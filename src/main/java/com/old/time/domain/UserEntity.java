@@ -7,7 +7,7 @@ import java.util.Date;
 public class UserEntity {
 
 
-    public UserEntity(){
+    public UserEntity() {
 
     }
 
@@ -40,8 +40,11 @@ public class UserEntity {
 
     private String mobile;
 
-    private Date birthday;
+    private String birthday;
 
+    /**
+     * 0：女、1：男
+     */
     private boolean sex;
 
     private String vocation;
@@ -102,11 +105,11 @@ public class UserEntity {
         this.mobile = mobile;
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 

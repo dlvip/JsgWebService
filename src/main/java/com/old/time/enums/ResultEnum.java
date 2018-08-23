@@ -2,12 +2,20 @@ package com.old.time.enums;
 
 public enum ResultEnum {
 
+    //通用提示信息
+    CURRENCY_MSG_NON_PERMISSION(-9000, "操作失败，权限不够"),
+
+    //用户提示信息
     USER_NON_EXISTENT(-1000, "用户不存在，请注册"),
     USER_ALREADY_EXISTENT(-1001, "用户已经存在，请登录"),
 
+    //验证码提示信息
     MOBILE_CODE_ERROR(-1020, "验证码有误，请重新输入"),
     MOBILE_CODE_INVALID(-1021, "验证码已失效，请重试"),
     MOBILE_CODE_SEND(-1022, "验证码已发送至手机，2分钟内有效"),
+
+    //地址提示信息
+    USER_ADDRESS_NON(-1030, "地址不存在"),
 
     SUCCESS(0, "成功"),
     SYSTEM_ERROR(-1, "系统异常"),

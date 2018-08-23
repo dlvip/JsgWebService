@@ -1,5 +1,6 @@
 package com.old.time.controller;
 
+import com.old.time.aspect.HttpAspect;
 import com.old.time.domain.MsgCodeEntity;
 import com.old.time.domain.Result;
 import com.old.time.domain.UserEntity;
@@ -9,6 +10,8 @@ import com.old.time.repository.MsgCodeRepository;
 import com.old.time.repository.UserRepository;
 import com.old.time.utils.GenerateShortUuid;
 import com.old.time.utils.ResultUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "jiushiguang")
 public class LoginController {
+
+    private final static Logger logger = LoggerFactory.getLogger(HttpAspect.class);
 
     @Autowired
     private UserRepository userRepository;
@@ -40,8 +45,8 @@ public class LoginController {
         }
         String code = "1234";
 //        String code = MsgCodeUtils.getMsgCode(mobile);
-        msgCodeEntity = new MsgCodeEntity(mobile, code, currentTimeMillis + 10 * 1000, currentTimeMillis);
-
+        msgCodeEntity = new MsgCodeEntity(mobile, code, (currentTimeMillis + 10 * 1000), currentTimeMillis);
+        logger.info("mobile = " + mobile + ":::code = " + code);
         return ResultUtil.success(msgCodeRepository.save(msgCodeEntity));
     }
 
@@ -56,7 +61,6 @@ public class LoginController {
     @PostMapping(value = "/registerUser")
     public Result registerUser(@RequestParam("mobile") String mobile, @RequestParam("pasWord") String pasWord, @RequestParam("code") String code) throws RuntimeException {
         UserEntity userEntity = userRepository.findByMobile(mobile);
-
         if (userEntity != null) {
 
             throw new JSGNoSuchElementException(ResultEnum.USER_ALREADY_EXISTENT);
@@ -117,13 +121,12 @@ public class LoginController {
         }
 
         UserEntity userEntity = userRepository.findByMobile(mobile);
-        if(userEntity == null){
+        if (userEntity == null) {
 
             throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
         }
         return ResultUtil.success(userEntity);
     }
-
 
     /**
      * 修改密码

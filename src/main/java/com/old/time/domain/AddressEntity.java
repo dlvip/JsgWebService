@@ -7,9 +7,25 @@ import javax.persistence.Id;
 @Entity
 public class AddressEntity {
 
+    public AddressEntity() {
+
+    }
+
+    public AddressEntity(Integer userId, String mobile, String name, String county, String area, String address) {
+        this.userId = userId;
+        this.mobile = mobile;
+        this.name = name;
+        this.county = county;
+        this.area = area;
+        this.address = address;
+
+    }
+
     @Id
     @GeneratedValue
     private Integer id;
+
+    private Integer addressId;
 
     private Integer userId;
 
@@ -24,6 +40,22 @@ public class AddressEntity {
     private String name;
 
     private boolean isDefault;
+
+    public Integer getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(Integer addressId) {
+        this.addressId = addressId;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
     public boolean isDefault() {
         return isDefault;

@@ -6,10 +6,22 @@ import com.old.time.domain.Result;
 public class ResultUtil {
 
     public static Result success(Object object) {
+        if(object == null){
+            object = new Object();
+
+        }
         Result result = new Result();
         result.setStatus(0);
         result.setMsg("成功");
         result.setData(object);
+
+        return result;
+    }
+
+    public static Result success() {
+        Result result = new Result();
+        result.setStatus(0);
+        result.setMsg("成功");
 
         return result;
     }

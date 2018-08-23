@@ -10,6 +10,9 @@ public abstract class BaseController {
     @Autowired
     public JSGuangService jSGuangService;
 
-    public abstract Result getControllerList();
+    public  Result getControllerList(){
+
+        return null;
+    }
 
 }
