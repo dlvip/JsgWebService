@@ -58,8 +58,8 @@ public class CourseController extends BaseController {
      * @param pageSize
      * @return
      */
-    @PostMapping(value = "/getCourseList")
-    public Result getCourseList(@RequestParam("userId") Integer userId, @RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
+    @PostMapping(value = "/getUserCourseList")
+    public Result getUserCourseList(@RequestParam("userId") Integer userId, @RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
         boolean isUserExists = userRepository.existsById(userId);
         if (!isUserExists) {
 
@@ -67,6 +67,19 @@ public class CourseController extends BaseController {
         }
 
         List<CourseEntity> courseEntityList = courseRepository.findCourseEntitiesByUserId(userId, PageRequest.of(pageNum, pageSize));
+
+        return ResultUtil.success(courseEntityList);
+    }
+
+    /**
+     * 获取专辑列表
+     *
+     * @return
+     */
+    @PostMapping(value = "/getCourseList")
+    public Result getCourseList() {
+
+        List<CourseEntity> courseEntityList = courseRepository.findAll();
 
         return ResultUtil.success(courseEntityList);
     }

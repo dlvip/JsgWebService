@@ -44,10 +44,10 @@ public class LoginController {
             throw new JSGNoSuchElementException(ResultEnum.MOBILE_CODE_SEND);
         }
         String code = "1234";
-//        String code = MsgCodeUtils.getMsgCode(mobile);
+        //String code = MsgCodeUtils.getMsgCode(mobile);
         msgCodeEntity = new MsgCodeEntity(mobile, code, (currentTimeMillis + 10 * 1000), currentTimeMillis);
-        logger.info("mobile = " + mobile + ":::code = " + code);
-        return ResultUtil.success(msgCodeRepository.save(msgCodeEntity));
+        msgCodeRepository.save(msgCodeEntity);
+        return ResultUtil.success();
     }
 
     /**

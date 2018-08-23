@@ -25,11 +25,13 @@ public interface CourseRepository extends JpaRepository<CourseEntity, Integer> {
     List<CourseEntity> findCourseEntitiesByUserId(Integer userId);
 
     /**
-     * 获取专辑列表（分页）
+     * 获取用户专辑列表（分页）
      *
      * @param userId
      * @param pageable
      * @return
      */
     List<CourseEntity> findCourseEntitiesByUserId(Integer userId, Pageable pageable);
+
+
 }
