@@ -9,13 +9,19 @@ public class CourseEntity  {
     @GeneratedValue
     private Integer id;
 
-    private String userId;
+    /**
+     * 用户di
+     */
+    private Integer userId;
+
+    /**
+     * 课程id
+     */
+    private Integer albumId;
 
     private String title;
 
     private String coursePic;
-
-    private Integer albumId;
 
     public Integer getAlbumId() {
         return albumId;
@@ -41,11 +47,11 @@ public class CourseEntity  {
         this.title = title;
     }
 
-    public String getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 

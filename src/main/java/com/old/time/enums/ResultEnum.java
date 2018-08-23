@@ -4,6 +4,8 @@ public enum ResultEnum {
 
     //通用提示信息
     CURRENCY_MSG_NON_PERMISSION(-9000, "操作失败，权限不够"),
+    CURRENCY_MSG_NON_DATE(-9001, "操作失败，数据不存在"),
+
 
     //用户提示信息
     USER_NON_EXISTENT(-1000, "用户不存在，请注册"),
@@ -16,6 +18,9 @@ public enum ResultEnum {
 
     //地址提示信息
     USER_ADDRESS_NON(-1030, "地址不存在"),
+
+    //课程提示信息
+
 
     SUCCESS(0, "成功"),
     SYSTEM_ERROR(-1, "系统异常"),

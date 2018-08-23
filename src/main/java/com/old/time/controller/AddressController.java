@@ -96,7 +96,7 @@ public class AddressController extends BaseController {
      * @return
      */
     @PostMapping(value = "/deleteAddress")
-    public Result deleteAddress(@RequestParam("userId") Integer userId, @RequestParam("addressId") Integer addressId) {
+    public Result deleteAddress(@RequestParam("userId") Integer userId, @RequestParam("addressId") Integer addressId) throws RuntimeException {
         boolean isUserExists = userRepository.existsById(userId);
         if (!isUserExists) {
 
@@ -125,7 +125,7 @@ public class AddressController extends BaseController {
      * @return
      */
     @PostMapping(value = "/getAddressList")
-    public Result getAddressList(@RequestParam("userId") Integer userId, @RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
+    public Result getAddressList(@RequestParam("userId") Integer userId, @RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) throws RuntimeException {
         boolean isUserExists = userRepository.existsById(userId);
         if (!isUserExists) {
 
@@ -142,7 +142,7 @@ public class AddressController extends BaseController {
      * @return
      */
     @PostMapping(value = "/getAddressEntities")
-    public Result getAddressList(@RequestParam("userId") Integer userId) {
+    public Result getAddressList(@RequestParam("userId") Integer userId) throws RuntimeException {
         boolean isUserExists = userRepository.existsById(userId);
         if (!isUserExists) {
 
