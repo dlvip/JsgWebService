@@ -5,7 +5,7 @@ import com.old.time.domain.Result;
 
 public class ResultUtil {
 
-    public static Result success(Object object){
+    public static Result success(Object object) {
         Result result = new Result();
         result.setStatus(0);
         result.setMsg("成功");
@@ -14,7 +14,7 @@ public class ResultUtil {
         return result;
     }
 
-    public static Result error(Integer status,String msg){
+    public static Result error(Integer status, String msg) {
         Result result = new Result();
         result.setStatus(status);
         result.setMsg(msg);

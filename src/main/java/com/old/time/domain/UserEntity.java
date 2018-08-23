@@ -6,6 +6,26 @@ import java.util.Date;
 @Entity
 public class UserEntity {
 
+
+    public UserEntity(){
+
+    }
+
+
+    /**
+     * 用户基本信息
+     *
+     * @param userId
+     * @param mobile
+     * @param pasWord
+     */
+    public UserEntity(String userId, String mobile, String pasWord) {
+        this.userId = userId;
+        this.mobile = mobile;
+        this.pasWord = pasWord;
+
+    }
+
     @Id
     @GeneratedValue
     private Integer id;

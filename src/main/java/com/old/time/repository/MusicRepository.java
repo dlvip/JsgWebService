@@ -9,14 +9,6 @@ import java.util.List;
 public interface MusicRepository extends JpaRepository<MusicEntry, Integer> {
 
     /**
-     * 保存
-     *
-     * @param musicEntry
-     * @return
-     */
-    MusicEntry save(MusicEntry musicEntry);
-
-    /**
      * 根据albumId分页查询音频列表
      *
      * @param albumId
