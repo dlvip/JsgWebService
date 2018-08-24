@@ -45,6 +45,7 @@ public class UserEntity {
     /**
      * 0：女、1：男
      */
+    @Column(length = 1)
     private Integer sex;
 
     private String vocation;

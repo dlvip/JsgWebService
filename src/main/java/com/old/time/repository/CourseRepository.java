@@ -22,7 +22,7 @@ public interface CourseRepository extends JpaRepository<CourseEntity, Integer> {
      * @param userId
      * @return
      */
-    List<CourseEntity> findCourseEntitiesByUserId(Integer userId);
+    List<CourseEntity> findCourseEntitiesByUserId(String userId);
 
     /**
      * 获取用户专辑列表（分页）
@@ -31,7 +31,15 @@ public interface CourseRepository extends JpaRepository<CourseEntity, Integer> {
      * @param pageable
      * @return
      */
-    List<CourseEntity> findCourseEntitiesByUserId(Integer userId, Pageable pageable);
+    List<CourseEntity> findCourseEntitiesByUserId(String userId, Pageable pageable);
+
+    /**
+     * 获取专辑是否存在
+     *
+     * @param albumId
+     * @return
+     */
+    boolean existsByAlbumId(Integer albumId);
 
 
 }

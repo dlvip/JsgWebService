@@ -1,5 +1,11 @@
 package com.old.time.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.ResourceUtils;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,6 +15,30 @@ import java.util.Locale;
 
 public class TimeUtil {
 
+    private final static Logger logger = LoggerFactory.getLogger(TimeUtil.class);
+
+    /**
+     * 读取文件
+     */
+    public static void inputFile() {
+        File file = null;
+        try {
+            file = ResourceUtils.getFile("classpath:assets");
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (file.exists()) {
+            File[] files = file.listFiles();
+            if (files != null) {
+                for (File childFile : files) {
+                    logger.info("childFile={}", childFile);
+
+                }
+            }
+        }
+    }
+
     /**
      * 掉此方法输入所要转换的时间输入例如（"2014年06月14日16时09分00秒"）返回时间戳
      *
@@ -16,6 +46,8 @@ public class TimeUtil {
      * @return
      */
     public String data(String time) {
+
+
         SimpleDateFormat sdr = new SimpleDateFormat("yyyy年MM月dd日HH时mm分ss秒",
                 Locale.CHINA);
         Date date;

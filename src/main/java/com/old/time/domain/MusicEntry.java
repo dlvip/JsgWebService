@@ -7,21 +7,83 @@ import javax.persistence.Id;
 @Entity
 public class MusicEntry {
 
+    public MusicEntry() {
+
+    }
+
+
+    public MusicEntry(Integer chapterId, String userId, Integer albumId, String title, String musicUrl, String musicPic, String musicTitle, long musicTime, Integer orderNo) {
+        this.chapterId = chapterId;
+        this.userId = userId;
+        this.albumId = albumId;
+        this.title = title;
+        this.musicUrl = musicUrl;
+        this.musicPic = musicPic;
+        this.musicTitle = musicTitle;
+        this.musicTime = musicTime;
+        this.orderNo = orderNo;
+
+    }
+
     @Id
     @GeneratedValue
     private Integer id;
+
+    /**
+     * 章节id
+     */
+    private Integer chapterId;
 
     private String title;
 
     private Integer albumId;
 
-    private String musiceUrl;
+    private String musicUrl;
 
-    private String musiceTitle;
+    private String musicTitle;
 
     private String musicPic;
 
-    private long musiceTime;
+    private long musicTime;
+
+    private String userId;
+
+    /**
+     * 章节序号
+     */
+    private Integer orderNo;
+
+    public Integer getChapterId() {
+        return chapterId;
+    }
+
+    public void setChapterId(Integer chapterId) {
+        this.chapterId = chapterId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public long getMusicTime() {
+        return musicTime;
+    }
+
+    public void setMusicTime(long musicTime) {
+        this.musicTime = musicTime;
+    }
+
+    public Integer getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(Integer orderNo) {
+        this.orderNo = orderNo;
+    }
 
     public void setMusicPic(String musicPic) {
         this.musicPic = musicPic;
@@ -55,27 +117,19 @@ public class MusicEntry {
         this.albumId = albumId;
     }
 
-    public String getMusiceUrl() {
-        return musiceUrl;
+    public String getMusicUrl() {
+        return musicUrl;
     }
 
-    public void setMusiceUrl(String musiceUrl) {
-        this.musiceUrl = musiceUrl;
+    public void setMusicUrl(String musicUrl) {
+        this.musicUrl = musicUrl;
     }
 
-    public String getMusiceTitle() {
-        return musiceTitle;
+    public String getMusicTitle() {
+        return musicTitle;
     }
 
-    public void setMusiceTitle(String musiceTitle) {
-        this.musiceTitle = musiceTitle;
-    }
-
-    public long getMusiceTime() {
-        return musiceTime;
-    }
-
-    public void setMusiceTime(long musiceTime) {
-        this.musiceTime = musiceTime;
+    public void setMusicTitle(String musicTitle) {
+        this.musicTitle = musicTitle;
     }
 }

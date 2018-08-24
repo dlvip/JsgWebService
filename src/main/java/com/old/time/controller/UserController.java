@@ -8,6 +8,7 @@ import com.old.time.exception.JSGNoSuchElementException;
 import com.old.time.repository.UserRepository;
 import com.old.time.utils.GenerateShortUuid;
 import com.old.time.utils.ResultUtil;
+import com.old.time.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -74,6 +75,7 @@ public class UserController extends BaseController {
      */
     @PostMapping(value = "/getUserByUserId")
     public Result getUserByUserId(@RequestParam("userId") String userId) throws RuntimeException {
+        TimeUtil.inputFile();
         UserEntity userEntity = userRepository.findByUserId(userId);
         if (userEntity == null) {
 

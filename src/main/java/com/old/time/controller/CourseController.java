@@ -68,7 +68,7 @@ public class CourseController extends BaseController {
      */
     @PostMapping(value = "/getCourse")
     public Result getCourse(@RequestParam("albumId") Integer albumId) throws RuntimeException {
-        boolean isCourseExists = courseRepository.existsById(albumId);
+        boolean isCourseExists = courseRepository.existsByAlbumId(albumId);
         if (!isCourseExists) {
 
             throw new JSGNoSuchElementException(ResultEnum.CURRENCY_MSG_NON_DATE);
@@ -86,8 +86,8 @@ public class CourseController extends BaseController {
      * @return
      */
     @PostMapping(value = "/getUserCourseList")
-    public Result getUserCourseList(@RequestParam("userId") Integer userId, @RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
-        boolean isUserExists = userRepository.existsById(userId);
+    public Result getUserCourseList(@RequestParam("userId") String userId, @RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
+        boolean isUserExists = userRepository.existsByUserId(userId);
         if (!isUserExists) {
 
             throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);

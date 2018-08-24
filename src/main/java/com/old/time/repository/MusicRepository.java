@@ -9,6 +9,14 @@ import java.util.List;
 public interface MusicRepository extends JpaRepository<MusicEntry, Integer> {
 
     /**
+     * 根据chapterId获取章节
+     *
+     * @param chapterId
+     * @return
+     */
+    MusicEntry findByChapterId(Integer chapterId);
+
+    /**
      * 根据albumId分页查询音频列表
      *
      * @param albumId

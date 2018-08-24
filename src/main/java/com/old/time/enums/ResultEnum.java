@@ -20,7 +20,7 @@ public enum ResultEnum {
     USER_ADDRESS_NON(-1030, "地址不存在"),
 
     //课程提示信息
-
+    USER_COURSE_NON(-1040, "专辑不存在"),
 
     SUCCESS(0, "成功"),
     SYSTEM_ERROR(-1, "系统异常"),
