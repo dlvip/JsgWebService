@@ -51,7 +51,7 @@ public class UserController extends BaseController {
      * @return
      */
     @PostMapping(value = "/updateUserMsg")
-    public Result updateUserMsg(@RequestParam("userId") Integer userId, @RequestParam("userName") String userName, @RequestParam("avatar") String avatar, @RequestParam("birthday") String birthday, @RequestParam("sex") int sex) {
+    public Result updateUserMsg(@RequestParam("userId") String userId, @RequestParam("userName") String userName, @RequestParam("avatar") String avatar, @RequestParam("birthday") String birthday, @RequestParam("sex") int sex) {
         UserEntity userEntity = userRepository.findByUserId(userId);
         if (userEntity == null) {
 
@@ -60,7 +60,7 @@ public class UserController extends BaseController {
         userEntity.setAvatar(avatar);
         userEntity.setBirthday(birthday);
         userEntity.setUserName(userName);
-        userEntity.setSex(sex == 0);
+        userEntity.setSex(sex);
 
         return ResultUtil.success(userRepository.save(userEntity));
     }
@@ -73,7 +73,7 @@ public class UserController extends BaseController {
      * @throws RuntimeException
      */
     @PostMapping(value = "/getUserByUserId")
-    public Result getUserByUserId(@RequestParam("userId") Integer userId) throws RuntimeException {
+    public Result getUserByUserId(@RequestParam("userId") String userId) throws RuntimeException {
         UserEntity userEntity = userRepository.findByUserId(userId);
         if (userEntity == null) {
 

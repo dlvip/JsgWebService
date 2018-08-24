@@ -45,7 +45,7 @@ public class UserEntity {
     /**
      * 0：女、1：男
      */
-    private boolean sex;
+    private Integer sex;
 
     private String vocation;
 
@@ -113,11 +113,11 @@ public class UserEntity {
         this.birthday = birthday;
     }
 
-    public boolean isSex() {
+    public Integer isSex() {
         return sex;
     }
 
-    public void setSex(boolean sex) {
+    public void setSex(Integer sex) {
         this.sex = sex;
     }
 }

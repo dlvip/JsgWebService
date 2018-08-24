@@ -11,7 +11,7 @@ public class AddressEntity {
 
     }
 
-    public AddressEntity(Integer userId, String mobile, String name, String county, String area, String address) {
+    public AddressEntity(String userId, String mobile, String name, String county, String area, String address) {
         this.userId = userId;
         this.mobile = mobile;
         this.name = name;
@@ -27,7 +27,7 @@ public class AddressEntity {
 
     private Integer addressId;
 
-    private Integer userId;
+    private String userId;
 
     private String mobile;
 
@@ -49,11 +49,11 @@ public class AddressEntity {
         this.addressId = addressId;
     }
 
-    public Integer getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

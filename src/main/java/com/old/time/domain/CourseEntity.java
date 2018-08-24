@@ -3,7 +3,28 @@ package com.old.time.domain;
 import javax.persistence.*;
 
 @Entity
-public class CourseEntity  {
+public class CourseEntity {
+
+    public CourseEntity() {
+
+
+    }
+
+    /**
+     * 创建专辑
+     *
+     * @param userId
+     * @param albumId
+     * @param title
+     * @param coursePic
+     */
+    public CourseEntity(String userId, Integer albumId, String title, String coursePic) {
+        this.userId = userId;
+        this.albumId = albumId;
+        this.title = title;
+        this.coursePic = coursePic;
+
+    }
 
     @Id
     @GeneratedValue
@@ -12,10 +33,10 @@ public class CourseEntity  {
     /**
      * 用户di
      */
-    private Integer userId;
+    private String userId;
 
     /**
-     * 课程id
+     * 专辑id
      */
     private Integer albumId;
 
@@ -47,11 +68,11 @@ public class CourseEntity  {
         this.title = title;
     }
 
-    public Integer getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -62,4 +83,6 @@ public class CourseEntity  {
     public void setCoursePic(String coursePic) {
         this.coursePic = coursePic;
     }
+
+    
 }

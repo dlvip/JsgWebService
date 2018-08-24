@@ -26,10 +26,37 @@ public class CourseController extends BaseController {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * 添加专辑
+     *
+     * @param mCourseEntity
+     * @return
+     */
     @PostMapping(value = "/addCourse")
     public Result addCourse(CourseEntity mCourseEntity) {
 
         return jSGuangService.saveCourseEntity(mCourseEntity, courseRepository);
+    }
+
+    /**
+     * 添加专辑
+     *
+     * @param userId
+     * @param albumId
+     * @param title
+     * @param coursePic
+     * @return
+     */
+    @PostMapping(value = "/saveCourse")
+    public Result saveCourse(@RequestParam("userId") String userId, @RequestParam("albumId") Integer albumId, @RequestParam("title") String title, @RequestParam("coursePic") String coursePic) {
+        boolean isUserExists = userRepository.existsByUserId(userId);
+        if (!isUserExists) {
+
+            throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
+        }
+        CourseEntity courseEntity = new CourseEntity(userId, albumId, title, coursePic);
+
+        return ResultUtil.success(courseRepository.save(courseEntity));
     }
 
     /**

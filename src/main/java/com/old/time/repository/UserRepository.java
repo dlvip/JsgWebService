@@ -12,7 +12,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
      * @param pasWord
      * @return
      */
-    UserEntity findByUserIdAndPasWord(Integer userId, String pasWord);
+    UserEntity findByUserIdAndPasWord(String userId, String pasWord);
 
     /**
      * 通过用户id查找用户
@@ -20,7 +20,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
      * @param userId
      * @return
      */
-    UserEntity findByUserId(Integer userId);
+    UserEntity findByUserId(String userId);
 
     /**
      * 通过手机号查找用户
@@ -38,5 +38,13 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
      * @return
      */
     UserEntity findByMobileAndPasWord(String mobile, String pasWord);
+
+    /**
+     * 判断用户是否存在
+     *
+     * @param userId
+     * @return
+     */
+    boolean existsByUserId(String userId);
 
 }

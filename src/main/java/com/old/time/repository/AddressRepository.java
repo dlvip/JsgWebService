@@ -17,14 +17,13 @@ public interface AddressRepository extends JpaRepository<AddressEntity, Integer>
      */
     AddressEntity findByAddressId(Integer addressId);
 
-
     /**
      * 查询地址信息列表
      *
      * @param userId
      * @return
      */
-    List<AddressEntity> findAddressEntitiesByUserId(Integer userId);
+    List<AddressEntity> findAddressEntitiesByUserId(String userId);
 
     /**
      * 根据userId分页查询地址
@@ -33,7 +32,7 @@ public interface AddressRepository extends JpaRepository<AddressEntity, Integer>
      * @param pageable
      * @return
      */
-    List<AddressEntity> findAddressEntitiesByUserId(Integer userId, Pageable pageable);
+    List<AddressEntity> findAddressEntitiesByUserId(String userId, Pageable pageable);
 
 
 }

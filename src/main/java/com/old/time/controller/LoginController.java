@@ -39,13 +39,20 @@ public class LoginController {
     public Result getMobileCode(@RequestParam("mobile") String mobile) {
         long currentTimeMillis = System.currentTimeMillis();
         MsgCodeEntity msgCodeEntity = msgCodeRepository.findByMobile(mobile);
-        if (msgCodeEntity != null && currentTimeMillis < msgCodeEntity.getCreateTime() + 2 * 1000) {
+        if (msgCodeEntity != null && currentTimeMillis < msgCodeEntity.getEndTime()) {
 
             throw new JSGNoSuchElementException(ResultEnum.MOBILE_CODE_SEND);
         }
         String code = "1234";
         //String code = MsgCodeUtils.getMsgCode(mobile);
-        msgCodeEntity = new MsgCodeEntity(mobile, code, (currentTimeMillis + 10 * 1000), currentTimeMillis);
+        if(msgCodeEntity == null){
+            msgCodeEntity = new MsgCodeEntity();
+
+        }
+        msgCodeEntity.setMobile(mobile);
+        msgCodeEntity.setCode(code);
+        msgCodeEntity.setEndTime((currentTimeMillis + 2 * 60 * 1000));
+        msgCodeEntity.setCreateTime(currentTimeMillis);
         msgCodeRepository.save(msgCodeEntity);
         return ResultUtil.success();
     }
@@ -138,7 +145,7 @@ public class LoginController {
      * @throws RuntimeException
      */
     @PostMapping(value = "/updatePasWord")
-    public Result updatePasWord(@RequestParam("userId") Integer userId, @RequestParam("pasWord") String pasWord, @RequestParam("newPasWord") String newPasWord) throws RuntimeException {
+    public Result updatePasWord(@RequestParam("userId") String userId, @RequestParam("pasWord") String pasWord, @RequestParam("newPasWord") String newPasWord) throws RuntimeException {
         UserEntity userEntity = userRepository.findByUserIdAndPasWord(userId, pasWord);
         if (userEntity == null) {
 
