@@ -7,7 +7,6 @@ import com.old.time.enums.ResultEnum;
 import com.old.time.exception.JSGNoSuchElementException;
 import com.old.time.repository.CourseRepository;
 import com.old.time.repository.MusicRepository;
-import com.old.time.repository.UserRepository;
 import com.old.time.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -24,9 +23,6 @@ public class MusicController extends BaseController {
     private MusicRepository musicRepository;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private CourseRepository courseRepository;
 
     @PostMapping(value = "/addMusic")
@@ -40,7 +36,7 @@ public class MusicController extends BaseController {
      *
      * @param userId
      * @param albumId
-     * @param title
+     * @param chapterId
      * @param musicUrl
      * @param musicPic
      * @param musicTitle
@@ -49,7 +45,7 @@ public class MusicController extends BaseController {
      * @return
      */
     @PostMapping(value = "/saveChapter")
-    public Result saveChapter(@RequestParam("id") Integer id, @RequestParam("userId") String userId, @RequestParam("albumId") Integer albumId, @RequestParam("title") String title, @RequestParam("musicUrl") String musicUrl, @RequestParam("musicPic") String musicPic, @RequestParam("musicTitle") String musicTitle, @RequestParam("musicTime") long musicTime, @RequestParam("orderNo") Integer orderNo) {
+    public Result saveChapter(@RequestParam("userId") String userId, @RequestParam("albumId") Integer albumId, @RequestParam("chapterId") Integer chapterId, @RequestParam("musicUrl") String musicUrl, @RequestParam("musicPic") String musicPic, @RequestParam("musicTitle") String musicTitle, @RequestParam("musicTime") long musicTime, @RequestParam("orderNo") Integer orderNo) {
         CourseEntity courseEntity = courseRepository.findByAlbumId(albumId);
         if (courseEntity == null) {
 
@@ -59,7 +55,7 @@ public class MusicController extends BaseController {
 
             throw new JSGNoSuchElementException(ResultEnum.CURRENCY_MSG_NON_PERMISSION);
         }
-        MusicEntry musicEntry = new MusicEntry(id, userId, albumId, title, musicUrl, musicPic, musicTitle, musicTime, orderNo);
+        MusicEntry musicEntry = new MusicEntry(chapterId, userId, albumId, musicUrl, musicPic, musicTitle, musicTime, orderNo);
 
         return ResultUtil.success(musicRepository.save(musicEntry));
     }
@@ -68,7 +64,6 @@ public class MusicController extends BaseController {
      * 修改章节
      *
      * @param userId
-     * @param title
      * @param musicUrl
      * @param musicPic
      * @param musicTitle
@@ -77,9 +72,9 @@ public class MusicController extends BaseController {
      * @return
      */
     @PostMapping(value = "/updateChapter")
-    public Result updateChapter(@RequestParam("userId") String userId, @RequestParam("chapterId") Integer chapterId, @RequestParam("title") String title, @RequestParam("musicUrl") String musicUrl, @RequestParam("musicPic") String musicPic, @RequestParam("musicTitle") String musicTitle, @RequestParam("musicTime") long musicTime, @RequestParam("orderNo") Integer orderNo) {
+    public Result updateChapter(@RequestParam("userId") String userId, @RequestParam("chapterId") Integer chapterId, @RequestParam("musicUrl") String musicUrl, @RequestParam("musicPic") String musicPic, @RequestParam("musicTitle") String musicTitle, @RequestParam("musicTime") long musicTime, @RequestParam("orderNo") Integer orderNo) {
         MusicEntry musicEntry = musicRepository.findByChapterId(chapterId);
-        if(musicEntry == null){
+        if (musicEntry == null) {
 
             throw new JSGNoSuchElementException(ResultEnum.NULL_DATA_ERROR);
         }
@@ -87,20 +82,28 @@ public class MusicController extends BaseController {
 
             throw new JSGNoSuchElementException(ResultEnum.CURRENCY_MSG_NON_PERMISSION);
         }
-        if(!"".equals(musicPic)){
+        if (!"".equals(musicPic)) {
             musicEntry.setMusicPic(musicPic);
 
         }
-        if(!"".equals(musicTitle)){
+        if (!"".equals(musicPic)) {
+            musicEntry.setMusicPic(musicPic);
+
+        }
+        if (!"".equals(musicTitle)) {
             musicEntry.setMusicTitle(musicTitle);
 
         }
-        if(!"".equals(musicUrl)){
+        if (!"".equals(musicUrl)) {
             musicEntry.setMusicUrl(musicUrl);
 
         }
-        if(!"".equals(title)){
-            musicEntry.setTitle(title);
+        if (0 == musicTime) {
+            musicEntry.setMusicTime(musicTime);
+
+        }
+        if (0 == orderNo) {
+            musicEntry.setOrderNo(orderNo);
 
         }
 
@@ -108,7 +111,7 @@ public class MusicController extends BaseController {
     }
 
     /**
-     * 获取章节列表
+     * 获取章节列表（分页）
      *
      * @param albumId
      * @return

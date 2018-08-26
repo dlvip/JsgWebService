@@ -9,6 +9,7 @@ import com.old.time.exception.JSGNoSuchElementException;
 import com.old.time.repository.MsgCodeRepository;
 import com.old.time.repository.UserRepository;
 import com.old.time.utils.GenerateShortUuid;
+import com.old.time.utils.MsgCodeUtils;
 import com.old.time.utils.ResultUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,8 +44,7 @@ public class LoginController {
 
             throw new JSGNoSuchElementException(ResultEnum.MOBILE_CODE_SEND);
         }
-        String code = "1234";
-        //String code = MsgCodeUtils.getMsgCode(mobile);
+        String code = MsgCodeUtils.getMsgCode(mobile);
         if(msgCodeEntity == null){
             msgCodeEntity = new MsgCodeEntity();
 

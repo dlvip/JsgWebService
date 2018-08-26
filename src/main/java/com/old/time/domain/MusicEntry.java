@@ -12,11 +12,10 @@ public class MusicEntry {
     }
 
 
-    public MusicEntry(Integer chapterId, String userId, Integer albumId, String title, String musicUrl, String musicPic, String musicTitle, long musicTime, Integer orderNo) {
+    public MusicEntry(Integer chapterId, String userId, Integer albumId, String musicUrl, String musicPic, String musicTitle, long musicTime, Integer orderNo) {
         this.chapterId = chapterId;
         this.userId = userId;
         this.albumId = albumId;
-        this.title = title;
         this.musicUrl = musicUrl;
         this.musicPic = musicPic;
         this.musicTitle = musicTitle;
@@ -33,8 +32,6 @@ public class MusicEntry {
      * 章节id
      */
     private Integer chapterId;
-
-    private String title;
 
     private Integer albumId;
 
@@ -99,14 +96,6 @@ public class MusicEntry {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public Integer getAlbumId() {

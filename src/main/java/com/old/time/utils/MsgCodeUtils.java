@@ -11,7 +11,13 @@ import com.aliyuncs.profile.IClientProfile;
 import com.old.time.enums.ResultEnum;
 import com.old.time.exception.JSGNoSuchElementException;
 
+import java.util.Random;
+
 public class MsgCodeUtils {
+
+    private static String Access_Key_ID = "LTAIZI9pk9HdFbtB";
+    private static String Access_Key_Secret = "rGH6Ug2QEJOt3T7Ple9qTgn7XRLqP8";
+    private static String Template_Code = "SMS_142616557";
 
     /**
      * 获取阿里云短信验证码
@@ -29,8 +35,8 @@ public class MsgCodeUtils {
             final String product = "Dysmsapi";//短信API产品名称（短信产品名固定，无需修改）
             final String domain = "dysmsapi.aliyuncs.com";//短信API产品域名（接口地址固定，无需修改）
             //替换成你的AK
-            final String accessKeyId = "yourAccessKeyId";//你的accessKeyId,参考本文档步骤2
-            final String accessKeySecret = "yourAccessKeySecret";//你的accessKeySecret，参考本文档步骤2
+            final String accessKeyId = Access_Key_ID;//你的accessKeyId,参考本文档步骤2
+            final String accessKeySecret = Access_Key_Secret;//你的accessKeySecret，参考本文档步骤2
             //初始化ascClient,暂时不支持多region（请勿修改）
             IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessKeySecret);
             DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", product, domain);
@@ -44,14 +50,16 @@ public class MsgCodeUtils {
             //必填:短信签名-可在短信控制台中找到
             request.setSignName("云通信");
             //必填:短信模板-可在短信控制台中找到，发送国际/港澳台消息时，请使用国际/港澳台短信模版
-            request.setTemplateCode("SMS_1000000");
+            request.setTemplateCode(Template_Code);
             //可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
             //友情提示:如果JSON中需要带换行符,请参照标准的JSON协议对换行符的要求,比如短信内容中包含\r\n的情况在JSON中需要表示成\\r\\n,否则会导致JSON在服务端解析失败
-            request.setTemplateParam("{\"name\":\"Tom\", \"code\":\"123\"}");
+            Random ne = new Random();
+            int code = ne.nextInt(999999 - 100000 + 1) + 100000;
+            request.setTemplateParam("{code:" + code + "}");
             //可选-上行短信扩展码(扩展码字段控制在7位或以下，无特殊需求用户请忽略此字段)
             //request.setSmsUpExtendCode("90997");
             //可选:outId为提供给业务方扩展字段,最终在短信回执消息中将此值带回给调用者
-            request.setOutId("yourOutId");
+//            request.setOutId("yourOutId");
             //请求失败这里会抛ClientException异常
             SendSmsResponse sendSmsResponse = acsClient.getAcsResponse(request);
             if (sendSmsResponse.getCode() != null && sendSmsResponse.getCode().equals("OK")) {
@@ -67,4 +75,10 @@ public class MsgCodeUtils {
 
         throw new JSGNoSuchElementException(ResultEnum.SYSTEM_ERROR);
     }
+
+    public static int getRandomCode() {
+        Random ne = new Random();//实例化一个random的对象ne
+        return ne.nextInt(9999 - 1000 + 1) + 1000;//为变量赋随机值1000-9999
+    }
+
 }
