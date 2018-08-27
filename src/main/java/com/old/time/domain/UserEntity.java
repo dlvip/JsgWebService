@@ -48,6 +48,10 @@ public class UserEntity {
     @Column(length = 1)
     private Integer sex;
 
+    public Integer getSex() {
+        return sex;
+    }
+
     private String vocation;
 
     public String getVocation() {

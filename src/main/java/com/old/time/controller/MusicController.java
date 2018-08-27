@@ -63,51 +63,46 @@ public class MusicController extends BaseController {
     /**
      * 修改章节
      *
-     * @param userId
-     * @param musicUrl
-     * @param musicPic
-     * @param musicTitle
-     * @param musicTime
-     * @param orderNo
      * @return
      */
     @PostMapping(value = "/updateChapter")
-    public Result updateChapter(@RequestParam("userId") String userId, @RequestParam("chapterId") Integer chapterId, @RequestParam("musicUrl") String musicUrl, @RequestParam("musicPic") String musicPic, @RequestParam("musicTitle") String musicTitle, @RequestParam("musicTime") long musicTime, @RequestParam("orderNo") Integer orderNo) {
-        MusicEntry musicEntry = musicRepository.findByChapterId(chapterId);
-        if (musicEntry == null) {
+    public Result updateChapter(MusicEntry musicEntry) {
+        if (musicEntry == null || musicEntry.getUserId() == null || musicEntry.getAlbumId() == null || musicEntry.getChapterId() == null) {
+
+            throw new JSGNoSuchElementException(ResultEnum.CURRENCY_MSG_PARAMETER_ERROR);
+        }
+        MusicEntry mMusicEntry = musicRepository.findByChapterId(musicEntry.getChapterId());
+        if(mMusicEntry == null){
 
             throw new JSGNoSuchElementException(ResultEnum.NULL_DATA_ERROR);
         }
-        if (!userId.equals(musicEntry.getUserId())) {
+        if (!musicEntry.getUserId().equals(mMusicEntry.getUserId())) {
 
             throw new JSGNoSuchElementException(ResultEnum.CURRENCY_MSG_NON_PERMISSION);
         }
-        if (!"".equals(musicPic)) {
-            musicEntry.setMusicPic(musicPic);
+
+        if (musicEntry.getMusicPic() != null) {
+            mMusicEntry.setMusicPic(musicEntry.getMusicPic());
 
         }
-        if (!"".equals(musicPic)) {
-            musicEntry.setMusicPic(musicPic);
+        if (musicEntry.getMusicTitle() != null) {
+            mMusicEntry.setMusicTitle(musicEntry.getMusicTitle());
 
         }
-        if (!"".equals(musicTitle)) {
-            musicEntry.setMusicTitle(musicTitle);
+        if (musicEntry.getMusicUrl() != null) {
+            mMusicEntry.setMusicUrl(musicEntry.getMusicUrl());
 
         }
-        if (!"".equals(musicUrl)) {
-            musicEntry.setMusicUrl(musicUrl);
+        if (musicEntry.getMusicTime() != 0) {
+            mMusicEntry.setMusicTime(musicEntry.getMusicTime());
 
         }
-        if (0 == musicTime) {
-            musicEntry.setMusicTime(musicTime);
-
-        }
-        if (0 == orderNo) {
-            musicEntry.setOrderNo(orderNo);
+        if (0 != musicEntry.getOrderNo()) {
+            mMusicEntry.setOrderNo(musicEntry.getOrderNo());
 
         }
 
-        return ResultUtil.success(musicRepository.save(musicEntry));
+        return ResultUtil.success(musicRepository.save(mMusicEntry));
     }
 
     /**

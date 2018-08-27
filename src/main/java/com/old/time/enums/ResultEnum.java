@@ -5,10 +5,11 @@ public enum ResultEnum {
     //通用提示信息
     CURRENCY_MSG_NON_PERMISSION(-9000, "操作失败，权限不够"),
     CURRENCY_MSG_NON_DATE(-9001, "操作失败，数据不存在"),
+    CURRENCY_MSG_PARAMETER_ERROR(-9002, "参数错误"),
 
 
     //用户提示信息
-    USER_NON_EXISTENT(-1000, "用户不存在，请注册"),
+    USER_NON_EXISTENT(-1000, "用户不存在"),
     USER_ALREADY_EXISTENT(-1001, "用户已经存在，请登录"),
 
     //验证码提示信息

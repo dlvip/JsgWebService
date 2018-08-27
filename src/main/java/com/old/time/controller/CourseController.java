@@ -60,7 +60,48 @@ public class CourseController extends BaseController {
     }
 
     /**
-     * 获取课程信息
+     * 修改专辑信息
+     *
+     * @param courseEntity
+     * @return
+     */
+    @PostMapping(value = "/updateCourse")
+    public Result updateCourse(CourseEntity courseEntity) {
+        if (courseEntity == null) {
+
+            throw new JSGNoSuchElementException(ResultEnum.CURRENCY_MSG_PARAMETER_ERROR);
+        }
+        if (courseEntity.getUserId() == null || userRepository.existsByUserId(courseEntity.getUserId())) {
+
+            throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
+        }
+        if (courseEntity.getAlbumId() == null || courseRepository.existsByAlbumId(courseEntity.getAlbumId())) {
+
+            throw new JSGNoSuchElementException(ResultEnum.USER_COURSE_NON);
+        }
+        CourseEntity mCourseEntity = courseRepository.findByAlbumId(courseEntity.getAlbumId());
+        if (mCourseEntity == null) {
+//            mCourseEntity = courseEntity;//保存时候需要
+
+            throw new JSGNoSuchElementException(ResultEnum.USER_COURSE_NON);
+        }
+        if (!courseEntity.getUserId().equals(mCourseEntity.getUserId())) {
+
+            throw new JSGNoSuchElementException(ResultEnum.CURRENCY_MSG_NON_PERMISSION);
+        }
+        if (courseEntity.getCoursePic() != null) {
+            mCourseEntity.setCoursePic(courseEntity.getCoursePic());
+
+        }
+        if (courseEntity.getTitle() != null) {
+            mCourseEntity.setTitle(courseEntity.getTitle());
+
+        }
+        return ResultUtil.success(courseRepository.save(mCourseEntity));
+    }
+
+    /**
+     * 获取专辑信息
      *
      * @param albumId
      * @return
@@ -78,7 +119,7 @@ public class CourseController extends BaseController {
     }
 
     /**
-     * 获取专辑列表（分页）
+     * 获取用户专辑列表（分页）
      *
      * @param userId
      * @param pageNum

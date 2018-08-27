@@ -44,26 +44,42 @@ public class UserController extends BaseController {
     /**
      * 修改用户信息
      *
-     * @param userId   用户id
-     * @param userName 用户名称
-     * @param avatar   用户头像
-     * @param birthday 生日
-     * @param sex      性别
+     * @param userEntity
      * @return
      */
     @PostMapping(value = "/updateUserMsg")
-    public Result updateUserMsg(@RequestParam("userId") String userId, @RequestParam("userName") String userName, @RequestParam("avatar") String avatar, @RequestParam("birthday") String birthday, @RequestParam("sex") int sex) {
-        UserEntity userEntity = userRepository.findByUserId(userId);
-        if (userEntity == null) {
+    public Result updateUserMsg(UserEntity userEntity) {
+        if ("".equals(userEntity.getUserId())) {
+
+            throw new JSGNoSuchElementException(ResultEnum.CURRENCY_MSG_PARAMETER_ERROR);
+        }
+        UserEntity mUserEntity = userRepository.findByUserId(userEntity.getUserId());
+        if (mUserEntity == null) {
 
             throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
         }
-        userEntity.setAvatar(avatar);
-        userEntity.setBirthday(birthday);
-        userEntity.setUserName(userName);
-        userEntity.setSex(sex);
+        if (userEntity.getAvatar() != null) {
+            mUserEntity.setAvatar(userEntity.getAvatar());
 
-        return ResultUtil.success(userRepository.save(userEntity));
+        }
+        if (userEntity.getUserName() != null) {
+            mUserEntity.setUserName(userEntity.getUserName());
+
+        }
+        if (userEntity.getBirthday() != null) {
+            mUserEntity.setBirthday(userEntity.getBirthday());
+
+        }
+        if (userEntity.getVocation() != null) {
+            mUserEntity.setVocation(userEntity.getVocation());
+
+        }
+        if (userEntity.getSex() != null) {
+            mUserEntity.setSex(userEntity.getSex());
+
+        }
+
+        return ResultUtil.success(userRepository.save(mUserEntity));
     }
 
     /**
