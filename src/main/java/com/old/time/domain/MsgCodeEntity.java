@@ -7,26 +7,6 @@ import javax.persistence.Id;
 @Entity
 public class MsgCodeEntity {
 
-    public MsgCodeEntity() {
-
-    }
-
-
-    /**
-     * 验证码
-     *
-     * @param mobile
-     * @param code
-     * @param endTime
-     */
-    public MsgCodeEntity(String mobile, String code, long endTime, long createTime) {
-        this.mobile = mobile;
-        this.code = code;
-        this.endTime = endTime;
-        this.createTime = createTime;
-
-    }
-
     @Id
     @GeneratedValue
     private Integer id;
@@ -46,6 +26,24 @@ public class MsgCodeEntity {
      */
     private long endTime;
 
+    /**
+     * 密码
+     */
+    private String pasWord;
+
+    /**
+     * 手机号
+     */
+    private String mobile;
+
+    public String getPasWord() {
+        return pasWord;
+    }
+
+    public void setPasWord(String pasWord) {
+        this.pasWord = pasWord;
+    }
+
     public long getEndTime() {
         return endTime;
     }
@@ -61,8 +59,6 @@ public class MsgCodeEntity {
     public void setCreateTime(long createTime) {
         this.createTime = createTime;
     }
-
-    private String mobile;
 
     public String getMobile() {
         return mobile;

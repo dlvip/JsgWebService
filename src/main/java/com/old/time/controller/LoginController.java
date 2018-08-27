@@ -157,7 +157,7 @@ public class LoginController {
     }
 
     /**
-     * 忘记密码
+     * 设置新密码
      *
      * @param mobile
      * @param code

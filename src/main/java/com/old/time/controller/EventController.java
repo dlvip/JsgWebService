@@ -3,7 +3,6 @@ package com.old.time.controller;
 
 import com.old.time.domain.Result;
 import com.old.time.repository.EventRepository;
-import com.old.time.repository.UserRepository;
 import com.old.time.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

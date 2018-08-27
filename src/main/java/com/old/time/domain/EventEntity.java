@@ -23,7 +23,6 @@ public class EventEntity {
 
     private String type;
 
-
     public Integer getId() {
         return id;
     }
