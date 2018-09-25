@@ -14,6 +14,7 @@ public class MusicEntry {
 
     public MusicEntry(Integer chapterId, String userId, Integer albumId, String musicUrl, String musicPic, String musicTitle, long musicTime, Integer orderNo) {
         this.chapterId = chapterId;
+        this.id = chapterId;
         this.userId = userId;
         this.albumId = albumId;
         this.musicUrl = musicUrl;

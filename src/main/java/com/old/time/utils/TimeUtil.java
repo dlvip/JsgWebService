@@ -597,7 +597,7 @@ public class TimeUtil {
      *
      * @return
      */
-    public static String getCurrentTime() {
+    public static String getCurrentTime1() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日  HH时mm分");
         return sdf.format(new Date());
     }
@@ -607,7 +607,7 @@ public class TimeUtil {
      *
      * @return
      */
-    public static String getCurrentTime2() {
+    public static String getCurrentTime() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(new Date());
     }

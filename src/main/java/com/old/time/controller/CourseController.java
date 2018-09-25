@@ -1,7 +1,5 @@
 package com.old.time.controller;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.old.time.domain.CourseEntity;
 import com.old.time.domain.Result;
 import com.old.time.enums.ResultEnum;
@@ -83,7 +81,6 @@ public class CourseController extends BaseController {
         }
         CourseEntity mCourseEntity = courseRepository.findByAlbumId(courseEntity.getAlbumId());
         if (mCourseEntity == null) {
-//            mCourseEntity = courseEntity;//保存时候需要
 
             throw new JSGNoSuchElementException(ResultEnum.USER_COURSE_NON);
         }
@@ -135,8 +132,7 @@ public class CourseController extends BaseController {
 
             throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
         }
-        List<CourseEntity> courseEntityList = courseRepository.findCourseEntitiesByUserId(userId, PageRequest.of(pageNum, pageSize));
-        return ResultUtil.success(courseEntityList);
+        return ResultUtil.success(courseRepository.findCourseEntitiesByUserId(userId, PageRequest.of(pageNum, pageSize)));
     }
 
     /**

@@ -18,6 +18,6 @@ public class JSGNoSuchElementException extends NoSuchElementException {
     }
 
     public void setStatus(Integer code) {
-        this.status = status;
+        this.status = code;
     }
 }

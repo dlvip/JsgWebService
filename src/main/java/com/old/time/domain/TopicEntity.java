@@ -1,5 +1,8 @@
 package com.old.time.domain;
 
+import com.old.time.utils.IdUtils;
+import com.old.time.utils.TimeUtil;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -7,8 +10,25 @@ import javax.persistence.Id;
 @Entity
 public class TopicEntity {
 
+    public TopicEntity() {
+
+    }
+
+    public TopicEntity(String userId, String topicTitle, String topicContent) {
+        this.userId = userId;
+        this.topicTitle = topicTitle;
+        this.topicContent = topicContent;
+        this.createTime = TimeUtil.getCurrentTime();
+        this.topicId = IdUtils.getCurrentTimeMillis();
+        this.commentCount = 0;
+        this.praiseCount = 0;
+
+    }
+
     @Id
     @GeneratedValue
+    private Integer id;
+
     private Integer topicId;
 
     private String topicTitle;
@@ -22,6 +42,14 @@ public class TopicEntity {
     private Integer commentCount;
 
     private String createTime;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getCreateTime() {
         return createTime;

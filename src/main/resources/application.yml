@@ -5,17 +5,11 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/jiushiguang?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
     username: root
-    password: 12345678
+    password: 123456
 
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
-
-pagehelper:
-  helper-dialect: mysql
-  reasonable: true
-  support-methods-arguments: true
-  params:
 
 

@@ -17,14 +17,6 @@ public interface CourseRepository extends JpaRepository<CourseEntity, Integer> {
     CourseEntity findByAlbumId(Integer albumId);
 
     /**
-     * 获取专辑列表
-     *
-     * @param userId
-     * @return
-     */
-    List<CourseEntity> findCourseEntitiesByUserId(String userId);
-
-    /**
      * 获取用户专辑列表（分页）
      *
      * @param userId
