@@ -40,11 +40,4 @@ public interface TopicRepository extends JpaRepository<TopicEntity, Integer> {
      */
     boolean deleteTopicEntityByUserIdAndTopicId(String userId, Integer topicId);
 
-    /**
-     * 删除话题
-     *
-     * @param topicId
-     * @return
-     */
-    boolean deleteTopicEntityByTopicId(Integer topicId);
 }

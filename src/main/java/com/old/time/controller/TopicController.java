@@ -44,6 +44,17 @@ public class TopicController extends BaseController {
         return ResultUtil.success(topicRepository.save(topicEntity));
     }
 
+    @PostMapping(value = "/getTopicDetail")
+    public Result getTopicDetail(@RequestParam("topicId") Integer topicId) {
+        boolean isExists = topicRepository.existsByTopicId(topicId);
+        if (!isExists) {
+
+            throw new JSGNoSuchElementException(ResultEnum.NULL_DATA_ERROR);
+        }
+
+        return ResultUtil.success(topicRepository.findTopicEntitiesByTopicId(topicId));
+    }
+
     /**
      * 获取话题列表
      *
@@ -71,28 +82,5 @@ public class TopicController extends BaseController {
 
             return ResultUtil.success();
         }
-
-//        boolean isUserExists = userRepository.existsByUserId(userId);
-//        if (!isUserExists) {
-//
-//            throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
-//        }
-//        boolean isTopicExists = topicRepository.existsByTopicId(topicId);
-//        if (!isTopicExists) {
-//
-//            throw new JSGNoSuchElementException(ResultEnum.CURRENCY_MSG_NON_DATE);
-//        }
-//        TopicEntity topicEntity = topicRepository.findTopicEntitiesByTopicId(topicId);
-//        if (!userId.equals(topicEntity.getUserId())) {
-//
-//            throw new JSGNoSuchElementException(ResultEnum.CURRENCY_MSG_PARAMETER_ERROR);
-//        }
-//
-//         isDelete = topicRepository.deleteTopicEntityByTopicId(topicId);
-//        if (!isDelete) {
-//
-//            throw new JSGNoSuchElementException(ResultEnum.CURRENCY_MSG_PARAMETER_ERROR);
-//        }
-//        return ResultUtil.success();
     }
 }

@@ -1,14 +1,35 @@
 package com.old.time.domain;
 
+import com.old.time.utils.IdUtils;
+import com.old.time.utils.TimeUtil;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 @Entity
 public class CommentEntity {
 
+    public CommentEntity() {
+
+
+    }
+
+    public CommentEntity(String userId, Integer topicId, String comment) {
+        this.userId = userId;
+        this.topicId = topicId;
+        this.comment = comment;
+        this.createTime = TimeUtil.getCurrentTime();
+        this.commentId = IdUtils.getCurrentTimeMillis();
+        this.praiseCount = 0;
+
+    }
+
     @Id
     @GeneratedValue
+    private Integer id;
+
     private Integer commentId;
 
     private String userId;
@@ -20,6 +41,14 @@ public class CommentEntity {
     private Integer praiseCount;
 
     private String createTime;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getCommentId() {
         return commentId;
@@ -67,5 +96,17 @@ public class CommentEntity {
 
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+
+    @Transient
+    private UserEntity userEntity;
+
+    public UserEntity getUserEntity() {
+        return userEntity;
+    }
+
+    public void setUserEntity(UserEntity userEntity) {
+        this.userEntity = userEntity;
     }
 }
