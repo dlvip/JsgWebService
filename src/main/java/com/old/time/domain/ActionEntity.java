@@ -7,9 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-/**
- * 活动
- */
 @Entity
 public class ActionEntity {
 
@@ -17,19 +14,20 @@ public class ActionEntity {
 
     }
 
-    public ActionEntity(String userId, String title, String pic, String url, String describe, String longitude, String latitude, String address, String startTime, String endTime) {
+    public ActionEntity(String userId, String title, String pic, String url, String brief, String longitude, String latitude, String address, String startTime, String endTime) {
         this.userId = userId;
         this.actionId = IdUtils.getCurrentTimeMillis();
         this.title = title;
         this.pic = pic;
         this.url = url;
-        this.describe = describe;
+        this.brief = brief;
         this.longitude = longitude;
         this.latitude = latitude;
         this.address = address;
         this.createTime = TimeUtil.getCurrentTime();
         this.startTime = startTime;
         this.endTime = endTime;
+        this.price = 0.0;
     }
 
     @Id
@@ -46,7 +44,7 @@ public class ActionEntity {
 
     private String title;
 
-    private String describe;
+    private String brief;
 
     private String createTime;
 
@@ -60,7 +58,7 @@ public class ActionEntity {
 
     private String address;
 
-    private Double price;
+    private double price;
 
 
     public Integer getId() {
@@ -111,12 +109,12 @@ public class ActionEntity {
         this.title = title;
     }
 
-    public String getDescribe() {
-        return describe;
+    public String getBrief() {
+        return brief;
     }
 
-    public void setDescribe(String describe) {
-        this.describe = describe;
+    public void setBrief(String brief) {
+        this.brief = brief;
     }
 
     public String getCreateTime() {
@@ -167,11 +165,11 @@ public class ActionEntity {
         this.address = address;
     }
 
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 }

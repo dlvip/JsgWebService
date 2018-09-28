@@ -32,20 +32,20 @@ public class ActionController extends BaseController {
      * @param title
      * @param pic
      * @param url
-     * @param describe
+     * @param brief
      * @param longitude
      * @param latitude
      * @param address
      * @return
      */
     @RequestMapping(value = "/insertAction")
-    public Result insertAction(@RequestParam("userId") String userId, @RequestParam("title") String title, @RequestParam("pic") String pic, @RequestParam("url") String url, @RequestParam("describe") String describe, @RequestParam("longitude") String longitude, @RequestParam("latitude") String latitude, @RequestParam("address") String address, @RequestParam("startTime") String startTime, @RequestParam("endTime") String endTime) {
+    public Result insertAction(@RequestParam("userId") String userId, @RequestParam("title") String title, @RequestParam("pic") String pic, @RequestParam("url") String url, @RequestParam("brief") String brief, @RequestParam("longitude") String longitude, @RequestParam("latitude") String latitude, @RequestParam("address") String address, @RequestParam("startTime") String startTime, @RequestParam("endTime") String endTime) {
         boolean isUserExists = userRepository.existsByUserId(userId);
         if (!isUserExists) {
 
             throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
         }
-        ActionEntity actionEntity = new ActionEntity(userId, title, pic, url, describe, longitude, latitude, address, startTime, endTime);
+        ActionEntity actionEntity = new ActionEntity(userId, title, pic, url, brief, longitude, latitude, address, startTime, endTime);
 
         return ResultUtil.success(actionRepository.save(actionEntity));
     }
