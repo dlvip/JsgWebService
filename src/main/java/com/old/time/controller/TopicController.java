@@ -1,9 +1,11 @@
 package com.old.time.controller;
 
+import com.old.time.domain.CommentEntity;
 import com.old.time.domain.Result;
 import com.old.time.domain.TopicEntity;
 import com.old.time.enums.ResultEnum;
 import com.old.time.exception.JSGNoSuchElementException;
+import com.old.time.repository.CommentRepository;
 import com.old.time.repository.TopicRepository;
 import com.old.time.repository.UserRepository;
 import com.old.time.utils.ResultUtil;
@@ -14,12 +16,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "jiushiguang/topic")
 public class TopicController extends BaseController {
 
     @Autowired
     private TopicRepository topicRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -69,7 +77,16 @@ public class TopicController extends BaseController {
 
             throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
         }
-        return ResultUtil.success(topicRepository.findTopicEntitiesByUserId(userId, PageRequest.of(pageNum, pageSize)));
+        List<TopicEntity> topicEntities = topicRepository.findTopicEntitiesByUserId(userId, PageRequest.of(pageNum, pageSize));
+        if (topicEntities == null) {
+
+            return ResultUtil.success(new ArrayList<CommentEntity>());
+        }
+        for (TopicEntity topicEntity : topicEntities) {
+            topicEntity.setCommentCount(commentRepository.countByTopicId(topicEntity.getTopicId()));
+
+        }
+        return ResultUtil.success(topicEntities);
     }
 
     @PostMapping(value = "/deleteTopic")

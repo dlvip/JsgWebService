@@ -17,6 +17,14 @@ public interface CommentRepository extends JpaRepository<CommentEntity, Integer>
     List<CommentEntity> findCommentEntitiesByTopicId(Integer topicId, Pageable pageable);
 
     /**
+     * 获取评论数量
+     *
+     * @param topicId
+     * @return
+     */
+    int countByTopicId(Integer topicId);
+
+    /**
      * 删除评论
      *
      * @param userId

@@ -132,7 +132,8 @@ public class CourseController extends BaseController {
 
             throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
         }
-        return ResultUtil.success(courseRepository.findCourseEntitiesByUserId(userId, PageRequest.of(pageNum, pageSize)));
+        List<CourseEntity> courseEntities = courseRepository.findCourseEntitiesByUserId(userId, PageRequest.of(pageNum, pageSize));
+        return ResultUtil.success(courseEntities);
     }
 
     /**
