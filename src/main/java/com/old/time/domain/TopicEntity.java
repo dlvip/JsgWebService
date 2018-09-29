@@ -6,6 +6,7 @@ import com.old.time.utils.TimeUtil;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 @Entity
 public class TopicEntity {
@@ -37,11 +38,24 @@ public class TopicEntity {
 
     private String userId;
 
+    private String createTime;
+
+    @Transient
     private Integer praiseCount;
 
+    @Transient
     private Integer commentCount;
 
-    private String createTime;
+    @Transient
+    private String conmmentContent;
+
+    public String getConmmentContent() {
+        return conmmentContent;
+    }
+
+    public void setConmmentContent(String conmmentContent) {
+        this.conmmentContent = conmmentContent;
+    }
 
     public Integer getId() {
         return id;

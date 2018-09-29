@@ -77,7 +77,7 @@ public class CommentController extends BaseController {
             return ResultUtil.success(new ArrayList<CommentEntity>());
         }
         for (CommentEntity commentEntity : commentEntities) {
-            commentEntity.setUserEntity(userRepository.findByUserId(commentEntity.getUserId()));
+            commentEntity.setUserEntity(userRepository.findUserEntityByUserId(commentEntity.getUserId()));
 
         }
         return ResultUtil.success(commentEntities);

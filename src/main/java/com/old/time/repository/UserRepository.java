@@ -20,7 +20,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
      * @param userId
      * @return
      */
-    UserEntity findByUserId(String userId);
+    UserEntity findUserEntityByUserId(String userId);
 
     /**
      * 通过手机号查找用户

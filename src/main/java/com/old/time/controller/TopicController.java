@@ -3,6 +3,7 @@ package com.old.time.controller;
 import com.old.time.domain.CommentEntity;
 import com.old.time.domain.Result;
 import com.old.time.domain.TopicEntity;
+import com.old.time.domain.UserEntity;
 import com.old.time.enums.ResultEnum;
 import com.old.time.exception.JSGNoSuchElementException;
 import com.old.time.repository.CommentRepository;
@@ -52,6 +53,12 @@ public class TopicController extends BaseController {
         return ResultUtil.success(topicRepository.save(topicEntity));
     }
 
+    /**
+     * 获取话题详情
+     *
+     * @param topicId
+     * @return
+     */
     @PostMapping(value = "/getTopicDetail")
     public Result getTopicDetail(@RequestParam("topicId") Integer topicId) {
         boolean isExists = topicRepository.existsByTopicId(topicId);
@@ -64,7 +71,7 @@ public class TopicController extends BaseController {
     }
 
     /**
-     * 获取话题列表
+     * 获取用户话题列表
      *
      * @param pageNum
      * @param pageSize
@@ -89,15 +96,21 @@ public class TopicController extends BaseController {
         return ResultUtil.success(topicEntities);
     }
 
+    /**
+     * 删除话题
+     *
+     * @param userId
+     * @param topicId
+     * @return
+     */
     @PostMapping(value = "/deleteTopic")
     public Result deleteTopicByTopicId(String userId, Integer topicId) {
         boolean isDelete = topicRepository.deleteTopicEntityByUserIdAndTopicId(userId, topicId);
         if (!isDelete) {
 
             throw new JSGNoSuchElementException(ResultEnum.CURRENCY_MSG_PARAMETER_ERROR);
-        } else {
-
-            return ResultUtil.success();
         }
+
+        return ResultUtil.success();
     }
 }

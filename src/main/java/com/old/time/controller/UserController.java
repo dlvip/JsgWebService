@@ -53,7 +53,7 @@ public class UserController extends BaseController {
 
             throw new JSGNoSuchElementException(ResultEnum.CURRENCY_MSG_PARAMETER_ERROR);
         }
-        UserEntity mUserEntity = userRepository.findByUserId(userEntity.getUserId());
+        UserEntity mUserEntity = userRepository.findUserEntityByUserId(userEntity.getUserId());
         if (mUserEntity == null) {
 
             throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
@@ -92,7 +92,7 @@ public class UserController extends BaseController {
     @PostMapping(value = "/getUserByUserId")
     public Result getUserByUserId(@RequestParam("userId") String userId) throws RuntimeException {
         TimeUtil.inputFile();
-        UserEntity userEntity = userRepository.findByUserId(userId);
+        UserEntity userEntity = userRepository.findUserEntityByUserId(userId);
         if (userEntity == null) {
 
             throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
