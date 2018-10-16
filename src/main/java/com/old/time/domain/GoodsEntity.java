@@ -2,6 +2,7 @@ package com.old.time.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 @Entity
 public class GoodsEntity {
@@ -10,21 +11,17 @@ public class GoodsEntity {
 
     }
 
-    public static GoodsEntity getInstance(String userId, String picKey, String title, String price) {
-
-        return new GoodsEntity(userId, picKey, title, price);
-    }
-
     public GoodsEntity(String userId, String picKey, String title, String price) {
         this.userId = userId;
         this.picKey = picKey;
         this.title = title;
         this.price = price;
-        this.isDispose = false;
+        this.isDispose = 0;
 
     }
 
 
+    @Id
     @GeneratedValue
     private Integer goodsId;
 
@@ -38,15 +35,7 @@ public class GoodsEntity {
 
     private String detailId;
 
-    private boolean isDispose;
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+    private Integer isDispose;
 
     public Integer getGoodsId() {
         return goodsId;
@@ -54,6 +43,14 @@ public class GoodsEntity {
 
     public void setGoodsId(Integer goodsId) {
         this.goodsId = goodsId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getPicKey() {
@@ -88,11 +85,11 @@ public class GoodsEntity {
         this.detailId = detailId;
     }
 
-    public boolean getIsDispose() {
+    public Integer getIsDispose() {
         return isDispose;
     }
 
-    public void setIsDispose(boolean isDispose) {
+    public void setIsDispose(Integer isDispose) {
         this.isDispose = isDispose;
     }
 }

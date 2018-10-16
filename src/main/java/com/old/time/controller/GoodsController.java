@@ -25,7 +25,6 @@ public class GoodsController extends BaseController {
     @Autowired
     private GoodsRepository goodsRepository;
 
-
     /**
      * 添加宝贝
      *
@@ -42,7 +41,7 @@ public class GoodsController extends BaseController {
 
             throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
         }
-        GoodsEntity goodsEntity = GoodsEntity.getInstance(userId, picKey, title, price);
+        GoodsEntity goodsEntity = new GoodsEntity(userId, picKey, title, price);
 
         return ResultUtil.success(goodsRepository.save(goodsEntity));
     }
@@ -83,7 +82,7 @@ public class GoodsController extends BaseController {
 
             throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
         }
-        List<GoodsEntity> actionEntities = goodsRepository.findGoodsEntitiesByIsDispose(isDispose == 1, PageRequest.of(pageNum, pageSize));
+        List<GoodsEntity> actionEntities = goodsRepository.findGoodsEntitiesByIsDispose(isDispose, PageRequest.of(pageNum, pageSize));
 
         return ResultUtil.success(actionEntities);
     }
@@ -110,7 +109,7 @@ public class GoodsController extends BaseController {
         }
         GoodsEntity goodsEntity = goodsRepository.findGoodsEntityByGoodsId(goodsId);
         goodsEntity.setDetailId(detailId);
-        goodsEntity.setIsDispose(true);
+        goodsEntity.setIsDispose(1);
         return ResultUtil.success(goodsRepository.save(goodsEntity));
     }
 

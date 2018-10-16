@@ -22,7 +22,7 @@ public interface GoodsRepository extends JpaRepository<GoodsEntity, Integer> {
      * @param isDispose
      * @return
      */
-    List<GoodsEntity> findGoodsEntitiesByIsDispose(boolean isDispose, Pageable pageable);
+    List<GoodsEntity> findGoodsEntitiesByIsDispose(Integer isDispose, Pageable pageable);
 
     /**
      * 查找宝贝信息
