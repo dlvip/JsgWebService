@@ -88,4 +88,30 @@ public class GoodsController extends BaseController {
         return ResultUtil.success(actionEntities);
     }
 
+    /**
+     * 更新宝贝状态
+     *
+     * @param userId
+     * @param goodsId
+     * @param detailId
+     * @return
+     */
+    @RequestMapping(value = "/updateGoodsEntityDetailId")
+    public Result updateGoodsEntityDetailId(@RequestParam("userId") String userId, @RequestParam("goodsId") Integer goodsId, @RequestParam("detailId") String detailId) {
+        boolean isUserExists = userRepository.existsByUserId(userId);
+        if (!isUserExists) {
+
+            throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
+        }
+        boolean isGoodsExists = goodsRepository.existsById(goodsId);
+        if (!isGoodsExists) {
+
+            throw new JSGNoSuchElementException(ResultEnum.CURRENCY_MSG_NON_DATE);
+        }
+        GoodsEntity goodsEntity = goodsRepository.findGoodsEntityByGoodsId(goodsId);
+        goodsEntity.setDetailId(detailId);
+        goodsEntity.setIsDispose(true);
+        return ResultUtil.success(goodsRepository.save(goodsEntity));
+    }
+
 }
