@@ -11,7 +11,6 @@ public class UserEntity {
 
     }
 
-
     /**
      * 用户基本信息
      *
@@ -41,6 +40,16 @@ public class UserEntity {
     private String mobile;
 
     private String birthday;
+
+    private long goodsCount;
+
+    public void setGoodsCount(long goodsCount) {
+        this.goodsCount = goodsCount;
+    }
+
+    public long getGoodsCount() {
+        return goodsCount;
+    }
 
     /**
      * 0：女、1：男

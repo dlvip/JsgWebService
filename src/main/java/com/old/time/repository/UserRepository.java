@@ -47,4 +47,12 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
      */
     boolean existsByUserId(String userId);
 
+    /**
+     * 通过手机判断用户是否存在
+     *
+     * @param mobile
+     * @return
+     */
+    boolean existsByMobile(String mobile);
+
 }

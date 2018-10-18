@@ -2,6 +2,7 @@ package com.old.time.controller;
 
 import com.old.time.domain.GoodsEntity;
 import com.old.time.domain.Result;
+import com.old.time.domain.UserEntity;
 import com.old.time.enums.ResultEnum;
 import com.old.time.exception.JSGNoSuchElementException;
 import com.old.time.repository.GoodsRepository;
@@ -41,9 +42,18 @@ public class GoodsController extends BaseController {
 
             throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
         }
-        GoodsEntity goodsEntity = new GoodsEntity(userId, picKey, title, price);
+        UserEntity userEntity = userRepository.findUserEntityByUserId(userId);
+        long goodsCount = userEntity.getGoodsCount();
+        if (goodsCount <= 0) {
 
-        return ResultUtil.success(goodsRepository.save(goodsEntity));
+            throw new JSGNoSuchElementException(ResultEnum.USER_GOODS_COUNT_0);
+        }
+        GoodsEntity goodsEntity = new GoodsEntity(userId, picKey, title, price);
+        goodsEntity = goodsRepository.save(goodsEntity);
+        userEntity.setGoodsCount(userEntity.getGoodsCount() - 1);
+        userRepository.save(userEntity);
+
+        return ResultUtil.success(goodsEntity);
     }
 
     /**
@@ -82,6 +92,11 @@ public class GoodsController extends BaseController {
 
             throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
         }
+        UserEntity userEntity = userRepository.findUserEntityByUserId(userId);
+        if ("15093073252".equals(userEntity.getMobile())) {
+
+            throw new JSGNoSuchElementException(ResultEnum.CURRENCY_MSG_NON_DATE);
+        }
         List<GoodsEntity> actionEntities = goodsRepository.findGoodsEntitiesByIsDispose(isDispose, PageRequest.of(pageNum, pageSize));
 
         return ResultUtil.success(actionEntities);
@@ -110,7 +125,67 @@ public class GoodsController extends BaseController {
         GoodsEntity goodsEntity = goodsRepository.findGoodsEntityByGoodsId(goodsId);
         goodsEntity.setDetailId(detailId);
         goodsEntity.setIsDispose(1);
+
         return ResultUtil.success(goodsRepository.save(goodsEntity));
     }
 
+    /**
+     * 获取宝贝用户
+     *
+     * @param userId
+     * @param mobile
+     * @return
+     */
+    @RequestMapping(value = "/getGoodsEntityUser")
+    public Result getGoodsEntityUser(@RequestParam("userId") String userId, @RequestParam("mobile") String mobile) {
+        boolean isUserExists = userRepository.existsByUserId(userId);
+        if (!isUserExists) {
+
+            throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
+        }
+        boolean isFriendExists = userRepository.existsByMobile(mobile);
+        if (!isFriendExists) {
+
+            throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
+        }
+        UserEntity userEntity = userRepository.findUserEntityByUserId(userId);
+        if ("15038124379".equals(userEntity.getMobile())) {
+
+            throw new JSGNoSuchElementException(ResultEnum.CURRENCY_MSG_NON_DATE);
+        }
+
+        return ResultUtil.success(userRepository.findByMobile(mobile));
+    }
+
+
+    /**
+     * 更新用户剩余次数
+     *
+     * @param userId
+     * @param friendId
+     * @param goodsCount
+     * @return
+     */
+    @RequestMapping(value = "/updateUserGoodsCount")
+    public Result updateUserGoodsCount(@RequestParam("userId") String userId, @RequestParam("friendId") String friendId, @RequestParam("goodsCount") long goodsCount) {
+        boolean isUserExists = userRepository.existsByUserId(userId);
+        if (!isUserExists) {
+
+            throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
+        }
+        boolean isFriendExists = userRepository.existsByUserId(friendId);
+        if (!isFriendExists) {
+
+            throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
+        }
+        UserEntity userEntity = userRepository.findUserEntityByUserId(userId);
+        if ("15038124379".equals(userEntity.getMobile())) {
+
+            throw new JSGNoSuchElementException(ResultEnum.CURRENCY_MSG_NON_DATE);
+        }
+        UserEntity friendEntity = userRepository.findUserEntityByUserId(friendId);
+        friendEntity.setGoodsCount(friendEntity.getGoodsCount() + goodsCount);
+
+        return ResultUtil.success(userRepository.save(friendEntity));
+    }
 }
