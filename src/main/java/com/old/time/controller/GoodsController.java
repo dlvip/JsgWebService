@@ -57,7 +57,7 @@ public class GoodsController extends BaseController {
     }
 
     /**
-     * 获取宝贝列表
+     * 用户获取宝贝列表
      *
      * @param userId
      * @param pageNum
@@ -77,7 +77,7 @@ public class GoodsController extends BaseController {
     }
 
     /**
-     * 获取所有宝贝列表
+     * admin获取宝贝列表
      *
      * @param userId
      * @param isDispose
