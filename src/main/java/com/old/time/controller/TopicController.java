@@ -71,14 +71,35 @@ public class TopicController extends BaseController {
     }
 
     /**
-     * 获取用户话题列表
+     * 获取话题列表分页
      *
      * @param pageNum
      * @param pageSize
      * @return
      */
     @PostMapping(value = "/getTopicList")
-    public Result getTopicList(@RequestParam("userId") String userId, @RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
+    public Result getTopicList(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
+        List<TopicEntity> topicEntities = topicRepository.findAll(PageRequest.of(pageNum, pageSize)).getContent();
+        if (topicEntities == null) {
+
+            return ResultUtil.success(new ArrayList<CommentEntity>());
+        }
+        for (TopicEntity topicEntity : topicEntities) {
+            topicEntity.setCommentCount(commentRepository.countByTopicId(topicEntity.getTopicId()));
+
+        }
+        return ResultUtil.success(topicEntities);
+    }
+
+    /**
+     * 获取用户话题列表
+     *
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @PostMapping(value = "/getUserTopicList")
+    public Result getUserTopicList(@RequestParam("userId") String userId, @RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
         boolean isUserExists = userRepository.existsByUserId(userId);
         if (!isUserExists) {
 

@@ -124,7 +124,7 @@ public class MusicController extends BaseController {
 
     @PostMapping(value = "/getMusicList")
     @Override
-    public Result getControllerList() {
+    public Result getControllerList(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
 
         return ResultUtil.success(musicRepository.findAll());
     }

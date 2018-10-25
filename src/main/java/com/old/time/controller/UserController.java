@@ -125,7 +125,7 @@ public class UserController extends BaseController {
      */
     @PostMapping(value = "/getUserList")
     @Override
-    public Result getControllerList() {
+    public Result getControllerList(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
 
         return ResultUtil.success(userRepository.findAll());
     }

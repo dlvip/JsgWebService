@@ -63,7 +63,7 @@ public class VideoController extends BaseController {
      */
     @PostMapping(value = "/getVideos")
     @Override
-    public Result getControllerList() {
+    public Result getControllerList(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
         return ResultUtil.success(videoRepository.findAll());
     }
 }

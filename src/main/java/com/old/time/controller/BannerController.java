@@ -32,7 +32,7 @@ public class BannerController extends BaseController {
      */
     @PostMapping(value = "/getBanners")
     @Override
-    public Result getControllerList() {
+    public Result getControllerList(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
 
         return ResultUtil.success(bannerRepository.findAll());
     }

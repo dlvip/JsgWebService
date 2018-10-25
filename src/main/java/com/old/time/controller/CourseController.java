@@ -137,15 +137,15 @@ public class CourseController extends BaseController {
     }
 
     /**
-     * 获取专辑列表
+     * 获取专辑列表(分页)
      *
+     * @param pageNum
+     * @param pageSize
      * @return
      */
     @PostMapping(value = "/getCourseList")
-    public Result getCourseList() {
-
-        List<CourseEntity> courseEntityList = courseRepository.findAll();
-
+    public Result getCourseList(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
+        List<CourseEntity> courseEntityList = courseRepository.findAll(PageRequest.of(pageNum, pageSize)).getContent();
         return ResultUtil.success(courseEntityList);
     }
 }

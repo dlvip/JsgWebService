@@ -75,6 +75,22 @@ public class ActionController extends BaseController {
         return ResultUtil.success(actionEntity);
     }
 
+
+
+    /**
+     * 获取活动列表
+     *
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping(value = "/getActionList")
+    public Result getActionList(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
+        List<ActionEntity> actionEntities = actionRepository.findAll(PageRequest.of(pageNum, pageSize)).getContent();
+
+        return ResultUtil.success(actionEntities);
+    }
+
     /**
      * 获取活动列表
      *
@@ -83,8 +99,8 @@ public class ActionController extends BaseController {
      * @param pageSize
      * @return
      */
-    @RequestMapping(value = "/getActionList")
-    public Result getActionList(@RequestParam("userId") String userId, @RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
+    @RequestMapping(value = "/getUserActionList")
+    public Result getUserActionList(@RequestParam("userId") String userId, @RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
         boolean isUserExists = userRepository.existsByUserId(userId);
         if (!isUserExists) {
 
