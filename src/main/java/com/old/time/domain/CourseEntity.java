@@ -44,6 +44,16 @@ public class CourseEntity {
 
     private String coursePic;
 
+    private String detail;
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
     public Integer getAlbumId() {
         return albumId;
     }
