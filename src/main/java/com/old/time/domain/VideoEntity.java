@@ -7,6 +7,16 @@ import javax.persistence.Id;
 @Entity
 public class VideoEntity {
 
+    public static VideoEntity getInstance(Integer id, String picUrl, String title, String videoUrl) {
+        VideoEntity mVideoEntity = new VideoEntity();
+        mVideoEntity.id = id;
+        mVideoEntity.picUrl = picUrl;
+        mVideoEntity.videoTitle = title;
+        mVideoEntity.videoUrl = videoUrl;
+
+        return mVideoEntity;
+    }
+
     @Id
     @GeneratedValue
     private Integer id;
@@ -19,7 +29,7 @@ public class VideoEntity {
 
     private Integer totalTime;
 
-    public VideoEntity(){
+    public VideoEntity() {
 
     }
 
@@ -61,5 +71,16 @@ public class VideoEntity {
 
     public void setTotalTime(Integer totalTime) {
         this.totalTime = totalTime;
+    }
+
+    @Override
+    public String toString() {
+        return "VideoEntity{" +
+                "id=" + id +
+                ", picUrl='" + picUrl + '\'' +
+                ", videoUrl='" + videoUrl + '\'' +
+                ", videoTitle='" + videoTitle + '\'' +
+                ", totalTime=" + totalTime +
+                '}';
     }
 }

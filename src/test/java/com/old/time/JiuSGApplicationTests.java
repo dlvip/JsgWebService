@@ -15,4 +15,9 @@ public class JiuSGApplicationTests {
 
     }
 
+    @Test
+    public void addVideo(){
+
+
+    }
 }
