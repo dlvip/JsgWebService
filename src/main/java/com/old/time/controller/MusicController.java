@@ -8,16 +8,26 @@ import com.old.time.exception.JSGNoSuchElementException;
 import com.old.time.repository.CourseRepository;
 import com.old.time.repository.MusicRepository;
 import com.old.time.utils.ResultUtil;
+import org.apache.commons.io.FileUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.File;
+
 @RestController
 @RequestMapping(value = "jiushiguang/music")
 public class MusicController extends BaseController {
+
+    private final static Logger logger = LoggerFactory.getLogger(MusicController.class);
 
     @Autowired
     private MusicRepository musicRepository;
@@ -25,40 +35,90 @@ public class MusicController extends BaseController {
     @Autowired
     private CourseRepository courseRepository;
 
+    @Autowired
+    private CourseController courseController;
+
     @PostMapping(value = "/addMusic")
     public Result addCourse(MusicEntry musicEntry) {
 
         return jSGuangService.saveMusicEntity(musicEntry, musicRepository);
     }
 
-    /**
-     * 添加章节
-     *
-     * @param userId
-     * @param albumId
-     * @param chapterId
-     * @param musicUrl
-     * @param musicPic
-     * @param musicTitle
-     * @param musicTime
-     * @param orderNo
-     * @return
-     */
     @PostMapping(value = "/saveChapter")
-    public Result saveChapter(@RequestParam("userId") String userId, @RequestParam("albumId") Integer albumId, @RequestParam("chapterId") Integer chapterId, @RequestParam("musicUrl") String musicUrl, @RequestParam("musicPic") String musicPic, @RequestParam("musicTitle") String musicTitle, @RequestParam("musicTime") long musicTime, @RequestParam("orderNo") Integer orderNo) {
-        CourseEntity courseEntity = courseRepository.findByAlbumId(albumId);
-        if (courseEntity == null) {
+    public Result saveChapter() {
+        try {
+            String path = MusicController.class.getResource("/assets").getPath();
+            File jsonFile = ResourceUtils.getFile(path + "/courses.json");
+            String json = FileUtils.readFileToString(jsonFile, "UTF-8");
+            JSONObject jsonObject = new JSONObject(json);
+            jsonObject = new JSONObject(jsonObject.getJSONObject("data"));
+            JSONArray jsonArray = jsonObject.getJSONArray("albumResults");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                jsonObject = jsonArray.getJSONObject(i);
+                String userId = "06l6pkk0";
+                Integer albumId = Integer.valueOf(jsonObject.getString("albumId"));
+                String albumTitle = jsonObject.getString("albumTitle");
+                String albumCover = jsonObject.getString("albumCover");
+                CourseEntity courseEntity = new CourseEntity(userId, albumId, albumTitle, albumCover);
+                courseController.addCourse(courseEntity);
+                logger.info("【保存成功 courseEntity = 】{}", courseEntity.toString());
 
-            throw new JSGNoSuchElementException(ResultEnum.USER_COURSE_NON);
+                jsonFile = ResourceUtils.getFile(path + "/" + String.valueOf(albumId) + ".json");
+                json = FileUtils.readFileToString(jsonFile, "UTF-8");
+                jsonObject = new JSONObject(json);
+                jsonObject = new JSONObject(jsonObject.getJSONObject("data"));
+                JSONArray array = jsonObject.getJSONArray("list");
+                for (int j = 0; j < array.length(); j++) {
+                    JSONObject musicObj = array.getJSONObject(j);
+                    Integer chapterId = Integer.valueOf(musicObj.getString("trackId"));
+                    albumId = Integer.valueOf(musicObj.getString("albumId"));
+                    String musicUrl = musicObj.getString("playUrl64");
+                    String musicPic = musicObj.getString("coverLarge");
+                    String musicTitle = musicObj.getString("title");
+                    long musicTime = Long.valueOf(musicObj.getString("playtimes"));
+                    Integer orderNo = Integer.valueOf(musicObj.getString("orderNo"));
+                    MusicEntry musicEntry = new MusicEntry(chapterId, "06l6pkk0", albumId, musicUrl, musicPic, musicTitle, musicTime, orderNo);
+                    logger.info("【保存成功 MusicEntry = 】{}", musicEntry.toString());
+                    musicRepository.save(musicEntry);
+
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
         }
-        if (!userId.equals(courseEntity.getUserId())) {
-
-            throw new JSGNoSuchElementException(ResultEnum.CURRENCY_MSG_NON_PERMISSION);
-        }
-        MusicEntry musicEntry = new MusicEntry(chapterId, userId, albumId, musicUrl, musicPic, musicTitle, musicTime, orderNo);
-
-        return ResultUtil.success(musicRepository.save(musicEntry));
+        return ResultUtil.success();
     }
+
+//    /**
+//     * 添加章节
+//     *
+//     * @param userId
+//     * @param albumId
+//     * @param chapterId
+//     * @param musicUrl
+//     * @param musicPic
+//     * @param musicTitle
+//     * @param musicTime
+//     * @param orderNo
+//     * @return
+//     */
+//    @PostMapping(value = "/saveChapter")
+//    public Result saveChapter(@RequestParam("userId") String userId, @RequestParam("albumId") Integer albumId, @RequestParam("chapterId") Integer chapterId, @RequestParam("musicUrl") String musicUrl, @RequestParam("musicPic") String musicPic, @RequestParam("musicTitle") String musicTitle, @RequestParam("musicTime") long musicTime, @RequestParam("orderNo") Integer orderNo) {
+//        CourseEntity courseEntity = courseRepository.findByAlbumId(albumId);
+//        if (courseEntity == null) {
+//
+//            throw new JSGNoSuchElementException(ResultEnum.USER_COURSE_NON);
+//        }
+//        if (!userId.equals(courseEntity.getUserId())) {
+//
+//            throw new JSGNoSuchElementException(ResultEnum.CURRENCY_MSG_NON_PERMISSION);
+//        }
+//        MusicEntry musicEntry = new MusicEntry(chapterId, userId, albumId, musicUrl, musicPic, musicTitle, musicTime, orderNo);
+//
+//        return ResultUtil.success(musicRepository.save(musicEntry));
+//    }
 
     /**
      * 修改章节
@@ -72,7 +132,7 @@ public class MusicController extends BaseController {
             throw new JSGNoSuchElementException(ResultEnum.CURRENCY_MSG_PARAMETER_ERROR);
         }
         MusicEntry mMusicEntry = musicRepository.findByChapterId(musicEntry.getChapterId());
-        if(mMusicEntry == null){
+        if (mMusicEntry == null) {
 
             throw new JSGNoSuchElementException(ResultEnum.NULL_DATA_ERROR);
         }

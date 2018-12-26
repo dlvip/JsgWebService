@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 public class CourseEntity {
 
-    public CourseEntity() {
+    private CourseEntity() {
 
 
     }
