@@ -51,36 +51,41 @@ public class MusicController extends BaseController {
             File jsonFile = ResourceUtils.getFile(path + "/courses.json");
             String json = FileUtils.readFileToString(jsonFile, "UTF-8");
             JSONObject jsonObject = new JSONObject(json);
-            jsonObject = new JSONObject(jsonObject.getJSONObject("data"));
+            jsonObject = jsonObject.getJSONObject("data");
             JSONArray jsonArray = jsonObject.getJSONArray("albumResults");
             for (int i = 0; i < jsonArray.length(); i++) {
                 jsonObject = jsonArray.getJSONObject(i);
                 String userId = "06l6pkk0";
-                Integer albumId = Integer.valueOf(jsonObject.getString("albumId"));
-                String albumTitle = jsonObject.getString("albumTitle");
-                String albumCover = jsonObject.getString("albumCover");
-                CourseEntity courseEntity = new CourseEntity(userId, albumId, albumTitle, albumCover);
-                courseController.addCourse(courseEntity);
-                logger.info("【保存成功 courseEntity = 】{}", courseEntity.toString());
+                Integer albumId = jsonObject.getInt("albumId");
+                boolean isExists = courseRepository.existsByAlbumId(albumId);
+                if (!isExists) {
+                    String albumTitle = jsonObject.getString("albumTitle");
+                    String albumCover = jsonObject.getString("albumCover");
+                    CourseEntity courseEntity = new CourseEntity(userId, albumId, albumTitle, albumCover);
+                    courseController.addCourse(courseEntity);
+                    logger.info("【保存成功 courseEntity = 】{}", courseEntity.toString());
 
+                }
                 jsonFile = ResourceUtils.getFile(path + "/" + String.valueOf(albumId) + ".json");
                 json = FileUtils.readFileToString(jsonFile, "UTF-8");
                 jsonObject = new JSONObject(json);
-                jsonObject = new JSONObject(jsonObject.getJSONObject("data"));
+                jsonObject = jsonObject.getJSONObject("data");
                 JSONArray array = jsonObject.getJSONArray("list");
                 for (int j = 0; j < array.length(); j++) {
                     JSONObject musicObj = array.getJSONObject(j);
-                    Integer chapterId = Integer.valueOf(musicObj.getString("trackId"));
-                    albumId = Integer.valueOf(musicObj.getString("albumId"));
-                    String musicUrl = musicObj.getString("playUrl64");
-                    String musicPic = musicObj.getString("coverLarge");
-                    String musicTitle = musicObj.getString("title");
-                    long musicTime = Long.valueOf(musicObj.getString("playtimes"));
-                    Integer orderNo = Integer.valueOf(musicObj.getString("orderNo"));
-                    MusicEntry musicEntry = new MusicEntry(chapterId, "06l6pkk0", albumId, musicUrl, musicPic, musicTitle, musicTime, orderNo);
-                    logger.info("【保存成功 MusicEntry = 】{}", musicEntry.toString());
-                    musicRepository.save(musicEntry);
+                    Integer chapterId = musicObj.getInt("trackId");
+                    boolean isExist = musicRepository.existsByChapterIdAndAlbumId(chapterId, albumId);
+                    if (!isExist) {
+                        String url = musicObj.getString("playUrl64");
+                        String picUrl = musicObj.getString("coverLarge");
+                        String title = musicObj.getString("title");
+                        Integer duration = musicObj.getInt("duration");
+                        Integer orderNo = musicObj.getInt("orderNo");
+                        MusicEntry musicEntry = new MusicEntry(chapterId, userId, albumId, url, picUrl, title, duration, orderNo);
+                        musicRepository.save(musicEntry);
+                        logger.info("【保存成功 MusicEntry = 】{}", musicEntry.toString());
 
+                    }
                 }
             }
 
@@ -141,20 +146,20 @@ public class MusicController extends BaseController {
             throw new JSGNoSuchElementException(ResultEnum.CURRENCY_MSG_NON_PERMISSION);
         }
 
-        if (musicEntry.getMusicPic() != null) {
-            mMusicEntry.setMusicPic(musicEntry.getMusicPic());
+        if (musicEntry.getPicUrl() != null) {
+            mMusicEntry.setPicUrl(musicEntry.getPicUrl());
 
         }
-        if (musicEntry.getMusicTitle() != null) {
-            mMusicEntry.setMusicTitle(musicEntry.getMusicTitle());
+        if (musicEntry.getTitle() != null) {
+            mMusicEntry.setTitle(musicEntry.getTitle());
 
         }
-        if (musicEntry.getMusicUrl() != null) {
-            mMusicEntry.setMusicUrl(musicEntry.getMusicUrl());
+        if (musicEntry.getUrl() != null) {
+            mMusicEntry.setUrl(musicEntry.getUrl());
 
         }
-        if (musicEntry.getMusicTime() != 0) {
-            mMusicEntry.setMusicTime(musicEntry.getMusicTime());
+        if (musicEntry.getDuration() != 0) {
+            mMusicEntry.setDuration(musicEntry.getDuration());
 
         }
         if (0 != musicEntry.getOrderNo()) {

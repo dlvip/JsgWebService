@@ -12,15 +12,14 @@ public class MusicEntry {
     }
 
 
-    public MusicEntry(Integer chapterId, String userId, Integer albumId, String musicUrl, String musicPic, String musicTitle, long musicTime, Integer orderNo) {
+    public MusicEntry(Integer chapterId, String userId, Integer albumId, String url, String picUrl, String title, Integer duration, Integer orderNo) {
         this.chapterId = chapterId;
-        this.id = chapterId;
         this.userId = userId;
         this.albumId = albumId;
-        this.musicUrl = musicUrl;
-        this.musicPic = musicPic;
-        this.musicTitle = musicTitle;
-        this.musicTime = musicTime;
+        this.url = url;
+        this.picUrl = picUrl;
+        this.title = title;
+        this.duration = duration;
         this.orderNo = orderNo;
 
     }
@@ -30,33 +29,51 @@ public class MusicEntry {
     private Integer id;
 
     /**
+     * 用户id
+     */
+    private String userId;
+
+    /**
      * 章节id
      */
     private Integer chapterId;
 
+    /**
+     * 专辑id
+     */
     private Integer albumId;
 
-    private String musicUrl;
+    /**
+     * 播放地址
+     */
+    private String url;
 
-    private String musicTitle;
+    /**
+     * 章节名称
+     */
+    private String title;
 
-    private String musicPic;
+    /**
+     * 封面
+     */
+    private String picUrl;
 
-    private long musicTime;
-
-    private String userId;
+    /**
+     * 时长
+     */
+    private Integer duration;
 
     /**
      * 章节序号
      */
     private Integer orderNo;
 
-    public Integer getChapterId() {
-        return chapterId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setChapterId(Integer chapterId) {
-        this.chapterId = chapterId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getUserId() {
@@ -67,36 +84,12 @@ public class MusicEntry {
         this.userId = userId;
     }
 
-    public long getMusicTime() {
-        return musicTime;
+    public Integer getChapterId() {
+        return chapterId;
     }
 
-    public void setMusicTime(long musicTime) {
-        this.musicTime = musicTime;
-    }
-
-    public Integer getOrderNo() {
-        return orderNo;
-    }
-
-    public void setOrderNo(Integer orderNo) {
-        this.orderNo = orderNo;
-    }
-
-    public void setMusicPic(String musicPic) {
-        this.musicPic = musicPic;
-    }
-
-    public String getMusicPic() {
-        return musicPic;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public void setChapterId(Integer chapterId) {
+        this.chapterId = chapterId;
     }
 
     public Integer getAlbumId() {
@@ -107,19 +100,58 @@ public class MusicEntry {
         this.albumId = albumId;
     }
 
-    public String getMusicUrl() {
-        return musicUrl;
+    public String getUrl() {
+        return url;
     }
 
-    public void setMusicUrl(String musicUrl) {
-        this.musicUrl = musicUrl;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public String getMusicTitle() {
-        return musicTitle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setMusicTitle(String musicTitle) {
-        this.musicTitle = musicTitle;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
+    }
+
+    public Integer getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(Integer orderNo) {
+        this.orderNo = orderNo;
+    }
+
+    @Override
+    public String toString() {
+        return "MusicEntry{" +
+                "id=" + id +
+                ", userId='" + userId + '\'' +
+                ", chapterId=" + chapterId +
+                ", albumId=" + albumId +
+                ", url='" + url + '\'' +
+                ", title='" + title + '\'' +
+                ", picUrl='" + picUrl + '\'' +
+                ", duration=" + duration +
+                ", orderNo=" + orderNo +
+                '}';
     }
 }

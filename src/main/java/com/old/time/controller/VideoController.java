@@ -3,7 +3,6 @@ package com.old.time.controller;
 import com.old.time.domain.VideoEntity;
 import com.old.time.domain.Result;
 import com.old.time.exception.JSGRuntimeException;
-import com.old.time.repository.UserRepository;
 import com.old.time.repository.VideoRepository;
 import com.old.time.utils.ResultUtil;
 import org.json.JSONArray;
@@ -34,8 +33,8 @@ public class VideoController extends BaseController {
     @Autowired
     private VideoRepository videoRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+//    @Autowired
+//    private UserRepository userRepository;
 
 //    /**
 //     * 添加

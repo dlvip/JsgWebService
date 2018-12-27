@@ -25,5 +25,13 @@ public interface MusicRepository extends JpaRepository<MusicEntry, Integer> {
      */
     List<MusicEntry> findMusicEntriesByAlbumId(Integer albumId, Pageable pageable);
 
+    /**
+     * 判断是否已经存在
+     *
+     * @param chapterId
+     * @param albumId
+     * @return
+     */
+    boolean existsByChapterIdAndAlbumId(Integer chapterId, Integer albumId);
 
 }
