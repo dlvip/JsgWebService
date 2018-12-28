@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "jiushiguang/music")
@@ -183,8 +184,15 @@ public class MusicController extends BaseController {
 
             throw new JSGNoSuchElementException(ResultEnum.USER_COURSE_NON);
         }
+        List<MusicEntry> musicEntries;
+        if (pageSize > 15) {
+            musicEntries = musicRepository.findAll();
 
-        return ResultUtil.success(musicRepository.findMusicEntriesByAlbumId(albumId, PageRequest.of(pageNum, pageSize)));
+        } else {
+            musicEntries = musicRepository.findMusicEntriesByAlbumId(albumId, PageRequest.of(pageNum, pageSize));
+
+        }
+        return ResultUtil.success(musicEntries);
     }
 
     @PostMapping(value = "/getMusicList")
