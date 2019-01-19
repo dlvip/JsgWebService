@@ -186,7 +186,7 @@ public class MusicController extends BaseController {
         }
         List<MusicEntry> musicEntries;
         if (pageSize > 15) {
-            musicEntries = musicRepository.findAll();
+            musicEntries = musicRepository.findMusicEntriesByAlbumId(albumId);
 
         } else {
             musicEntries = musicRepository.findMusicEntriesByAlbumId(albumId, PageRequest.of(pageNum, pageSize));

@@ -1,11 +1,30 @@
 package com.old.time.domain;
 
+import com.old.time.utils.IdUtils;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
 public class ArticleEntity {
+
+    /**
+     * 文章
+     *
+     * @param picUrl
+     * @param title
+     * @param detailUrl
+     * @param lookCount
+     */
+    public ArticleEntity(String picUrl, String title, String detailUrl, Integer lookCount) {
+        this.id = IdUtils.getCurrentTimeMillis();
+        this.picUrl = picUrl;
+        this.title = title;
+        this.detailUrl = detailUrl;
+        this.lookCount = lookCount;
+
+    }
 
     @Id
     @GeneratedValue
