@@ -9,6 +9,10 @@ import com.old.time.repository.UserRepository;
 import com.old.time.utils.GenerateShortUuid;
 import com.old.time.utils.ResultUtil;
 import com.old.time.utils.TimeUtil;
+import io.rong.RongCloud;
+import io.rong.methods.user.User;
+import io.rong.models.response.TokenResult;
+import io.rong.models.user.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -128,5 +132,26 @@ public class UserController extends BaseController {
     public Result getControllerList(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
 
         return ResultUtil.success(userRepository.findAll());
+    }
+
+    @PostMapping(value = "/getUserRongToken")
+    public Result getUserRongToken(@RequestParam("userId") String userId) {
+        String appKey = "x18ywvqfxcbjc";
+        String appSecret = "pzfndTCPu9";
+
+        RongCloud rongCloud = RongCloud.getInstance(appKey, appSecret);
+        User user = rongCloud.user;
+        UserModel userModel = new UserModel()
+                .setId(userId)
+                .setName("RongCloud")
+                .setPortrait("http://www.rongcloud.cn/images/logo.png");
+        TokenResult result = null;
+        try {
+            result = user.register(userModel);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return ResultUtil.success(result);
     }
 }
