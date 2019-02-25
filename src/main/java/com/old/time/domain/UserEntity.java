@@ -1,11 +1,9 @@
 package com.old.time.domain;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 public class UserEntity {
-
 
     public UserEntity() {
 
@@ -40,16 +38,6 @@ public class UserEntity {
     private String mobile;
 
     private String birthday;
-
-    private long goodsCount;
-
-    public void setGoodsCount(long goodsCount) {
-        this.goodsCount = goodsCount;
-    }
-
-    public long getGoodsCount() {
-        return goodsCount;
-    }
 
     /**
      * 0：女、1：男
@@ -134,4 +122,6 @@ public class UserEntity {
     public void setSex(Integer sex) {
         this.sex = sex;
     }
+
+
 }

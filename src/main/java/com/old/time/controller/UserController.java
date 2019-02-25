@@ -118,7 +118,6 @@ public class UserController extends BaseController {
 
             throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
         }
-
         return ResultUtil.success(userEntity);
     }
 
@@ -136,9 +135,8 @@ public class UserController extends BaseController {
 
     @PostMapping(value = "/getUserRongToken")
     public Result getUserRongToken(@RequestParam("userId") String userId) {
-        String appKey = "x18ywvqfxcbjc";
-        String appSecret = "pzfndTCPu9";
-
+        String appKey = "x18ywvqfxcbjc";//融云key
+        String appSecret = "pzfndTCPu9";//融云秘钥
         RongCloud rongCloud = RongCloud.getInstance(appKey, appSecret);
         User user = rongCloud.user;
         UserModel userModel = new UserModel()
