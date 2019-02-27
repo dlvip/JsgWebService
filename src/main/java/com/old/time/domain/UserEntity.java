@@ -33,6 +33,8 @@ public class UserEntity {
 
     private String avatar;
 
+    private String token;
+
     private String pasWord;
 
     private String mobile;
@@ -44,6 +46,14 @@ public class UserEntity {
      */
     @Column(length = 1)
     private Integer sex;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public Integer getSex() {
         return sex;

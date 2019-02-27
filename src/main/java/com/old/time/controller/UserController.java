@@ -39,7 +39,7 @@ public class UserController extends BaseController {
 
         }
         if ("".equals(userEntity.getUserId())) {
-            userEntity.setUserId(GenerateShortUuid.generateShortUuid());
+            userEntity.setUserId(GenerateShortUuid.getPhoneUserId(userEntity.getMobile()));
 
         }
         return ResultUtil.success(userRepository.save(userEntity));
@@ -134,22 +134,30 @@ public class UserController extends BaseController {
     }
 
     @PostMapping(value = "/getUserRongToken")
-    public Result getUserRongToken(@RequestParam("userId") String userId) {
-        String appKey = "x18ywvqfxcbjc";//融云key
-        String appSecret = "pzfndTCPu9";//融云秘钥
-        RongCloud rongCloud = RongCloud.getInstance(appKey, appSecret);
-        User user = rongCloud.user;
-        UserModel userModel = new UserModel()
-                .setId(userId)
-                .setName("RongCloud")
-                .setPortrait("http://www.rongcloud.cn/images/logo.png");
-        TokenResult result = null;
-        try {
-            result = user.register(userModel);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public Result getUserRongToken(@RequestParam("userId") String mobil) {
+        UserEntity userEntity = userRepository.findByMobile(mobil);
+        if (userEntity == null || userEntity.getToken() == null) {
+            try {
+                userEntity = new UserEntity(GenerateShortUuid.getPhoneUserId(mobil), mobil, "123456");
+                String appKey = "x18ywvqfxcbjc";//融云key
+                String appSecret = "pzfndTCPu9";//融云秘钥
+                RongCloud rongCloud = RongCloud.getInstance(appKey, appSecret);
+                User user = rongCloud.user;
+                UserModel userModel = new UserModel()
+                        .setId(userEntity.getUserId())
+                        .setName(userEntity.getUserName())
+                        .setPortrait(userEntity.getAvatar());
+
+                TokenResult result = user.register(userModel);
+                userEntity.setToken(result.getToken());
+                userEntity = userRepository.save(userEntity);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
         }
 
-        return ResultUtil.success(result);
+        return ResultUtil.success(userEntity);
     }
 }

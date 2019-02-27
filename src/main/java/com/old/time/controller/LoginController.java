@@ -82,7 +82,7 @@ public class LoginController {
 
             throw new JSGNoSuchElementException(ResultEnum.MOBILE_CODE_INVALID);
         }
-        userEntity = new UserEntity(GenerateShortUuid.generateShortUuid(), mobile, pasWord);
+        userEntity = new UserEntity(GenerateShortUuid.getPhoneUserId(mobile), mobile, pasWord);
 
         return ResultUtil.success(userRepository.save(userEntity));
     }

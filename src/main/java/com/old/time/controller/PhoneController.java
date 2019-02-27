@@ -1,10 +1,13 @@
 package com.old.time.controller;
 
+import com.old.time.domain.PhoneBeanEntity;
 import com.old.time.domain.PhoneInfoEntity;
 import com.old.time.domain.Result;
 import com.old.time.enums.ResultEnum;
 import com.old.time.exception.JSGRuntimeException;
+import com.old.time.repository.PhoneBeanRepository;
 import com.old.time.repository.PhoneRepository;
+import com.old.time.repository.UserRepository;
 import com.old.time.utils.ResultUtil;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
@@ -28,8 +31,63 @@ public class PhoneController extends BaseController {
     private PhoneRepository phoneRepository;
 
     @Autowired
-    FastMailController fastMailController;
+    private FastMailController fastMailController;
 
+    @Autowired
+    private PhoneBeanRepository phoneBeanRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+
+    /**
+     * 保存通讯录
+     *
+     * @return
+     */
+    @RequestMapping(value = "/savePhoneBeanList")
+    public Result savePhoneBeanList(@RequestParam("phoneListJson") String json) {
+        JSONArray jsonArray = new JSONArray(json);
+        for (int i = 0; i < jsonArray.length(); i++) {
+            PhoneBeanEntity phoneBeanEntity = new PhoneBeanEntity();
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            phoneBeanEntity.setUserId(jsonObject.getString("userId"));
+            phoneBeanEntity.setPhoto(jsonObject.getString("photo"));
+            phoneBeanEntity.setName(jsonObject.getString("name"));
+            phoneBeanEntity.setNumber(jsonObject.getString("number"));
+            phoneBeanEntity.setSortKey(jsonObject.getString("sortKey"));
+            phoneBeanRepository.save(phoneBeanEntity);
+
+        }
+        return ResultUtil.success();
+    }
+
+    /**
+     * 获取用户通讯录
+     *
+     * @param userId
+     * @return
+     */
+    @RequestMapping(value = "/getPhoneBeanList")
+    public Result getPhoneBeanList(@RequestParam("userId") String userId) {
+        boolean exists = userRepository.existsByUserId(userId);
+        List<PhoneBeanEntity> phoneBeanEntities;
+        if (exists) {
+            phoneBeanEntities = phoneBeanRepository.findPhoneBeanEntitiesByUserId(userId);
+
+        } else {
+            phoneBeanEntities = new ArrayList<>();
+
+        }
+        return ResultUtil.success(phoneBeanEntities);
+    }
+
+
+    /**
+     * 读取本地手机归属地信息
+     *
+     * @return
+     */
     @PostMapping(value = "/savePhoneList")
     public Result savePhoneList() {
         String path = PhoneController.class.getResource("/assets").getPath();
@@ -63,6 +121,8 @@ public class PhoneController extends BaseController {
     }
 
     /**
+     * 保存手机归属地信息
+     *
      * @param phoneInfoEntity
      * @return
      */

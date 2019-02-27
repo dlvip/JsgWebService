@@ -9,7 +9,8 @@ public class ResultUtil {
         Result result = new Result();
         result.setStatus(0);
         result.setMsg("成功");
-        result.setData(object);
+        if (object != null)
+            result.setData(object);
 
         return result;
     }

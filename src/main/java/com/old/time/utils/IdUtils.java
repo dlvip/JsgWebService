@@ -4,6 +4,9 @@ import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.MessageDigest;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.UUID;
 
 public class IdUtils {
@@ -193,7 +196,5 @@ public class IdUtils {
             int end = Integer.parseInt(makeUpNewData("", length + 1)) - start;//9000
             return (int) (Math.random() * end) + start;
         }
-
     }
-
 }
