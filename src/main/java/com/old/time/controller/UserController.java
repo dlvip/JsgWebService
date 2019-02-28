@@ -113,7 +113,7 @@ public class UserController extends BaseController {
      */
     @PostMapping(value = "/getUserByMobil")
     public Result getUserByMobil(@RequestParam("mobile") String mobile) throws RuntimeException {
-        UserEntity userEntity = userRepository.findByMobile(mobile);
+        UserEntity userEntity = userRepository.findUserEntityByMobile(mobile);
         if (userEntity == null) {
 
             throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
@@ -135,17 +135,21 @@ public class UserController extends BaseController {
 
     @PostMapping(value = "/getUserRongToken")
     public Result getUserRongToken(@RequestParam("userId") String mobil) {
-        UserEntity userEntity = userRepository.findByMobile(mobil);
-        if (userEntity == null || userEntity.getToken() == null) {
+        UserEntity userEntity = userRepository.findUserEntityByMobile(mobil);
+        if (userEntity == null) {
+            userEntity = new UserEntity(GenerateShortUuid.getPhoneUserId(mobil), mobil, "123456");
+
+        }
+        if (userEntity.getToken() == null) {
             try {
-                userEntity = new UserEntity(GenerateShortUuid.getPhoneUserId(mobil), mobil, "123456");
+
                 String appKey = "x18ywvqfxcbjc";//融云key
                 String appSecret = "pzfndTCPu9";//融云秘钥
                 RongCloud rongCloud = RongCloud.getInstance(appKey, appSecret);
                 User user = rongCloud.user;
                 UserModel userModel = new UserModel()
                         .setId(userEntity.getUserId())
-                        .setName(userEntity.getUserName())
+                        .setName(userEntity.getMobile())
                         .setPortrait(userEntity.getAvatar());
 
                 TokenResult result = user.register(userModel);

@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface PhoneBeanRepository extends JpaRepository<PhoneBeanEntity, String> {
+public interface PhoneBeanRepository extends JpaRepository<PhoneBeanEntity, Integer> {
 
     /**
      * 查询通讯录列表
@@ -22,7 +22,7 @@ public interface PhoneBeanRepository extends JpaRepository<PhoneBeanEntity, Stri
      * @param id
      * @return
      */
-    PhoneBeanEntity findPhoneBeanEntityByUserIdAndId(String userId, String id);
+    PhoneBeanEntity findPhoneBeanEntityByUserIdAndId(String userId, Integer id);
 
 
 }

@@ -67,7 +67,7 @@ public class LoginController {
      */
     @PostMapping(value = "/registerUser")
     public Result registerUser(@RequestParam("mobile") String mobile, @RequestParam("pasWord") String pasWord, @RequestParam("code") String code) throws RuntimeException {
-        UserEntity userEntity = userRepository.findByMobile(mobile);
+        UserEntity userEntity = userRepository.findUserEntityByMobile(mobile);
         if (userEntity != null) {
 
             throw new JSGNoSuchElementException(ResultEnum.USER_ALREADY_EXISTENT);
@@ -127,7 +127,7 @@ public class LoginController {
             throw new JSGNoSuchElementException(ResultEnum.MOBILE_CODE_INVALID);
         }
 
-        UserEntity userEntity = userRepository.findByMobile(mobile);
+        UserEntity userEntity = userRepository.findUserEntityByMobile(mobile);
         if (userEntity == null) {
 
             throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
@@ -177,7 +177,7 @@ public class LoginController {
             throw new JSGNoSuchElementException(ResultEnum.MOBILE_CODE_INVALID);
         }
 
-        UserEntity userEntity = userRepository.findByMobile(mobile);
+        UserEntity userEntity = userRepository.findUserEntityByMobile(mobile);
         if (userEntity == null) {
 
             throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);

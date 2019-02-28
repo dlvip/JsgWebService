@@ -28,7 +28,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
      * @param mobile
      * @return
      */
-    UserEntity findByMobile(String mobile);
+    UserEntity findUserEntityByMobile(String mobile);
 
     /**
      * 通过手机号和密码查找用户
@@ -54,5 +54,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
      * @return
      */
     boolean existsByMobile(String mobile);
+
+
 
 }

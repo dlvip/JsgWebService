@@ -70,6 +70,10 @@ public class UserEntity {
     }
 
     public String getAvatar() {
+        if (avatar == null) {
+
+            return mobile;
+        }
         return avatar;
     }
 

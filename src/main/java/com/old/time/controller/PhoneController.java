@@ -39,23 +39,29 @@ public class PhoneController extends BaseController {
     @Autowired
     private UserRepository userRepository;
 
-
     /**
      * 保存通讯录
      *
      * @return
      */
     @RequestMapping(value = "/savePhoneBeanList")
-    public Result savePhoneBeanList(@RequestParam("phoneListJson") String json) {
+    public Result savePhoneBeanList(@RequestParam("userId") String userId, @RequestParam("phoneListJson") String json) {
+        boolean exists = userRepository.existsByUserId(userId);
+        if (!exists) {
+
+            throw new JSGRuntimeException(ResultEnum.USER_NON_EXISTENT);
+        }
         JSONArray jsonArray = new JSONArray(json);
         for (int i = 0; i < jsonArray.length(); i++) {
-            PhoneBeanEntity phoneBeanEntity = new PhoneBeanEntity();
             JSONObject jsonObject = jsonArray.getJSONObject(i);
-            phoneBeanEntity.setUserId(jsonObject.getString("userId"));
+
+            PhoneBeanEntity phoneBeanEntity = new PhoneBeanEntity();
+            phoneBeanEntity.setUserId(userId);
             phoneBeanEntity.setPhoto(jsonObject.getString("photo"));
             phoneBeanEntity.setName(jsonObject.getString("name"));
             phoneBeanEntity.setNumber(jsonObject.getString("number"));
             phoneBeanEntity.setSortKey(jsonObject.getString("sortKey"));
+
             phoneBeanRepository.save(phoneBeanEntity);
 
         }
