@@ -16,6 +16,23 @@ public interface PhoneBeanRepository extends JpaRepository<PhoneBeanEntity, Inte
     List<PhoneBeanEntity> findPhoneBeanEntitiesByUserId(String userId);
 
     /**
+     * 数量
+     *
+     * @param userId
+     * @return
+     */
+    long countAllByUserId(String userId);
+
+    /**
+     * 查找通讯录
+     *
+     * @param name
+     * @param userId
+     * @return
+     */
+    PhoneBeanEntity findPhoneBeanEntityByUserIdAndName(String name, String userId);
+
+    /**
      * 查询单个通讯录信息
      *
      * @param userId

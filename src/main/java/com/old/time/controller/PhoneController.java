@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -51,21 +52,54 @@ public class PhoneController extends BaseController {
 
             throw new JSGRuntimeException(ResultEnum.USER_NON_EXISTENT);
         }
+        long count = phoneBeanRepository.countAllByUserId(userId);
+
         JSONArray jsonArray = new JSONArray(json);
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
+            String name = jsonObject.getString("name");
+            String number = jsonObject.getString("number");
+            PhoneBeanEntity phoneBeanEntity;
+            if (count == 0) {
+                phoneBeanEntity = new PhoneBeanEntity();
+                phoneBeanEntity.setName(name);
+                phoneBeanEntity.setNumber(number);
+                phoneBeanEntity.setUserId(userId);
 
-            PhoneBeanEntity phoneBeanEntity = new PhoneBeanEntity();
-            phoneBeanEntity.setUserId(userId);
-            phoneBeanEntity.setPhoto(jsonObject.getString("photo"));
-            phoneBeanEntity.setName(jsonObject.getString("name"));
-            phoneBeanEntity.setNumber(jsonObject.getString("number"));
-            phoneBeanEntity.setSortKey(jsonObject.getString("sortKey"));
+            } else {
+                phoneBeanEntity = phoneBeanRepository.findPhoneBeanEntityByUserIdAndName(userId, name);
+                if (phoneBeanEntity == null) {
+                    phoneBeanEntity = new PhoneBeanEntity();
+                    phoneBeanEntity.setName(name);
+                    phoneBeanEntity.setNumber(number);
+                    phoneBeanEntity.setUserId(userId);
 
+                } else {
+                    List<String> numberS = Arrays.asList(number.split(","));
+                    List<String> phoneS = Arrays.asList(phoneBeanEntity.getNumber().split(","));
+                    for (String phone : phoneS) {
+                        if (!numberS.contains(phone)) {
+                            numberS.add(phone);
+
+                        }
+                    }
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for (String phone : numberS) {
+                        stringBuilder.append(phone);
+                        stringBuilder.append(",");
+
+                    }
+                    String phoneStr = stringBuilder.toString();
+                    phoneBeanEntity.setNumber(phoneStr.substring(phoneStr.length() - 1));
+                }
+            }
+            String sortKey = jsonObject.getString("sortKey");
+            String photo = jsonObject.getString("photo");
+            phoneBeanEntity.setSortKey(sortKey);
+            phoneBeanEntity.setPhoto(photo);
             phoneBeanRepository.save(phoneBeanEntity);
-
         }
-        return ResultUtil.success();
+        return ResultUtil.success(phoneBeanRepository.findPhoneBeanEntitiesByUserId(userId));
     }
 
     /**
