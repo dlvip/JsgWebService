@@ -55,6 +55,7 @@ public class PhoneController extends BaseController {
         long count = phoneBeanRepository.countAllByUserId(userId);
 
         JSONArray jsonArray = new JSONArray(json);
+        StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             String name = jsonObject.getString("name");
@@ -75,22 +76,17 @@ public class PhoneController extends BaseController {
                     phoneBeanEntity.setUserId(userId);
 
                 } else {
-                    List<String> numberS = Arrays.asList(number.split(","));
+                    stringBuilder.delete(0, stringBuilder.length());
+                    stringBuilder.append(number);
                     List<String> phoneS = Arrays.asList(phoneBeanEntity.getNumber().split(","));
                     for (String phone : phoneS) {
-                        if (!numberS.contains(phone)) {
-                            numberS.add(phone);
+                        if (!number.contains(phone)) {
+                            stringBuilder.append(",");
+                            stringBuilder.append(phone);
 
                         }
                     }
-                    StringBuilder stringBuilder = new StringBuilder();
-                    for (String phone : numberS) {
-                        stringBuilder.append(phone);
-                        stringBuilder.append(",");
-
-                    }
-                    String phoneStr = stringBuilder.toString();
-                    phoneBeanEntity.setNumber(phoneStr.substring(phoneStr.length() - 1));
+                    phoneBeanEntity.setNumber(stringBuilder.toString());
                 }
             }
             String sortKey = jsonObject.getString("sortKey");
