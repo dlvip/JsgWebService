@@ -1,5 +1,7 @@
 package com.old.time.domain;
 
+import com.old.time.utils.TimeUtil;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -7,6 +9,21 @@ import javax.persistence.Transient;
 
 @Entity
 public class SignNameEntity {
+
+    public static SignNameEntity getInstance(String userId, String picUrl, String content) {
+
+        return new SignNameEntity(userId, picUrl, content);
+    }
+
+    private SignNameEntity(String userId, String picUrl, String content) {
+        this.userId = userId;
+        this.picUrl = picUrl;
+        this.content = content;
+        this.creatTime = TimeUtil.getCurrentTime();
+        this.shareCount = 0;
+        this.paiseCount = 0;
+
+    }
 
     @Id
     @GeneratedValue
@@ -18,9 +35,7 @@ public class SignNameEntity {
 
     private String content;
 
-    private String shareCount;
-
-    private String paiseCount;
+    private Integer shareCount;
 
     private String creatTime;
 
@@ -56,19 +71,19 @@ public class SignNameEntity {
         this.content = content;
     }
 
-    public String getShareCount() {
+    public Integer getShareCount() {
         return shareCount;
     }
 
-    public void setShareCount(String shareCount) {
+    public void setShareCount(Integer shareCount) {
         this.shareCount = shareCount;
     }
 
-    public String getPaiseCount() {
+    public Integer getPaiseCount() {
         return paiseCount;
     }
 
-    public void setPaiseCount(String paiseCount) {
+    public void setPaiseCount(Integer paiseCount) {
         this.paiseCount = paiseCount;
     }
 
@@ -81,13 +96,16 @@ public class SignNameEntity {
     }
 
     @Transient
-    private Integer isPaise;
+    private Integer paiseCount;
 
-    public Integer getIsPaise() {
+    @Transient
+    private boolean isPaise;
+
+    public boolean getIsPaise() {
         return isPaise;
     }
 
-    public void setIsPaise(Integer isPaise) {
+    public void setIsPaise(boolean isPaise) {
         this.isPaise = isPaise;
     }
 
