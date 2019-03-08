@@ -9,5 +9,4 @@ public interface SignNameRepository extends JpaRepository<SignNameEntity, Intege
     SignNameEntity findSignNameEntityByUserIdAndId(String userId, String id);
 
 
-
 }

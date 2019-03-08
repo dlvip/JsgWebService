@@ -10,6 +10,10 @@ import javax.persistence.Transient;
 @Entity
 public class SignNameEntity {
 
+    public SignNameEntity(){
+
+    }
+
     public static SignNameEntity getInstance(String userId, String picUrl, String content) {
 
         return new SignNameEntity(userId, picUrl, content);
