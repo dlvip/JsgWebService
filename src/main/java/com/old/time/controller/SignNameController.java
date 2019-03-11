@@ -57,18 +57,26 @@ public class SignNameController extends BaseController {
      * 分页获取打卡列表
      *
      * @param userId
+     * @param friendId
      * @param pageNum
      * @param pageSize
      * @return
      */
     @RequestMapping(value = "/getSignNameList")
-    public Result getSignNameList(@RequestParam("userId") String userId, @RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
+    public Result getSignNameList(@RequestParam("userId") String userId, @RequestParam("friendId") String friendId, @RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
         boolean isExist = userRepository.existsByUserId(userId);
         if (!isExist) {
 
             throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
         }
-        List<SignNameEntity> signNameEntities = signNameRepository.findAll(PageRequest.of(pageNum, pageSize)).getContent();
+        List<SignNameEntity> signNameEntities;
+        if (friendId != null && !"".equals(friendId)) {
+            signNameEntities = signNameRepository.findSignNameEntitiesByUserId(friendId, PageRequest.of(pageNum, pageSize));
+
+        } else {
+            signNameEntities = signNameRepository.findAll(PageRequest.of(pageNum, pageSize)).getContent();
+
+        }
         for (SignNameEntity signNameEntity : signNameEntities) {
             signNameEntity.setUserEntity(userRepository.findUserEntityByUserId(signNameEntity.getUserId()));
             signNameEntity.setPaiseCount(praiseContentController.getPraiseCount(signNameEntity.getId()));
