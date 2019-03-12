@@ -99,6 +99,25 @@ public class PhoneController extends BaseController {
     }
 
     /**
+     * 查找单个用户下的联系人信息
+     *
+     * @param userId
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/getUserSinglePhoneBean")
+    public Result getUserSinglePhoneBean(@RequestParam("userId") String userId, @RequestParam("id") String id) {
+        boolean exists = userRepository.existsByUserId(userId);
+        if (!exists) {
+
+            throw new JSGRuntimeException(ResultEnum.USER_NON_EXISTENT);
+        }
+        PhoneBeanEntity phoneBeanEntity = phoneBeanRepository.findPhoneBeanEntityByUserIdAndId(userId, Integer.parseInt(id));
+
+        return ResultUtil.success(phoneBeanEntity);
+    }
+
+    /**
      * 获取用户通讯录
      *
      * @param userId

@@ -10,6 +10,7 @@ import com.old.time.repository.UserRepository;
 import com.old.time.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -71,7 +72,7 @@ public class SignNameController extends BaseController {
         }
         List<SignNameEntity> signNameEntities;
         if (friendId != null && !"".equals(friendId)) {
-            signNameEntities = signNameRepository.findSignNameEntitiesByUserId(friendId, PageRequest.of(pageNum, pageSize));
+            signNameEntities = signNameRepository.findSignNameEntitiesByUserId(friendId, PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.DESC, "id")));
 
         } else {
             signNameEntities = signNameRepository.findAll(PageRequest.of(pageNum, pageSize)).getContent();
