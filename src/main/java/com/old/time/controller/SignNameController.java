@@ -75,7 +75,7 @@ public class SignNameController extends BaseController {
             signNameEntities = signNameRepository.findSignNameEntitiesByUserId(friendId, PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.DESC, "id")));
 
         } else {
-            signNameEntities = signNameRepository.findAll(PageRequest.of(pageNum, pageSize)).getContent();
+            signNameEntities = signNameRepository.findAll(PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.DESC, "id"))).getContent();
 
         }
         for (SignNameEntity signNameEntity : signNameEntities) {
