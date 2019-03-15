@@ -5,10 +5,10 @@ import com.old.time.domain.Result;
 import com.old.time.domain.UserEntity;
 import com.old.time.enums.ResultEnum;
 import com.old.time.exception.JSGNoSuchElementException;
+import com.old.time.exception.JSGRuntimeException;
 import com.old.time.repository.UserRepository;
 import com.old.time.utils.GenerateShortUuid;
 import com.old.time.utils.ResultUtil;
-import com.old.time.utils.TimeUtil;
 import io.rong.RongCloud;
 import io.rong.methods.user.User;
 import io.rong.models.response.TokenResult;
@@ -95,7 +95,6 @@ public class UserController extends BaseController {
      */
     @PostMapping(value = "/getUserByUserId")
     public Result getUserByUserId(@RequestParam("userId") String userId) throws RuntimeException {
-        TimeUtil.inputFile();
         UserEntity userEntity = userRepository.findUserEntityByUserId(userId);
         if (userEntity == null) {
 
@@ -135,14 +134,17 @@ public class UserController extends BaseController {
 
     @PostMapping(value = "/getUserRongToken")
     public Result getUserRongToken(@RequestParam("userId") String mobil) {
-        UserEntity userEntity = userRepository.findUserEntityByMobile(mobil);
-        if (userEntity == null) {
+        boolean isExists = userRepository.existsByMobile(mobil);
+        UserEntity userEntity;
+        if (isExists) {
+            userEntity = userRepository.findUserEntityByMobile(mobil);
+
+        } else {
             userEntity = new UserEntity(GenerateShortUuid.getPhoneUserId(mobil), mobil, "123456");
 
         }
         if (userEntity.getToken() == null) {
             try {
-
                 String appKey = "x18ywvqfxcbjc";//融云key
                 String appSecret = "pzfndTCPu9";//融云秘钥
                 RongCloud rongCloud = RongCloud.getInstance(appKey, appSecret);
@@ -151,13 +153,13 @@ public class UserController extends BaseController {
                         .setId(userEntity.getUserId())
                         .setName(userEntity.getMobile())
                         .setPortrait(userEntity.getAvatar());
-
                 TokenResult result = user.register(userModel);
                 userEntity.setToken(result.getToken());
-                userEntity = userRepository.save(userEntity);
 
+                userEntity = userRepository.save(userEntity);
             } catch (Exception e) {
                 e.printStackTrace();
+                throw new JSGRuntimeException(ResultEnum.SYSTEM_ERROR);
 
             }
         }

@@ -10,19 +10,20 @@ import javax.persistence.Transient;
 @Entity
 public class SignNameEntity {
 
-    public SignNameEntity(){
+    public SignNameEntity() {
 
     }
 
-    public static SignNameEntity getInstance(String userId, String picUrl, String content) {
+    public static SignNameEntity getInstance(String userId, String picUrl, String content, Integer bookId) {
 
-        return new SignNameEntity(userId, picUrl, content);
+        return new SignNameEntity(userId, picUrl, content, bookId);
     }
 
-    private SignNameEntity(String userId, String picUrl, String content) {
+    private SignNameEntity(String userId, String picUrl, String content, Integer bookId) {
         this.userId = userId;
         this.picUrl = picUrl;
         this.content = content;
+        this.bookId = bookId;
         this.creatTime = TimeUtil.getCurrentTime();
         this.shareCount = 0;
         this.paiseCount = 0;
@@ -42,6 +43,16 @@ public class SignNameEntity {
     private Integer shareCount;
 
     private String creatTime;
+
+    private Integer bookId;
+
+    public Integer getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(Integer bookId) {
+        this.bookId = bookId;
+    }
 
     public Integer getId() {
         return id;
@@ -122,5 +133,16 @@ public class SignNameEntity {
 
     public void setUserEntity(UserEntity userEntity) {
         this.userEntity = userEntity;
+    }
+
+    @Transient
+    private BookEntity bookEntity;
+
+    public BookEntity getBookEntity() {
+        return bookEntity;
+    }
+
+    public void setBookEntity(BookEntity bookEntity) {
+        this.bookEntity = bookEntity;
     }
 }

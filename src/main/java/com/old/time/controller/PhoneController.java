@@ -32,9 +32,6 @@ public class PhoneController extends BaseController {
     private PhoneRepository phoneRepository;
 
     @Autowired
-    private FastMailController fastMailController;
-
-    @Autowired
     private PhoneBeanRepository phoneBeanRepository;
 
     @Autowired
@@ -137,44 +134,6 @@ public class PhoneController extends BaseController {
         return ResultUtil.success(phoneBeanEntities);
     }
 
-
-    /**
-     * 读取本地手机归属地信息
-     *
-     * @return
-     */
-    @PostMapping(value = "/savePhoneList")
-    public Result savePhoneList() {
-        String path = PhoneController.class.getResource("/assets").getPath();
-        File jsonFile = null;
-        try {
-            jsonFile = ResourceUtils.getFile(path + "/phone.json");
-            String json = FileUtils.readFileToString(jsonFile, "UTF-8");
-            JSONArray jsonArray = new JSONArray(json);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                PhoneInfoEntity phoneInfoEntity = new PhoneInfoEntity();
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                phoneInfoEntity.setAreacode(jsonObject.getString("areacode"));
-                phoneInfoEntity.setCard(jsonObject.getString("card"));
-                phoneInfoEntity.setCity(jsonObject.getString("city"));
-                phoneInfoEntity.setCompany(jsonObject.getString("company"));
-                phoneInfoEntity.setPhone(jsonObject.getString("phone"));
-                phoneInfoEntity.setProvince(jsonObject.getString("province"));
-                phoneInfoEntity.setZip(jsonObject.getString("zip"));
-                if (!phoneRepository.existsPhoneInfoEntityByPhone(phoneInfoEntity.getPhone())) {
-                    phoneRepository.save(phoneInfoEntity);
-
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-
-        }
-        fastMailController.savePhoneList();
-
-        return ResultUtil.success();
-    }
-
     /**
      * 保存手机归属地信息
      *
@@ -189,8 +148,8 @@ public class PhoneController extends BaseController {
         }
         boolean isExists = phoneRepository.existsPhoneInfoEntityByPhone(phoneInfoEntity.getPhone());
         if (!isExists) {
-
             phoneRepository.save(phoneInfoEntity);
+
         }
 
         return ResultUtil.success();

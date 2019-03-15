@@ -5,9 +5,11 @@ import com.old.time.domain.SignNameEntity;
 import com.old.time.domain.UserEntity;
 import com.old.time.enums.ResultEnum;
 import com.old.time.exception.JSGNoSuchElementException;
+import com.old.time.repository.BookRepository;
 import com.old.time.repository.SignNameRepository;
 import com.old.time.repository.UserRepository;
 import com.old.time.utils.ResultUtil;
+import com.old.time.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -20,6 +22,9 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "jiushiguang/signname")
 public class SignNameController extends BaseController {
+
+    @Autowired
+    private BookRepository bookRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -39,14 +44,18 @@ public class SignNameController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/createSignName")
-    public Result createSignName(@RequestParam("userId") String userId, @RequestParam("picUrl") String picUrl, @RequestParam("content") String content) {
+    public Result createSignName(@RequestParam("userId") String userId, @RequestParam("picUrl") String picUrl, @RequestParam("content") String content, @RequestParam("bookId") String bookId) {
         boolean isExist = userRepository.existsByUserId(userId);
         if (!isExist) {
 
             throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
         }
-        SignNameEntity signNameEntity = SignNameEntity.getInstance(userId, picUrl, content);
-        signNameEntity = signNameRepository.save(signNameEntity);
+        if (!StringUtils.isNumeric(bookId)) {
+            bookId = "0";
+
+        }
+        SignNameEntity signNameEntity;
+        signNameEntity = signNameRepository.save(SignNameEntity.getInstance(userId, picUrl, content, Integer.parseInt(bookId)));
 
         UserEntity userEntity = userRepository.findUserEntityByUserId(userId);
         signNameEntity.setUserEntity(userEntity);
@@ -82,6 +91,7 @@ public class SignNameController extends BaseController {
             signNameEntity.setUserEntity(userRepository.findUserEntityByUserId(signNameEntity.getUserId()));
             signNameEntity.setPaiseCount(praiseContentController.getPraiseCount(signNameEntity.getId()));
             signNameEntity.setIsPaise(praiseContentController.isPraiseUser(userId, signNameEntity.getId()));
+            signNameEntity.setBookEntity(bookRepository.findBookEntityById(signNameEntity.getBookId()));
 
         }
         return ResultUtil.success(signNameEntities);

@@ -6,12 +6,14 @@ import com.old.time.domain.Result;
 public class ResultUtil {
 
     public static Result success(Object object) {
+        if (object == null) {
+
+            return error(-100, "内容不存在");
+        }
         Result result = new Result();
         result.setStatus(0);
         result.setMsg("成功");
-        if (object != null)
-            result.setData(object);
-
+        result.setData(object);
         return result;
     }
 
