@@ -1,5 +1,7 @@
 package com.old.time.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.old.time.domain.PhoneBeanEntity;
 import com.old.time.domain.PhoneInfoEntity;
 import com.old.time.domain.Result;
@@ -9,20 +11,13 @@ import com.old.time.repository.PhoneBeanRepository;
 import com.old.time.repository.PhoneRepository;
 import com.old.time.repository.UserRepository;
 import com.old.time.utils.ResultUtil;
-import org.apache.commons.io.FileUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "jiushiguang/phone")
@@ -50,13 +45,12 @@ public class PhoneController extends BaseController {
             throw new JSGRuntimeException(ResultEnum.USER_NON_EXISTENT);
         }
         long count = phoneBeanRepository.countAllByUserId(userId);
+        ArrayList<PhoneBeanEntity> phoneBeanEntities = JSON.parseObject(json, new TypeReference<ArrayList<PhoneBeanEntity>>(){});
 
-        JSONArray jsonArray = new JSONArray(json);
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
-            String name = jsonObject.getString("name");
-            String number = jsonObject.getString("number");
+        for (int i = 0; i < phoneBeanEntities.size(); i++) {
+            String name = phoneBeanEntities.get(i).getName();
+            String number = phoneBeanEntities.get(i).getNumber();
             PhoneBeanEntity phoneBeanEntity;
             if (count == 0) {
                 phoneBeanEntity = new PhoneBeanEntity();
@@ -75,8 +69,8 @@ public class PhoneController extends BaseController {
                 } else {
                     stringBuilder.delete(0, stringBuilder.length());
                     stringBuilder.append(number);
-                    List<String> phoneS = Arrays.asList(phoneBeanEntity.getNumber().split(","));
-                    for (String phone : phoneS) {
+                    String[] numStr = phoneBeanEntity.getNumber().split(",");
+                    for (String phone : numStr) {
                         if (!number.contains(phone)) {
                             stringBuilder.append(",");
                             stringBuilder.append(phone);
@@ -86,13 +80,14 @@ public class PhoneController extends BaseController {
                     phoneBeanEntity.setNumber(stringBuilder.toString());
                 }
             }
-            String sortKey = jsonObject.getString("sortKey");
-            String photo = jsonObject.getString("photo");
+            String sortKey = phoneBeanEntities.get(i).getSortKey();
+            String photo = phoneBeanEntities.get(i).getPhoto();
             phoneBeanEntity.setSortKey(sortKey);
             phoneBeanEntity.setPhoto(photo);
             phoneBeanRepository.save(phoneBeanEntity);
         }
-        return ResultUtil.success(phoneBeanRepository.findPhoneBeanEntitiesByUserId(userId));
+        List<PhoneBeanEntity> phoneInfoEntities = phoneBeanRepository.findPhoneBeanEntitiesByUserId(userId);
+        return ResultUtil.success(phoneInfoEntities);
     }
 
     /**

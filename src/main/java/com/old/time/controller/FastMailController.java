@@ -36,7 +36,7 @@ public class FastMailController extends BaseController {
                 mFastMailBean.setName(fastMailObj.getString("name"));
                 mFastMailBean.setIcon(fastMailObj.getString("icon"));
                 mFastMailBean.setUrl(fastMailObj.getString("url"));
-                mFastMailBean.setId(fastMailObj.getString("id"));
+//                mFastMailBean.setId(fastMailObj.getString("id"));
                 if (!fastMailRepository.existsFastMailEnitieById(mFastMailBean.getId())) {
                     fastMailRepository.save(mFastMailBean);
 

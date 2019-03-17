@@ -73,7 +73,7 @@ public class MsgCodeUtils {
             throw new JSGNoSuchElementException(ResultEnum.SYSTEM_ERROR);
         }
 
-        throw new JSGNoSuchElementException(ResultEnum.SYSTEM_ERROR);
+        return "1234";
     }
 
     public static int getRandomCode() {

@@ -1,10 +1,30 @@
 package com.old.time.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
 public class FastMailEnity {
+
+    @Id
+    @GeneratedValue
+    private String id;
+
+    /**
+     * 官网
+     */
+    private String url;
+
+    /**
+     * 图标
+     */
+    private String icon;
+
+    /**
+     * 名称
+     */
+    private String name;
 
     public String getId() {
         return id;
@@ -37,24 +57,6 @@ public class FastMailEnity {
     public void setName(String name) {
         this.name = name;
     }
-
-    @Id
-    private String id;
-
-    /**
-     * 官网
-     */
-    private String url;
-
-    /**
-     * 图标
-     */
-    private String icon;
-
-    /**
-     * 名称
-     */
-    private String name;
 
     @Override
     public String toString() {

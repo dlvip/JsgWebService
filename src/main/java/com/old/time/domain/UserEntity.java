@@ -1,12 +1,22 @@
 package com.old.time.domain;
 
-import javax.persistence.*;
+import com.old.time.utils.GenerateShortUuid;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 @Entity
 public class UserEntity {
 
     public UserEntity() {
 
+    }
+
+    public static UserEntity getInstance(String mobile, String pasWord) {
+
+        return new UserEntity(GenerateShortUuid.getPhoneUserId(mobile), mobile, pasWord);
     }
 
     /**

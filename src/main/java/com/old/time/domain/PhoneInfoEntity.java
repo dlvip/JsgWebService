@@ -1,6 +1,7 @@
 package com.old.time.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
@@ -15,6 +16,17 @@ public class PhoneInfoEntity {
      * card :
      */
     @Id
+    @GeneratedValue
+    private Integer id;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     private String phone;
     private String province;
     private String city;

@@ -10,10 +10,10 @@ public enum ResultEnum {
     //用户提示信息
     USER_NON_EXISTENT(-1000, "用户不存在"),
 
-    USER_ALREADY_EXISTENT(-1001, "用户已经存在，请登录"),
+    USER_ALREADY_EXISTENT(-1001, "用户已经存在，请直接登录"),
 
     //验证码提示信息
-    MOBILE_CODE_ERROR(-1020, "验证码有误，请重新输入"),
+    MOBILE_CODE_ERROR(-1020, "验证码有误，请重试"),
 
     MOBILE_CODE_INVALID(-1021, "验证码已失效，请重试"),
 

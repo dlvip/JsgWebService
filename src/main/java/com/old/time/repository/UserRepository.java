@@ -5,6 +5,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
+
+    /**
+     * 用户是否存在
+     *
+     * @param userId
+     * @param pasWord
+     * @return
+     */
+    boolean existsByUserIdAndPasWord(String userId, String pasWord);
+
     /**
      * 通过用户id和密码查找用户
      *
@@ -31,6 +41,15 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     UserEntity findUserEntityByMobile(String mobile);
 
     /**
+     * 用户是否存在
+     *
+     * @param mobile
+     * @param pasWord
+     * @return
+     */
+    boolean existsByMobileAndPasWord(String mobile, String pasWord);
+
+    /**
      * 通过手机号和密码查找用户
      *
      * @param mobile
@@ -54,7 +73,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
      * @return
      */
     boolean existsByMobile(String mobile);
-
 
 
 }

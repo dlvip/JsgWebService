@@ -132,10 +132,16 @@ public class UserController extends BaseController {
         return ResultUtil.success(userRepository.findAll());
     }
 
+    /**
+     * 获取并存储融云token
+     *
+     * @param mobil
+     * @return
+     */
     @PostMapping(value = "/getUserRongToken")
     public Result getUserRongToken(@RequestParam("userId") String mobil) {
-        boolean isExists = userRepository.existsByMobile(mobil);
         UserEntity userEntity;
+        boolean isExists = userRepository.existsByMobile(mobil);
         if (isExists) {
             userEntity = userRepository.findUserEntityByMobile(mobil);
 

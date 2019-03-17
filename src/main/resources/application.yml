@@ -5,11 +5,14 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/jiushiguang?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
     username: root
-    password: 123456
+    password: 12345678
 
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+    database-platform:
+          # spring boot 2.0 的坑， spring boot2.+后默认使用的是MyISAM引擎
+          org.hibernate.dialect.MySQL5InnoDBDialect
 
 

@@ -7,7 +7,6 @@ import com.old.time.enums.ResultEnum;
 import com.old.time.exception.JSGNoSuchElementException;
 import com.old.time.repository.MsgCodeRepository;
 import com.old.time.repository.UserRepository;
-import com.old.time.utils.GenerateShortUuid;
 import com.old.time.utils.MsgCodeUtils;
 import com.old.time.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,21 +32,24 @@ public class LoginController {
      */
     @PostMapping(value = "/getMobileCode")
     public Result getMobileCode(@RequestParam("mobile") String mobile) {
+        MsgCodeEntity msgCodeEntity;
+        boolean isExists = msgCodeRepository.existsByMobile(mobile);
+        if (isExists) {
+            msgCodeEntity = msgCodeRepository.findByMobile(mobile);
+
+        } else {
+            msgCodeEntity = MsgCodeEntity.getInstance(mobile, MsgCodeUtils.getMsgCode(mobile));
+
+        }
         long currentTimeMillis = System.currentTimeMillis();
-        MsgCodeEntity msgCodeEntity = msgCodeRepository.findByMobile(mobile);
-        if (msgCodeEntity != null && currentTimeMillis < msgCodeEntity.getEndTime()) {
+        if (currentTimeMillis < msgCodeEntity.getEndTime()) {
 
             throw new JSGNoSuchElementException(ResultEnum.MOBILE_CODE_SEND);
         }
-        String code = MsgCodeUtils.getMsgCode(mobile);
-        if(msgCodeEntity == null){
-            msgCodeEntity = new MsgCodeEntity();
-
-        }
         msgCodeEntity.setMobile(mobile);
-        msgCodeEntity.setCode(code);
-        msgCodeEntity.setEndTime((currentTimeMillis + 2 * 60 * 1000));
+        msgCodeEntity.setCode(MsgCodeUtils.getMsgCode(mobile));
         msgCodeEntity.setCreateTime(currentTimeMillis);
+        msgCodeEntity.setEndTime((currentTimeMillis + 2 * 60 * 1000));
         msgCodeRepository.save(msgCodeEntity);
         return ResultUtil.success();
     }
@@ -62,24 +64,28 @@ public class LoginController {
      */
     @PostMapping(value = "/registerUser")
     public Result registerUser(@RequestParam("mobile") String mobile, @RequestParam("pasWord") String pasWord, @RequestParam("code") String code) throws RuntimeException {
-        UserEntity userEntity = userRepository.findUserEntityByMobile(mobile);
-        if (userEntity != null) {
+        boolean isUserExist = userRepository.existsByMobile(mobile);
+        if (isUserExist) {//手机号是否已经被注册
 
             throw new JSGNoSuchElementException(ResultEnum.USER_ALREADY_EXISTENT);
         }
-
-        MsgCodeEntity msgCodeEntity = msgCodeRepository.findByMobile(mobile);
-        if (msgCodeEntity == null || !code.equals(msgCodeEntity.getCode())) {
-
-            throw new JSGNoSuchElementException(ResultEnum.MOBILE_CODE_ERROR);
-        }
-        if (System.currentTimeMillis() > msgCodeEntity.getEndTime()) {
+        boolean isCodeExists = msgCodeRepository.existsByMobile(mobile);
+        if (!isCodeExists) {//验证码是否存在
 
             throw new JSGNoSuchElementException(ResultEnum.MOBILE_CODE_INVALID);
         }
-        userEntity = new UserEntity(GenerateShortUuid.getPhoneUserId(mobile), mobile, pasWord);
+        MsgCodeEntity msgCodeEntity = msgCodeRepository.findByMobile(mobile);
+        long currentTime = System.currentTimeMillis();
+        long endTime = msgCodeEntity.getEndTime();
+        if (currentTime > endTime) {//验证码是否过期
 
-        return ResultUtil.success(userRepository.save(userEntity));
+            throw new JSGNoSuchElementException(ResultEnum.MOBILE_CODE_INVALID);
+        }
+        if (!code.equals(msgCodeEntity.getCode())) {//验证码是否正确
+
+            throw new JSGNoSuchElementException(ResultEnum.MOBILE_CODE_ERROR);
+        }
+        return ResultUtil.success(userRepository.save(UserEntity.getInstance(mobile, pasWord)));
     }
 
     /**
@@ -91,14 +97,13 @@ public class LoginController {
      * @throws RuntimeException
      */
     @PostMapping(value = "/loginUser")
-    public Result loginUser(@RequestParam("mobile") String mobile, @RequestParam("pasWord") String pasWord) throws RuntimeException {
-        UserEntity userEntity = userRepository.findByMobileAndPasWord(mobile, pasWord);
-        if (userEntity == null) {
+    public Result loginUser(@RequestParam("mobile") String mobile, @RequestParam("pasWord") String pasWord) {
+        boolean isUser = userRepository.existsByMobileAndPasWord(mobile, pasWord);
+        if (!isUser) {
 
             throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
         }
-
-        return ResultUtil.success(userEntity);
+        return ResultUtil.success(userRepository.findByMobileAndPasWord(mobile, pasWord));
     }
 
 
@@ -111,23 +116,30 @@ public class LoginController {
      * @throws RuntimeException
      */
     @PostMapping(value = "/loginMobilCode")
-    public Result loginMobilCode(@RequestParam("mobile") String mobile, @RequestParam("code") String code) throws RuntimeException {
-        MsgCodeEntity msgCodeEntity = msgCodeRepository.findByMobile(mobile);
-        if (msgCodeEntity == null || !code.equals(msgCodeEntity.getCode())) {
+    public Result loginMobilCode(@RequestParam("mobile") String mobile, @RequestParam("code") String code) {
+        boolean isUser = userRepository.existsByMobile(mobile);
+        if (!isUser) {//用户是否存在
 
-            throw new JSGNoSuchElementException(ResultEnum.MOBILE_CODE_ERROR);
+            throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
         }
-        if (System.currentTimeMillis() > msgCodeEntity.getEndTime()) {
+        boolean isCodeExists = msgCodeRepository.existsByMobile(mobile);
+        if (!isCodeExists) {//验证码是否存在
 
             throw new JSGNoSuchElementException(ResultEnum.MOBILE_CODE_INVALID);
         }
 
-        UserEntity userEntity = userRepository.findUserEntityByMobile(mobile);
-        if (userEntity == null) {
+        MsgCodeEntity msgCodeEntity = msgCodeRepository.findByMobile(mobile);
+        long currentTime = System.currentTimeMillis();
+        long endTime = msgCodeEntity.getEndTime();
+        if (currentTime > endTime) {//验证码是否过期
 
-            throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
+            throw new JSGNoSuchElementException(ResultEnum.MOBILE_CODE_INVALID);
         }
-        return ResultUtil.success(userEntity);
+        if (!code.equals(msgCodeEntity.getCode())) {//验证码是否正确
+
+            throw new JSGNoSuchElementException(ResultEnum.MOBILE_CODE_ERROR);
+        }
+        return ResultUtil.success(userRepository.findUserEntityByMobile(mobile));
     }
 
     /**
@@ -140,14 +152,14 @@ public class LoginController {
      * @throws RuntimeException
      */
     @PostMapping(value = "/updatePasWord")
-    public Result updatePasWord(@RequestParam("userId") String userId, @RequestParam("pasWord") String pasWord, @RequestParam("newPasWord") String newPasWord) throws RuntimeException {
-        UserEntity userEntity = userRepository.findByUserIdAndPasWord(userId, pasWord);
-        if (userEntity == null) {
+    public Result updatePasWord(@RequestParam("userId") String userId, @RequestParam("pasWord") String pasWord, @RequestParam("newPasWord") String newPasWord) {
+        boolean isUserExists = userRepository.existsByUserIdAndPasWord(userId, pasWord);
+        if (!isUserExists) {
 
             throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
         }
+        UserEntity userEntity = userRepository.findByUserIdAndPasWord(userId, pasWord);
         userEntity.setPasWord(newPasWord);
-
         return ResultUtil.success(userRepository.save(userEntity));
     }
 
@@ -162,23 +174,29 @@ public class LoginController {
      */
     @PostMapping(value = "/forgetPasWord")
     public Result forgetPasWord(@RequestParam("mobile") String mobile, @RequestParam("code") String code, @RequestParam("pasWord") String pasWord) throws RuntimeException {
-        MsgCodeEntity msgCodeEntity = msgCodeRepository.findByMobile(mobile);
-        if (msgCodeEntity == null || !code.equals(msgCodeEntity.getCode())) {
-
-            throw new JSGNoSuchElementException(ResultEnum.MOBILE_CODE_ERROR);
-        }
-        if (System.currentTimeMillis() > msgCodeEntity.getEndTime()) {
-
-            throw new JSGNoSuchElementException(ResultEnum.MOBILE_CODE_INVALID);
-        }
-
-        UserEntity userEntity = userRepository.findUserEntityByMobile(mobile);
-        if (userEntity == null) {
+        boolean isUser = userRepository.existsByMobile(mobile);
+        if (!isUser) {//用户是否存在
 
             throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
         }
-        userEntity.setPasWord(pasWord);
+        boolean isCodeExists = msgCodeRepository.existsByMobile(mobile);
+        if (!isCodeExists) {//验证码是否存在
 
+            throw new JSGNoSuchElementException(ResultEnum.MOBILE_CODE_INVALID);
+        }
+        MsgCodeEntity msgCodeEntity = msgCodeRepository.findByMobile(mobile);
+        long currentTime = System.currentTimeMillis();
+        long endTime = msgCodeEntity.getEndTime();
+        if (currentTime > endTime) {//验证码是否过期
+
+            throw new JSGNoSuchElementException(ResultEnum.MOBILE_CODE_INVALID);
+        }
+        if (!code.equals(msgCodeEntity.getCode())) {//验证码是否正确
+
+            throw new JSGNoSuchElementException(ResultEnum.MOBILE_CODE_ERROR);
+        }
+        UserEntity userEntity = userRepository.findUserEntityByMobile(mobile);
+        userEntity.setPasWord(pasWord);
         return ResultUtil.success(userRepository.save(userEntity));
     }
 }

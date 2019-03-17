@@ -7,6 +7,23 @@ import javax.persistence.Id;
 @Entity
 public class MsgCodeEntity {
 
+    public static MsgCodeEntity getInstance(String mobile, String code) {
+
+        return new MsgCodeEntity(mobile, code);
+    }
+
+    private MsgCodeEntity(String mobile, String code) {
+        this.mobile = mobile;
+        this.code = code;
+        this.createTime = System.currentTimeMillis();
+        this.endTime = System.currentTimeMillis() + 2 * 60 * 1000;
+
+    }
+
+    public MsgCodeEntity() {
+
+    }
+
     @Id
     @GeneratedValue
     private Integer id;

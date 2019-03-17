@@ -29,7 +29,7 @@ public class Exceptionhandle {
         } else {
             logger.error("【系统异常】{}", e.getMessage());
 
-            return ResultUtil.error(-500, "未知错误");
+            return ResultUtil.error(-500, e.getMessage());
         }
     }
 }
