@@ -88,6 +88,20 @@ public class LoginController {
         return ResultUtil.success(userRepository.save(UserEntity.getInstance(mobile, pasWord)));
     }
 
+    @PostMapping(value = "/registerSystemUser")
+    public Result registerSystemUser(@RequestParam("avatar") String avatar, @RequestParam("userName") String userName
+            , @RequestParam("userId") String userId, @RequestParam("mobile") String mobile) {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setAvatar(avatar);
+        userEntity.setUserName(userName);
+        userEntity.setPasWord("123456");
+        userEntity.setUserId(userId);
+        userEntity.setMobile(mobile);
+        userEntity.setToken(mobile);
+
+        return ResultUtil.success(userRepository.save(userEntity));
+    }
+
     /**
      * 密码登陆
      *
