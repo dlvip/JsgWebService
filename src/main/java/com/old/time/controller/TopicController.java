@@ -1,12 +1,9 @@
 package com.old.time.controller;
 
-import com.old.time.domain.CommentEntity;
 import com.old.time.domain.Result;
 import com.old.time.domain.TopicEntity;
-import com.old.time.domain.UserEntity;
 import com.old.time.enums.ResultEnum;
 import com.old.time.exception.JSGNoSuchElementException;
-import com.old.time.repository.CommentRepository;
 import com.old.time.repository.TopicRepository;
 import com.old.time.repository.UserRepository;
 import com.old.time.utils.ResultUtil;
@@ -28,27 +25,24 @@ public class TopicController extends BaseController {
     private TopicRepository topicRepository;
 
     @Autowired
-    private CommentRepository commentRepository;
-
-    @Autowired
     private UserRepository userRepository;
 
     /**
      * 创建话题
      *
-     * @param userId       用户id
-     * @param topicTitle   问题
-     * @param topicContent 描述
+     * @param userId 用户id
+     * @param topic  话题名称
+     * @param pic    图片地址
      * @return
      */
     @PostMapping(value = "/insertTopic")
-    public Result insertTopicEntity(@RequestParam("userId") String userId, @RequestParam("topicTitle") String topicTitle, @RequestParam("topicContent") String topicContent) {
+    public Result insertTopicEntity(@RequestParam("userId") String userId, @RequestParam("topic") String topic, @RequestParam("pic") String pic) {
         boolean isUserExists = userRepository.existsByUserId(userId);
         if (!isUserExists) {
 
             throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
         }
-        TopicEntity topicEntity = new TopicEntity(userId, topicTitle, topicContent);
+        TopicEntity topicEntity = TopicEntity.getInstance(userId, topic, pic);
 
         return ResultUtil.success(topicRepository.save(topicEntity));
     }
@@ -61,13 +55,13 @@ public class TopicController extends BaseController {
      */
     @PostMapping(value = "/getTopicDetail")
     public Result getTopicDetail(@RequestParam("topicId") Integer topicId) {
-        boolean isExists = topicRepository.existsByTopicId(topicId);
+        boolean isExists = topicRepository.existsTopicEntityById(topicId);
         if (!isExists) {
 
             throw new JSGNoSuchElementException(ResultEnum.NULL_DATA_ERROR);
         }
 
-        return ResultUtil.success(topicRepository.findTopicEntitiesByTopicId(topicId));
+        return ResultUtil.success(topicRepository.findTopicEntityById(topicId));
     }
 
     /**
@@ -80,14 +74,7 @@ public class TopicController extends BaseController {
     @PostMapping(value = "/getTopicList")
     public Result getTopicList(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
         List<TopicEntity> topicEntities = topicRepository.findAll(PageRequest.of(pageNum, pageSize)).getContent();
-        if (topicEntities == null) {
 
-            return ResultUtil.success(new ArrayList<CommentEntity>());
-        }
-        for (TopicEntity topicEntity : topicEntities) {
-            topicEntity.setCommentCount(commentRepository.countByTopicId(topicEntity.getTopicId()));
-
-        }
         return ResultUtil.success(topicEntities);
     }
 
@@ -108,11 +95,7 @@ public class TopicController extends BaseController {
         List<TopicEntity> topicEntities = topicRepository.findTopicEntitiesByUserId(userId, PageRequest.of(pageNum, pageSize));
         if (topicEntities == null) {
 
-            return ResultUtil.success(new ArrayList<CommentEntity>());
-        }
-        for (TopicEntity topicEntity : topicEntities) {
-            topicEntity.setCommentCount(commentRepository.countByTopicId(topicEntity.getTopicId()));
-
+            return ResultUtil.success(new ArrayList<TopicEntity>());
         }
         return ResultUtil.success(topicEntities);
     }
@@ -126,7 +109,7 @@ public class TopicController extends BaseController {
      */
     @PostMapping(value = "/deleteTopic")
     public Result deleteTopicByTopicId(String userId, Integer topicId) {
-        boolean isDelete = topicRepository.deleteTopicEntityByUserIdAndTopicId(userId, topicId);
+        boolean isDelete = topicRepository.deleteTopicEntityByUserIdAndId(userId, topicId);
         if (!isDelete) {
 
             throw new JSGNoSuchElementException(ResultEnum.CURRENCY_MSG_PARAMETER_ERROR);

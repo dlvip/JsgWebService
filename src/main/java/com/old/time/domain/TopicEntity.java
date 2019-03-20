@@ -1,6 +1,5 @@
 package com.old.time.domain;
 
-import com.old.time.utils.IdUtils;
 import com.old.time.utils.TimeUtil;
 
 import javax.persistence.Entity;
@@ -11,18 +10,28 @@ import javax.persistence.Transient;
 @Entity
 public class TopicEntity {
 
-    public TopicEntity() {
+    /**
+     * 实例话话题
+     *
+     * @param userId
+     * @param topic
+     * @param pic
+     * @return
+     */
+    public static TopicEntity getInstance(String userId, String topic, String pic) {
+
+        return new TopicEntity(userId, topic, pic);
+    }
+
+    private TopicEntity(String userId, String topic, String pic) {
+        this.userId = userId;
+        this.topic = topic;
+        this.pic = pic;
+        this.createTime = TimeUtil.getCurrentTime();
 
     }
 
-    public TopicEntity(String userId, String topicTitle, String topicContent) {
-        this.userId = userId;
-        this.topicTitle = topicTitle;
-        this.topicContent = topicContent;
-        this.createTime = TimeUtil.getCurrentTime();
-        this.topicId = IdUtils.getCurrentTimeMillis();
-        this.commentCount = 0;
-        this.praiseCount = 0;
+    public TopicEntity() {
 
     }
 
@@ -30,31 +39,40 @@ public class TopicEntity {
     @GeneratedValue
     private Integer id;
 
-    private Integer topicId;
+    private String pic;
 
-    private String topicTitle;
-
-    private String topicContent;
+    private String topic;
 
     private String userId;
 
     private String createTime;
 
     @Transient
-    private Integer praiseCount;
+    private UserEntity userEntity;
 
-    @Transient
-    private Integer commentCount;
-
-    @Transient
-    private String conmmentContent;
-
-    public String getConmmentContent() {
-        return conmmentContent;
+    public UserEntity getUserEntity() {
+        return userEntity;
     }
 
-    public void setConmmentContent(String conmmentContent) {
-        this.conmmentContent = conmmentContent;
+    public void setUserEntity(UserEntity userEntity) {
+        this.userEntity = userEntity;
+    }
+
+
+    public String getPic() {
+        return pic;
+    }
+
+    public void setPic(String pic) {
+        this.pic = pic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+    public String getTopic() {
+        return topic;
     }
 
     public Integer getId() {
@@ -73,30 +91,6 @@ public class TopicEntity {
         this.createTime = createTime;
     }
 
-    public Integer getTopicId() {
-        return topicId;
-    }
-
-    public void setTopicId(Integer topicId) {
-        this.topicId = topicId;
-    }
-
-    public String getTopicTitle() {
-        return topicTitle;
-    }
-
-    public void setTopicTitle(String topicTitle) {
-        this.topicTitle = topicTitle;
-    }
-
-    public String getTopicContent() {
-        return topicContent;
-    }
-
-    public void setTopicContent(String topicContent) {
-        this.topicContent = topicContent;
-    }
-
     public String getUserId() {
         return userId;
     }
@@ -105,19 +99,4 @@ public class TopicEntity {
         this.userId = userId;
     }
 
-    public Integer getPraiseCount() {
-        return praiseCount;
-    }
-
-    public void setPraiseCount(Integer praiseCount) {
-        this.praiseCount = praiseCount;
-    }
-
-    public Integer getCommentCount() {
-        return commentCount;
-    }
-
-    public void setCommentCount(Integer commentCount) {
-        this.commentCount = commentCount;
-    }
 }

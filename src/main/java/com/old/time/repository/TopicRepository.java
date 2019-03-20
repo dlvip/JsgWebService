@@ -11,10 +11,10 @@ public interface TopicRepository extends JpaRepository<TopicEntity, Integer> {
     /**
      * 获取话题对象
      *
-     * @param topicId
+     * @param id
      * @return
      */
-    TopicEntity findTopicEntitiesByTopicId(Integer topicId);
+    TopicEntity findTopicEntityById(Integer id);
 
     /**
      * 获取用户话题
@@ -27,17 +27,17 @@ public interface TopicRepository extends JpaRepository<TopicEntity, Integer> {
     /**
      * 判断是否存在
      *
-     * @param topicId
+     * @param id
      * @return
      */
-    boolean existsByTopicId(Integer topicId);
+    boolean existsTopicEntityById(Integer id);
 
     /**
      * 删除话题
      *
-     * @param topicId
+     * @param id
      * @return
      */
-    boolean deleteTopicEntityByUserIdAndTopicId(String userId, Integer topicId);
+    boolean deleteTopicEntityByUserIdAndId(String userId, Integer id);
 
 }
