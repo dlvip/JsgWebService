@@ -35,8 +35,8 @@ public class TopicController extends BaseController {
      * @param pic    图片地址
      * @return
      */
-    @PostMapping(value = "/insertTopic")
-    public Result insertTopicEntity(@RequestParam("userId") String userId, @RequestParam("topic") String topic, @RequestParam("pic") String pic) {
+    @PostMapping(value = "/createTopicEntity")
+    public Result createTopicEntity(@RequestParam("userId") String userId, @RequestParam("topic") String topic, @RequestParam("pic") String pic) {
         boolean isUserExists = userRepository.existsByUserId(userId);
         if (!isUserExists) {
 
