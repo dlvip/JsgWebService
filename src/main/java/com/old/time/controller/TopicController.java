@@ -9,6 +9,7 @@ import com.old.time.repository.UserRepository;
 import com.old.time.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -73,7 +74,7 @@ public class TopicController extends BaseController {
      */
     @PostMapping(value = "/getTopicList")
     public Result getTopicList(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
-        List<TopicEntity> topicEntities = topicRepository.findAll(PageRequest.of(pageNum, pageSize)).getContent();
+        List<TopicEntity> topicEntities = topicRepository.findAll(PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.DESC, "id"))).getContent();
 
         return ResultUtil.success(topicEntities);
     }
@@ -92,7 +93,7 @@ public class TopicController extends BaseController {
 
             throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
         }
-        List<TopicEntity> topicEntities = topicRepository.findTopicEntitiesByUserId(userId, PageRequest.of(pageNum, pageSize));
+        List<TopicEntity> topicEntities = topicRepository.findTopicEntitiesByUserId(userId, PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.DESC, "id")));
         if (topicEntities == null) {
 
             return ResultUtil.success(new ArrayList<TopicEntity>());

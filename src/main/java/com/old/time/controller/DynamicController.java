@@ -9,9 +9,12 @@ import com.old.time.repository.UserRepository;
 import com.old.time.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "jiushiguang/dynamic")
@@ -40,7 +43,9 @@ public class DynamicController extends BaseController {
             throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
         }
 
-        return ResultUtil.success(dynamicRepository.save(DynamicEntity.getInstance(userId, content, images, Integer.parseInt(topicId))));
+        DynamicEntity dynamicEntity = DynamicEntity.getInstance(userId, content, images, Integer.parseInt(topicId));
+        dynamicEntity.setUserEntity(userRepository.findUserEntityByUserId(userId));
+        return ResultUtil.success(dynamicRepository.save(dynamicEntity));
     }
 
 
@@ -80,8 +85,13 @@ public class DynamicController extends BaseController {
             topicId = "-1";
 
         }
+        List<DynamicEntity> dynamicEntities = dynamicRepository.findDynamicEntitiesByUserIdOrTopicId(userId, Integer.valueOf(topicId), PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.DESC, "id")));
+        for (DynamicEntity dynamicEntity : dynamicEntities) {
+            dynamicEntity.setUserEntity(userRepository.findUserEntityByUserId(dynamicEntity.getUserId()));
 
-        return ResultUtil.success(dynamicRepository.findDynamicEntitiesByUserIdOrTopicId(userId, Integer.valueOf(topicId), PageRequest.of(pageNum, pageSize)));
+        }
+
+        return ResultUtil.success(dynamicEntities);
     }
 
     /**
