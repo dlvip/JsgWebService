@@ -61,6 +61,17 @@ public class DynamicEntity {
     @Transient
     private UserEntity userEntity;
 
+    @Transient
+    private TopicEntity topicEntity;
+
+    public TopicEntity getTopicEntity() {
+        return topicEntity;
+    }
+
+    public void setTopicEntity(TopicEntity topicEntity) {
+        this.topicEntity = topicEntity;
+    }
+
     public Integer getId() {
         return id;
     }

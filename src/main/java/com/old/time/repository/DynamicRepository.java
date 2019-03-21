@@ -38,10 +38,18 @@ public interface DynamicRepository extends JpaRepository<DynamicEntity, Integer>
      * 分页获取用户动态
      *
      * @param userId
+     * @param pageable
+     * @return
+     */
+    List<DynamicEntity> findDynamicEntitiesByUserId(String userId, Pageable pageable);
+
+    /**
+     * 分页获取用户动态
+     *
      * @param topicId
      * @param pageable
      * @return
      */
-    List<DynamicEntity> findDynamicEntitiesByUserIdOrTopicId(String userId, Integer topicId, Pageable pageable);
+    List<DynamicEntity> findDynamicEntitiesByTopicId(Integer topicId, Pageable pageable);
 
 }
