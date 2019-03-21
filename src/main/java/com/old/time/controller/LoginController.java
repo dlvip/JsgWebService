@@ -5,10 +5,12 @@ import com.old.time.domain.Result;
 import com.old.time.domain.UserEntity;
 import com.old.time.enums.ResultEnum;
 import com.old.time.exception.JSGNoSuchElementException;
+import com.old.time.exception.JSGRuntimeException;
 import com.old.time.repository.MsgCodeRepository;
 import com.old.time.repository.UserRepository;
 import com.old.time.utils.MsgCodeUtils;
 import com.old.time.utils.ResultUtil;
+import com.old.time.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,20 +38,22 @@ public class LoginController {
         boolean isExists = msgCodeRepository.existsByMobile(mobile);
         if (isExists) {
             msgCodeEntity = msgCodeRepository.findByMobile(mobile);
+            long currentTimeMillis = System.currentTimeMillis();
+            long endTime = msgCodeEntity.getEndTime();
+            if (currentTimeMillis < endTime) {
+
+                throw new JSGNoSuchElementException(ResultEnum.MOBILE_CODE_SEND);
+            }
+            msgCodeEntity.setMobile(mobile);
+            msgCodeEntity.setCode(MsgCodeUtils.getMsgCode(mobile));
+            msgCodeEntity.setCreateTime(currentTimeMillis);
+            msgCodeEntity.setEndTime((currentTimeMillis + 2 * 60 * 1000));
 
         } else {
             msgCodeEntity = MsgCodeEntity.getInstance(mobile, MsgCodeUtils.getMsgCode(mobile));
 
         }
-        long currentTimeMillis = System.currentTimeMillis();
-        if (currentTimeMillis < msgCodeEntity.getEndTime()) {
 
-            throw new JSGNoSuchElementException(ResultEnum.MOBILE_CODE_SEND);
-        }
-        msgCodeEntity.setMobile(mobile);
-        msgCodeEntity.setCode(MsgCodeUtils.getMsgCode(mobile));
-        msgCodeEntity.setCreateTime(currentTimeMillis);
-        msgCodeEntity.setEndTime((currentTimeMillis + 2 * 60 * 1000));
         msgCodeRepository.save(msgCodeEntity);
         return ResultUtil.success();
     }
@@ -94,7 +98,7 @@ public class LoginController {
         UserEntity userEntity = new UserEntity();
         userEntity.setAvatar(avatar);
         userEntity.setUserName(userName);
-        userEntity.setPasWord("123456");
+        userEntity.setPasWord(StringUtils.encodeByMd5("123456"));
         userEntity.setUserId(userId);
         userEntity.setMobile(mobile);
         userEntity.setToken(mobile);
@@ -112,10 +116,15 @@ public class LoginController {
      */
     @PostMapping(value = "/loginUser")
     public Result loginUser(@RequestParam("mobile") String mobile, @RequestParam("pasWord") String pasWord) {
-        boolean isUser = userRepository.existsByMobileAndPasWord(mobile, pasWord);
+        boolean isUser = userRepository.existsByMobile(mobile);
         if (!isUser) {
 
             throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
+        }
+        boolean isExists = userRepository.existsByMobileAndPasWord(mobile, pasWord);
+        if (!isExists) {
+
+            throw new JSGRuntimeException(ResultEnum.CURRENCY_MSG_PARAMETER_ERROR);
         }
         return ResultUtil.success(userRepository.findByMobileAndPasWord(mobile, pasWord));
     }

@@ -9,6 +9,7 @@ import com.old.time.exception.JSGRuntimeException;
 import com.old.time.repository.UserRepository;
 import com.old.time.utils.GenerateShortUuid;
 import com.old.time.utils.ResultUtil;
+import com.old.time.utils.StringUtils;
 import io.rong.RongCloud;
 import io.rong.methods.user.User;
 import io.rong.models.response.TokenResult;
@@ -146,7 +147,7 @@ public class UserController extends BaseController {
             userEntity = userRepository.findUserEntityByMobile(mobil);
 
         } else {
-            userEntity = new UserEntity(GenerateShortUuid.getPhoneUserId(mobil), mobil, "123456");
+            userEntity = new UserEntity(GenerateShortUuid.getPhoneUserId(mobil), mobil, StringUtils.encodeByMd5("123456"));
 
         }
         if (userEntity.getToken() == null) {
