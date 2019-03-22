@@ -2,16 +2,24 @@ package com.old.time.controller;
 
 import com.old.time.domain.BookEntity;
 import com.old.time.domain.Result;
+import com.old.time.domain.SignNameEntity;
 import com.old.time.enums.ResultEnum;
 import com.old.time.exception.JSGNoSuchElementException;
 import com.old.time.exception.JSGRuntimeException;
 import com.old.time.repository.BookRepository;
+import com.old.time.repository.SignNameRepository;
+import com.old.time.repository.UserRepository;
 import com.old.time.utils.ResultUtil;
-import com.old.time.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "jiushiguang/book")
@@ -19,6 +27,12 @@ public class BookController extends BaseController {
 
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private SignNameRepository signNameRepository;
 
     /**
      * 添加图书信息
@@ -104,5 +118,49 @@ public class BookController extends BaseController {
 
         }
         return ResultUtil.success(bookEntity);
+    }
+
+    /**
+     * 图书列表(用户)
+     *
+     * @param userId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping("/getUserBookList")
+    public Result getUserBookList(@RequestParam("userId") String userId, @RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
+        boolean isExist = userRepository.existsByUserId(userId);
+        if (!isExist) {
+
+            throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
+        }
+        Pageable pageable = PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.DESC, "id"));
+        List<SignNameEntity> signNameEntities = signNameRepository.findSignNameEntitiesByUserId(userId, pageable);
+        List<BookEntity> bookEntities = new ArrayList<>();
+        bookEntities.clear();
+        for (SignNameEntity signNameEntity : signNameEntities) {
+            bookEntities.add(bookRepository.findBookEntityById(signNameEntity.getBookId()));
+
+        }
+        return ResultUtil.success(bookEntities);
+    }
+
+    /**
+     * 图书列表（分页）
+     *
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping("/getBookEntities")
+    public Result getBookEntities(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.DESC, "id"));
+        List<BookEntity> bookEntities = bookRepository.findAll(pageable).getContent();
+        if (bookEntities == null) {
+            bookEntities = new ArrayList<>();
+
+        }
+        return ResultUtil.success(bookEntities);
     }
 }

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Value;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.validation.constraints.Max;
 
 @Entity
 public class BookEntity {
