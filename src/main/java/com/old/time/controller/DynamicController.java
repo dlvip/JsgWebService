@@ -48,6 +48,7 @@ public class DynamicController extends BaseController {
         }
 
         DynamicEntity dynamicEntity = DynamicEntity.getInstance(userId, content, images, Integer.parseInt(topicId));
+        dynamicEntity.setTopicEntity(topicRepository.findTopicEntityById(dynamicEntity.getTopicId()));
         dynamicEntity.setUserEntity(userRepository.findUserEntityByUserId(userId));
         return ResultUtil.success(dynamicRepository.save(dynamicEntity));
     }
