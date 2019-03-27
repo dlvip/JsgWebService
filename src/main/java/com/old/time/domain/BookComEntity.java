@@ -1,5 +1,7 @@
 package com.old.time.domain;
 
+import com.old.time.utils.TimeUtil;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -17,6 +19,7 @@ public class BookComEntity {
         this.userId = userId;
         this.bookId = bookId;
         this.comment = comment;
+        this.createTime = TimeUtil.getCurrentTime();
 
     }
 
@@ -35,6 +38,8 @@ public class BookComEntity {
 
     private String comment;
 
+    private String createTime;
+
     @Transient
     private String praiseCount;
 
@@ -43,6 +48,14 @@ public class BookComEntity {
 
     @Transient
     private BookEntity bookEntity;
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
 
     public void setBookEntity(BookEntity bookEntity) {
         this.bookEntity = bookEntity;
