@@ -17,7 +17,7 @@ public class MsgCodeUtils {
 
     private static String Access_Key_ID = "LTAIZI9pk9HdFbtB";
     private static String Access_Key_Secret = "rGH6Ug2QEJOt3T7Ple9qTgn7XRLqP8";
-    private static String Template_Code = "SMS_142616557";
+    private static String Template_Code = "SMS_161890572";
 
     /**
      * 获取阿里云短信验证码
@@ -29,8 +29,6 @@ public class MsgCodeUtils {
     public static String getMsgCode(String mobile) throws RuntimeException {
         try {
             //设置超时时间-可自行调整
-            System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
-            System.setProperty("sun.net.client.defaultReadTimeout", "10000");
             //初始化ascClient需要的几个参数
             final String product = "Dysmsapi";//短信API产品名称（短信产品名固定，无需修改）
             final String domain = "dysmsapi.aliyuncs.com";//短信API产品域名（接口地址固定，无需修改）
@@ -48,7 +46,7 @@ public class MsgCodeUtils {
             //必填:待发送手机号。支持以逗号分隔的形式进行批量调用，批量上限为1000个手机号码,批量调用相对于单条调用及时性稍有延迟,验证码类型的短信推荐使用单条调用的方式；发送国际/港澳台消息时，接收号码格式为00+国际区号+号码，如“0085200000000”
             request.setPhoneNumbers(mobile);
             //必填:短信签名-可在短信控制台中找到
-            request.setSignName("云通信");
+            request.setSignName("觅邮");
             //必填:短信模板-可在短信控制台中找到，发送国际/港澳台消息时，请使用国际/港澳台短信模版
             request.setTemplateCode(Template_Code);
             //可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
