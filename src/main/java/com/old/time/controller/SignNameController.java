@@ -77,11 +77,6 @@ public class SignNameController extends BaseController {
      */
     @RequestMapping(value = "/getSignNameList")
     public Result getSignNameList(@RequestParam("userId") String userId, @RequestParam("friendId") String friendId, @RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
-        boolean isExist = userRepository.existsByUserId(userId);
-        if (!isExist) {
-
-            throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
-        }
         List<SignNameEntity> signNameEntities;
         if (friendId != null && !"".equals(friendId)) {
             signNameEntities = signNameRepository.findSignNameEntitiesByUserId(friendId, PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.DESC, "id")));
@@ -93,7 +88,11 @@ public class SignNameController extends BaseController {
         for (SignNameEntity signNameEntity : signNameEntities) {
             signNameEntity.setUserEntity(userRepository.findUserEntityByUserId(signNameEntity.getUserId()));
             signNameEntity.setPaiseCount(praiseContentController.getPraiseCount(signNameEntity.getId()));
-            signNameEntity.setIsPaise(praiseContentController.isPraiseUser(userId, signNameEntity.getId()));
+            boolean isExist = userRepository.existsByUserId(userId);
+            if (!isExist) {
+                signNameEntity.setIsPaise(praiseContentController.isPraiseUser(userId, signNameEntity.getId()));
+
+            }
             signNameEntity.setBookEntity(bookRepository.findBookEntityById(signNameEntity.getBookId()));
 
         }
