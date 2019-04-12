@@ -11,6 +11,10 @@ import com.old.time.repository.UserRepository;
 import com.old.time.utils.MsgCodeUtils;
 import com.old.time.utils.ResultUtil;
 import com.old.time.utils.StringUtils;
+import io.rong.RongCloud;
+import io.rong.methods.user.User;
+import io.rong.models.response.TokenResult;
+import io.rong.models.user.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -89,7 +93,27 @@ public class LoginController {
 
             throw new JSGNoSuchElementException(ResultEnum.MOBILE_CODE_ERROR);
         }
-        return ResultUtil.success(userRepository.save(UserEntity.getInstance(mobile, pasWord)));
+        UserEntity userEntity = UserEntity.getInstance(mobile,pasWord);
+        if (userEntity.getToken() == null) {
+            try {
+                String appKey = "x18ywvqfxcbjc";//融云key
+                String appSecret = "pzfndTCPu9";//融云秘钥
+                RongCloud rongCloud = RongCloud.getInstance(appKey, appSecret);
+                User user = rongCloud.user;
+                UserModel userModel = new UserModel()
+                        .setId(userEntity.getUserId())
+                        .setName(userEntity.getMobile())
+                        .setPortrait(userEntity.getAvatar());
+                TokenResult result = user.register(userModel);
+                userEntity.setToken(result.getToken());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new JSGRuntimeException(ResultEnum.SYSTEM_ERROR);
+
+            }
+        }
+        return ResultUtil.success(userRepository.save(userEntity));
     }
 
     @PostMapping(value = "/registerSystemUser")
@@ -126,7 +150,27 @@ public class LoginController {
 
             throw new JSGRuntimeException(ResultEnum.CURRENCY_MSG_PARAMETER_ERROR);
         }
-        return ResultUtil.success(userRepository.findByMobileAndPasWord(mobile, pasWord));
+        UserEntity userEntity = userRepository.findByMobileAndPasWord(mobile, pasWord);
+        if (userEntity.getToken() == null) {
+            try {
+                String appKey = "x18ywvqfxcbjc";//融云key
+                String appSecret = "pzfndTCPu9";//融云秘钥
+                RongCloud rongCloud = RongCloud.getInstance(appKey, appSecret);
+                User user = rongCloud.user;
+                UserModel userModel = new UserModel()
+                        .setId(userEntity.getUserId())
+                        .setName(userEntity.getMobile())
+                        .setPortrait(userEntity.getAvatar());
+                TokenResult result = user.register(userModel);
+                userEntity.setToken(result.getToken());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new JSGRuntimeException(ResultEnum.SYSTEM_ERROR);
+
+            }
+        }
+        return ResultUtil.success(userEntity);
     }
 
 

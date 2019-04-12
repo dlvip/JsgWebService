@@ -1,6 +1,5 @@
 package com.old.time.controller;
 
-import com.old.time.domain.BookEntity;
 import com.old.time.domain.Result;
 import com.old.time.domain.SignNameEntity;
 import com.old.time.domain.UserEntity;
@@ -13,13 +12,11 @@ import com.old.time.utils.ResultUtil;
 import com.old.time.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
