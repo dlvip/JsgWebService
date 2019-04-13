@@ -93,27 +93,8 @@ public class LoginController {
 
             throw new JSGNoSuchElementException(ResultEnum.MOBILE_CODE_ERROR);
         }
-        UserEntity userEntity = UserEntity.getInstance(mobile,pasWord);
-        if (userEntity.getToken() == null) {
-            try {
-                String appKey = "x18ywvqfxcbjc";//融云key
-                String appSecret = "pzfndTCPu9";//融云秘钥
-                RongCloud rongCloud = RongCloud.getInstance(appKey, appSecret);
-                User user = rongCloud.user;
-                UserModel userModel = new UserModel()
-                        .setId(userEntity.getUserId())
-                        .setName(userEntity.getMobile())
-                        .setPortrait(userEntity.getAvatar());
-                TokenResult result = user.register(userModel);
-                userEntity.setToken(result.getToken());
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new JSGRuntimeException(ResultEnum.SYSTEM_ERROR);
-
-            }
-        }
-        return ResultUtil.success(userRepository.save(userEntity));
+        UserEntity userEntity = UserEntity.getInstance(mobile, pasWord);
+        return ResultUtil.success(setRongToken(userEntity));
     }
 
     @PostMapping(value = "/registerSystemUser")
@@ -151,28 +132,8 @@ public class LoginController {
             throw new JSGRuntimeException(ResultEnum.CURRENCY_MSG_PARAMETER_ERROR);
         }
         UserEntity userEntity = userRepository.findByMobileAndPasWord(mobile, pasWord);
-        if (userEntity.getToken() == null) {
-            try {
-                String appKey = "x18ywvqfxcbjc";//融云key
-                String appSecret = "pzfndTCPu9";//融云秘钥
-                RongCloud rongCloud = RongCloud.getInstance(appKey, appSecret);
-                User user = rongCloud.user;
-                UserModel userModel = new UserModel()
-                        .setId(userEntity.getUserId())
-                        .setName(userEntity.getMobile())
-                        .setPortrait(userEntity.getAvatar());
-                TokenResult result = user.register(userModel);
-                userEntity.setToken(result.getToken());
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new JSGRuntimeException(ResultEnum.SYSTEM_ERROR);
-
-            }
-        }
-        return ResultUtil.success(userEntity);
+        return ResultUtil.success(setRongToken(userEntity));
     }
-
 
     /**
      * 验证码登陆
@@ -206,7 +167,38 @@ public class LoginController {
 
             throw new JSGNoSuchElementException(ResultEnum.MOBILE_CODE_ERROR);
         }
-        return ResultUtil.success(userRepository.findUserEntityByMobile(mobile));
+        UserEntity userEntity = userRepository.findUserEntityByMobile(mobile);
+        return ResultUtil.success(setRongToken(userEntity));
+    }
+
+    /**
+     * 设置用户融云token
+     *
+     * @param userEntity
+     */
+    private UserEntity setRongToken(UserEntity userEntity) {
+        try {
+            RongCloud rongCloud = RongCloud.getInstance(StringUtils.RONG_APP_KEY, StringUtils.RONG_APP_SECRET);
+            User user = rongCloud.user;
+            UserModel userModel = new UserModel()
+                    .setId(userEntity.getUserId())
+                    .setName(userEntity.getMobile())
+                    .setPortrait(userEntity.getAvatar());
+            if (userEntity.getToken() == null || "".equals(userEntity.getToken())) {
+                TokenResult result = user.register(userModel);
+                userEntity.setToken(result.getToken());
+
+            } else {
+                user.update(userModel);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new JSGRuntimeException(ResultEnum.SYSTEM_ERROR);
+
+        }
+
+        return userEntity;
     }
 
     /**

@@ -10,6 +10,8 @@ import com.old.time.repository.BookRepository;
 import com.old.time.repository.SignNameRepository;
 import com.old.time.repository.UserRepository;
 import com.old.time.utils.ResultUtil;
+import com.old.time.utils.StringUtils;
+import io.rong.RongCloud;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -110,13 +112,12 @@ public class BookController extends BaseController {
     @RequestMapping(value = "/getBookInfo")
     public Result getBookInfo(@RequestParam("isbn") String isbn) {
         BookEntity bookEntity;
-        if ("".equals(isbn)) {
+        if ("".equals(isbn) || null == isbn) {
 
             throw new JSGNoSuchElementException(ResultEnum.CURRENCY_MSG_PARAMETER_ERROR);
-        } else {
-            bookEntity = bookRepository.findBookEntityByIsbn10OrIsbn13(isbn, isbn);
-
         }
+        bookEntity = bookRepository.findBookEntityByIsbn10OrIsbn13(isbn, isbn);
+
         return ResultUtil.success(bookEntity);
     }
 

@@ -83,8 +83,9 @@ public class UserController extends BaseController {
             mUserEntity.setSex(userEntity.getSex());
 
         }
+        userEntity = userRepository.save(mUserEntity);
 
-        return ResultUtil.success(userRepository.save(mUserEntity));
+        return ResultUtil.success(setRongToken(userEntity));
     }
 
     /**
@@ -150,27 +151,35 @@ public class UserController extends BaseController {
             userEntity = new UserEntity(GenerateShortUuid.getPhoneUserId(mobil), mobil, StringUtils.encodeByMd5("123456"));
 
         }
-        if (userEntity.getToken() == null) {
-            try {
-                String appKey = "x18ywvqfxcbjc";//融云key
-                String appSecret = "pzfndTCPu9";//融云秘钥
-                RongCloud rongCloud = RongCloud.getInstance(appKey, appSecret);
-                User user = rongCloud.user;
-                UserModel userModel = new UserModel()
-                        .setId(userEntity.getUserId())
-                        .setName(userEntity.getMobile())
-                        .setPortrait(userEntity.getAvatar());
+        return ResultUtil.success(setRongToken(userEntity));
+    }
+
+    /**
+     * 设置用户融云token
+     *
+     * @param userEntity
+     */
+    private UserEntity setRongToken(UserEntity userEntity) {
+        try {
+            RongCloud rongCloud = RongCloud.getInstance(StringUtils.RONG_APP_KEY, StringUtils.RONG_APP_SECRET);
+            User user = rongCloud.user;
+            UserModel userModel = new UserModel()
+                    .setId(userEntity.getUserId())
+                    .setName(userEntity.getMobile())
+                    .setPortrait(userEntity.getAvatar());
+            if (userEntity.getToken() == null || "".equals(userEntity.getToken())) {
                 TokenResult result = user.register(userModel);
                 userEntity.setToken(result.getToken());
 
-                userEntity = userRepository.save(userEntity);
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new JSGRuntimeException(ResultEnum.SYSTEM_ERROR);
+            } else {
+                user.update(userModel);
 
             }
-        }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new JSGRuntimeException(ResultEnum.SYSTEM_ERROR);
 
-        return ResultUtil.success(userEntity);
+        }
+        return userEntity;
     }
 }

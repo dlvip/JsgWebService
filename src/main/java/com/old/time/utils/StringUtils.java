@@ -43,4 +43,14 @@ public class StringUtils {
         }
         return "E10ADC3949BA59ABBE56E057F20F883E";//123456
     }
+
+    /**
+     * 融云key
+     */
+    public static final String RONG_APP_KEY = "x18ywvqfxcbjc";
+
+    /**
+     * 融云秘钥
+     */
+    public static final String RONG_APP_SECRET = "x18ywvqfxcbjc";
 }
