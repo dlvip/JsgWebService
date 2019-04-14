@@ -6,6 +6,7 @@ import com.old.time.domain.TopicVideoBookEntry;
 import com.old.time.domain.VideoEntity;
 import com.old.time.enums.ResultEnum;
 import com.old.time.exception.JSGRuntimeException;
+import com.old.time.repository.EpisodeRepository;
 import com.old.time.repository.TopicRepository;
 import com.old.time.repository.TopicVideoBookRepository;
 import com.old.time.repository.VideoRepository;
@@ -28,6 +29,9 @@ public class VideoController {
 
     @Autowired
     private TopicRepository topicRepository;
+
+    @Autowired
+    private EpisodeRepository episodeRepository;
 
     @Autowired
     private TopicVideoBookRepository topicVideoBookRepository;
@@ -76,6 +80,23 @@ public class VideoController {
 
 
         }
+        return ResultUtil.success(videoEntity);
+    }
+
+    /**
+     * 获取视频信息
+     *
+     * @param videoId
+     * @return
+     */
+    @PostMapping(value = "/getVideoDetail")
+    public Result getVideoDetail(@RequestParam("videoId") int videoId) {
+        VideoEntity videoEntity = videoRepository.findVideoEntityById(videoId);
+        if (videoEntity == null) {
+
+            throw new JSGRuntimeException(ResultEnum.NULL_DATA_ERROR);
+        }
+        videoEntity.setEpisodeEntities(episodeRepository.findEpisodeEntitiesByVideoId(videoId));
         return ResultUtil.success(videoEntity);
     }
 
