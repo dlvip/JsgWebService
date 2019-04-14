@@ -1,17 +1,11 @@
 package com.old.time.controller;
 
-import com.old.time.domain.BookEntity;
-import com.old.time.domain.Result;
-import com.old.time.domain.SignNameEntity;
+import com.old.time.domain.*;
 import com.old.time.enums.ResultEnum;
 import com.old.time.exception.JSGNoSuchElementException;
 import com.old.time.exception.JSGRuntimeException;
-import com.old.time.repository.BookRepository;
-import com.old.time.repository.SignNameRepository;
-import com.old.time.repository.UserRepository;
+import com.old.time.repository.*;
 import com.old.time.utils.ResultUtil;
-import com.old.time.utils.StringUtils;
-import io.rong.RongCloud;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -35,6 +29,12 @@ public class BookController extends BaseController {
 
     @Autowired
     private SignNameRepository signNameRepository;
+
+    @Autowired
+    private TopicRepository topicRepository;
+
+    @Autowired
+    private TopicVideoBookRepository topicVideoBookRepository;
 
     /**
      * 添加图书信息
@@ -99,6 +99,12 @@ public class BookController extends BaseController {
                     summary,
                     price,
                     url));
+        }
+        if (!topicRepository.existsTopicEntityByTopic(bookEntity.getTitle())) {
+            TopicEntity topicEntity = topicRepository.save(TopicEntity.getInstance("", bookEntity.getTitle(), bookEntity.getImages_large()));
+            topicVideoBookRepository.save(TopicVideoBookEntry.instance(-1, topicEntity.getId(), bookEntity.getId()));
+
+
         }
         return ResultUtil.success(bookEntity);
     }

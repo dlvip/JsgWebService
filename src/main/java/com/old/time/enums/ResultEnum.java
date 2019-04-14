@@ -31,6 +31,8 @@ public enum ResultEnum {
 
     NULL_DATA_ERROR(-100, "内容不存在"),
 
+    DATA_ALREADY_ERROR(-101, "内容已存在"),
+
     DATA_FORMAT_ERROR(-200, "数据格式有误");
 
 

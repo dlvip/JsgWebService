@@ -80,6 +80,17 @@ public class TopicController extends BaseController {
     }
 
     /**
+     * 获取推荐
+     *
+     * @return
+     */
+    @PostMapping(value = "/getRecommendTopicList")
+    public Result getRecommendTopicList() {
+
+        return ResultUtil.success(topicRepository.findTopicEntitiesByWeight(4));
+    }
+
+    /**
      * 获取用户话题列表
      *
      * @param pageNum

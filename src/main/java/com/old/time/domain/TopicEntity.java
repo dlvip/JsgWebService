@@ -31,10 +31,6 @@ public class TopicEntity {
 
     }
 
-    public TopicEntity() {
-
-    }
-
     @Id
     @GeneratedValue
     private Integer id;
@@ -47,6 +43,19 @@ public class TopicEntity {
 
     private String createTime;
 
+    /**
+     * 推荐权重
+     */
+    private int weight;
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
     @Transient
     private UserEntity userEntity;
 
@@ -57,7 +66,6 @@ public class TopicEntity {
     public void setUserEntity(UserEntity userEntity) {
         this.userEntity = userEntity;
     }
-
 
     public String getPic() {
         return pic;
