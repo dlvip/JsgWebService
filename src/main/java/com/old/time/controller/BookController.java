@@ -100,12 +100,26 @@ public class BookController extends BaseController {
                     price,
                     url));
         }
+        //创建话题
+        TopicEntity topicEntity;
         if (!topicRepository.existsTopicEntityByTopic(bookEntity.getTitle())) {
-            TopicEntity topicEntity = topicRepository.save(TopicEntity.getInstance("", bookEntity.getTitle(), bookEntity.getImages_large()));
-            topicVideoBookRepository.save(TopicVideoBookEntry.instance(-1, topicEntity.getId(), bookEntity.getId()));
+            topicEntity = topicRepository.save(TopicEntity.getInstance("", bookEntity.getTitle(), bookEntity.getImages_large()));
 
+        } else {
+            topicEntity = topicRepository.findTopicEntityByTopic(bookEntity.getTitle());
 
         }
+        //创建关联
+        TopicVideoBookEntry topicVideoBookEntry = topicVideoBookRepository.findTopicVideoBookEntryByTopicId(topicEntity.getId());
+        if (topicVideoBookEntry == null) {
+            topicVideoBookEntry = TopicVideoBookEntry.instance(-1, topicEntity.getId(), bookEntity.getId());
+
+        } else {
+            topicVideoBookEntry.setBookId(bookEntity.getId());
+
+        }
+        topicVideoBookRepository.save(topicVideoBookEntry);
+
         return ResultUtil.success(bookEntity);
     }
 

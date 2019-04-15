@@ -17,12 +17,21 @@ public interface TopicRepository extends JpaRepository<TopicEntity, Integer> {
     TopicEntity findTopicEntityById(Integer id);
 
     /**
+     * 名称查询
+     *
+     * @param topic
+     * @return
+     */
+    TopicEntity findTopicEntityByTopic(String topic);
+
+    /**
      * 话题名称是否存在
      *
      * @param topic
      * @return
      */
     boolean existsTopicEntityByTopic(String topic);
+
 
     /**
      * 获取用户话题

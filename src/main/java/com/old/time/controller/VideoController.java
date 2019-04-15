@@ -74,12 +74,24 @@ public class VideoController {
                 , score
                 , episodes
                 , totalEpisodes));
+        TopicEntity topicEntity;
         if (!topicRepository.existsTopicEntityByTopic(name)) {
-            TopicEntity topicEntity = topicRepository.save(TopicEntity.getInstance("", name, pic));
-            topicVideoBookRepository.save(TopicVideoBookEntry.instance(videoEntity.getId(), topicEntity.getId(), -1));
+            topicEntity = topicRepository.save(TopicEntity.getInstance("", name, pic));
 
+        } else {
+            topicEntity = topicRepository.findTopicEntityByTopic(name);
 
         }
+        TopicVideoBookEntry topicVideoBookEntry = topicVideoBookRepository.findTopicVideoBookEntryByTopicId(topicEntity.getId());
+        if (topicVideoBookEntry == null) {
+            topicVideoBookEntry = TopicVideoBookEntry.instance(videoEntity.getId(), topicEntity.getId(), -1);
+
+        } else {
+            topicVideoBookEntry.setVideoId(videoEntity.getId());
+
+        }
+        topicVideoBookRepository.save(topicVideoBookEntry);
+
         return ResultUtil.success(videoEntity);
     }
 
