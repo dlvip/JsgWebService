@@ -12,6 +12,10 @@ import java.util.List;
 @Entity
 public class VideoEntity {
 
+    public VideoEntity() {
+
+    }
+
     public static VideoEntity instance(String name
             , String detail
             , String pic

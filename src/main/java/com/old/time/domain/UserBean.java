@@ -7,6 +7,10 @@ import java.util.List;
  */
 public class UserBean {
 
+    public UserBean() {
+
+    }
+
     /**
      * id
      */

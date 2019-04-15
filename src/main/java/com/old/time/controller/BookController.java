@@ -103,10 +103,10 @@ public class BookController extends BaseController {
         //创建话题
         TopicEntity topicEntity;
         if (!topicRepository.existsTopicEntityByTopic(bookEntity.getTitle())) {
-            topicEntity = topicRepository.save(TopicEntity.getInstance("", bookEntity.getTitle(), bookEntity.getImages_large()));
+            topicEntity = topicRepository.save(TopicEntity.getInstance("", "#" + bookEntity.getTitle(), bookEntity.getImages_large()));
 
         } else {
-            topicEntity = topicRepository.findTopicEntityByTopic(bookEntity.getTitle());
+            topicEntity = topicRepository.findTopicEntityByTopic("#" + bookEntity.getTitle());
 
         }
         //创建关联

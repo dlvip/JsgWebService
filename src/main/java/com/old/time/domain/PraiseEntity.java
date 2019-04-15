@@ -9,6 +9,10 @@ import javax.persistence.Id;
 @Entity
 public class PraiseEntity {
 
+    public PraiseEntity(){
+
+    }
+
     private PraiseEntity(String userId, String praiseType, Integer contentId) {
         this.userId = userId;
         this.praiseType = praiseType;

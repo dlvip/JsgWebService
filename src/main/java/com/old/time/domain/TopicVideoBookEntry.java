@@ -7,6 +7,10 @@ import javax.persistence.Id;
 @Entity
 public class TopicVideoBookEntry {
 
+    public TopicVideoBookEntry(){
+
+    }
+
     /**
      *
      * @param videoId

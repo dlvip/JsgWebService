@@ -1,6 +1,7 @@
 package com.old.time.domain;
 
 import com.old.time.utils.TimeUtil;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,6 +29,10 @@ public class TopicEntity {
         this.topic = topic;
         this.pic = pic;
         this.createTime = TimeUtil.getCurrentTime();
+
+    }
+
+    public TopicEntity() {
 
     }
 

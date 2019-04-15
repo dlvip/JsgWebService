@@ -12,6 +12,10 @@ import javax.persistence.Id;
 @Entity
 public class EpisodeEntity {
 
+    public EpisodeEntity(){
+
+    }
+
     /**
      * 单集信息
      *

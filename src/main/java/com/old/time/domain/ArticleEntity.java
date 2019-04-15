@@ -9,6 +9,10 @@ import javax.persistence.Id;
 @Entity
 public class ArticleEntity {
 
+    public ArticleEntity(){
+
+    }
+
     /**
      * 文章
      *

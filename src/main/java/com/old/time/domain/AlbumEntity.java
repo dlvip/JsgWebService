@@ -7,6 +7,10 @@ import javax.persistence.Id;
 @Entity
 public class AlbumEntity {
 
+    public AlbumEntity(){
+        
+    }
+
     @Id
     @GeneratedValue
     private Integer id;

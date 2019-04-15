@@ -5,6 +5,7 @@ import com.old.time.domain.TopicEntity;
 import com.old.time.domain.TopicVideoBookEntry;
 import com.old.time.domain.VideoEntity;
 import com.old.time.enums.ResultEnum;
+import com.old.time.exception.JSGNoSuchElementException;
 import com.old.time.exception.JSGRuntimeException;
 import com.old.time.repository.EpisodeRepository;
 import com.old.time.repository.TopicRepository;
@@ -75,11 +76,11 @@ public class VideoController {
                 , episodes
                 , totalEpisodes));
         TopicEntity topicEntity;
-        if (!topicRepository.existsTopicEntityByTopic(name)) {
-            topicEntity = topicRepository.save(TopicEntity.getInstance("", name, pic));
+        if (!topicRepository.existsTopicEntityByTopic("#" + name)) {
+            topicEntity = topicRepository.save(TopicEntity.getInstance("", "#" + name, pic));
 
         } else {
-            topicEntity = topicRepository.findTopicEntityByTopic(name);
+            topicEntity = topicRepository.findTopicEntityByTopic("#" + name);
 
         }
         TopicVideoBookEntry topicVideoBookEntry = topicVideoBookRepository.findTopicVideoBookEntryByTopicId(topicEntity.getId());
@@ -98,17 +99,38 @@ public class VideoController {
     /**
      * 获取视频信息
      *
+     * @param type    0:话题id，1：视频id，2：图书id
      * @param videoId
      * @return
      */
     @PostMapping(value = "/getVideoDetail")
-    public Result getVideoDetail(@RequestParam("videoId") int videoId) {
-        VideoEntity videoEntity = videoRepository.findVideoEntityById(videoId);
+    public Result getVideoDetail(@RequestParam("type") int type, @RequestParam("videoId") int videoId) {
+        TopicVideoBookEntry topicVideoBookEntry;
+        switch (type) {
+            case 0:
+                topicVideoBookEntry = topicVideoBookRepository.findTopicVideoBookEntryByTopicId(videoId);
+
+                break;
+            case 1:
+                topicVideoBookEntry = topicVideoBookRepository.findTopicVideoBookEntryByVideoId(videoId);
+
+                break;
+            default:
+                topicVideoBookEntry = topicVideoBookRepository.findTopicVideoBookEntryByBookId(videoId);
+
+                break;
+
+        }
+        if (topicVideoBookEntry == null) {
+
+            throw new JSGNoSuchElementException(ResultEnum.NULL_DATA_ERROR);
+        }
+        VideoEntity videoEntity = videoRepository.findVideoEntityById(topicVideoBookEntry.getVideoId());
         if (videoEntity == null) {
 
             throw new JSGRuntimeException(ResultEnum.NULL_DATA_ERROR);
         }
-        videoEntity.setEpisodeEntities(episodeRepository.findEpisodeEntitiesByVideoId(videoId));
+        videoEntity.setEpisodeEntities(episodeRepository.findEpisodeEntitiesByVideoId(topicVideoBookEntry.getVideoId()));
         return ResultUtil.success(videoEntity);
     }
 

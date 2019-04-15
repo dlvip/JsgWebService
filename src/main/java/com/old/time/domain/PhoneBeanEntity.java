@@ -7,6 +7,10 @@ import javax.persistence.Id;
 @Entity
 public class PhoneBeanEntity {
 
+    public PhoneBeanEntity(){
+
+    }
+
     private String userId;
 
     private String photo;

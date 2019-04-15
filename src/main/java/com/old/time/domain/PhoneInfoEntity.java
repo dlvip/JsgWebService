@@ -7,6 +7,10 @@ import javax.persistence.Id;
 @Entity
 public class PhoneInfoEntity {
 
+    public PhoneInfoEntity(){
+
+    }
+
     /**
      * province : 浙江
      * city : 杭州

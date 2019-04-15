@@ -7,6 +7,10 @@ import javax.persistence.Id;
 @Entity
 public class FastMailEnity {
 
+    public FastMailEnity(){
+
+    }
+
     @Id
     @GeneratedValue
     private String id;
