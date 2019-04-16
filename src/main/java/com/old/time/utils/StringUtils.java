@@ -52,5 +52,5 @@ public class StringUtils {
     /**
      * 融云秘钥
      */
-    public static final String RONG_APP_SECRET = "x18ywvqfxcbjc";
+    public static final String RONG_APP_SECRET = "pzfndTCPu9";
 }

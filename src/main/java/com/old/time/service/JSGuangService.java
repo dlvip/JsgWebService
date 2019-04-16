@@ -7,12 +7,14 @@ import com.old.time.exception.JSGRuntimeException;
 import com.old.time.repository.AlbumRepository;
 import com.old.time.repository.CourseRepository;
 import com.old.time.repository.MusicRepository;
+import com.old.time.repository.UserRepository;
 import com.old.time.utils.ResultUtil;
 import com.old.time.utils.StringUtils;
 import io.rong.RongCloud;
 import io.rong.methods.user.User;
 import io.rong.models.response.TokenResult;
 import io.rong.models.user.UserModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,6 +74,9 @@ public class JSGuangService {
         return ResultUtil.success(musicRepository.save(musicEntry));
     }
 
+    @Autowired
+    private UserRepository userRepository;
+
     /**
      * 设置用户融云token
      *
@@ -88,6 +93,7 @@ public class JSGuangService {
             if (userEntity.getToken() == null || "".equals(userEntity.getToken())) {
                 TokenResult result = user.register(userModel);
                 userEntity.setToken(result.getToken());
+                userEntity = userRepository.save(userEntity);
 
             } else {
                 user.update(userModel);
