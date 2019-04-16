@@ -5,15 +5,10 @@ import com.old.time.domain.Result;
 import com.old.time.domain.UserEntity;
 import com.old.time.enums.ResultEnum;
 import com.old.time.exception.JSGNoSuchElementException;
-import com.old.time.exception.JSGRuntimeException;
 import com.old.time.repository.UserRepository;
 import com.old.time.utils.GenerateShortUuid;
 import com.old.time.utils.ResultUtil;
 import com.old.time.utils.StringUtils;
-import io.rong.RongCloud;
-import io.rong.methods.user.User;
-import io.rong.models.response.TokenResult;
-import io.rong.models.user.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,25 +21,6 @@ public class UserController extends BaseController {
 
     @Autowired
     private UserRepository userRepository;
-
-    /**
-     * 添加（修改）用户
-     *
-     * @param userEntity
-     * @return
-     */
-    @PostMapping(value = "/saveUser")
-    public Result saveUser(UserEntity userEntity) {
-        if (userEntity == null) {
-            userEntity = new UserEntity();
-
-        }
-        if ("".equals(userEntity.getUserId())) {
-            userEntity.setUserId(GenerateShortUuid.getPhoneUserId(userEntity.getMobile()));
-
-        }
-        return ResultUtil.success(userRepository.save(userEntity));
-    }
 
     /**
      * 修改用户信息
@@ -103,7 +79,7 @@ public class UserController extends BaseController {
             throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
         }
 
-        return ResultUtil.success(userEntity);
+        return ResultUtil.success(jSGuangService.setRongToken(userEntity));
     }
 
     /**
@@ -119,7 +95,7 @@ public class UserController extends BaseController {
 
             throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
         }
-        return ResultUtil.success(userEntity);
+        return ResultUtil.success(jSGuangService.setRongToken(userEntity));
     }
 
     /**
