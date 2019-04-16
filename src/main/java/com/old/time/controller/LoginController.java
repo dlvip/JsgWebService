@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "jiushiguang")
-public class LoginController {
+public class LoginController extends BaseController {
 
     @Autowired
     private UserRepository userRepository;
@@ -94,7 +94,7 @@ public class LoginController {
             throw new JSGNoSuchElementException(ResultEnum.MOBILE_CODE_ERROR);
         }
         UserEntity userEntity = UserEntity.getInstance(mobile, pasWord);
-        return ResultUtil.success(setRongToken(userEntity));
+        return ResultUtil.success(jSGuangService.setRongToken(userEntity));
     }
 
     @PostMapping(value = "/registerSystemUser")
@@ -132,7 +132,7 @@ public class LoginController {
             throw new JSGRuntimeException(ResultEnum.CURRENCY_MSG_PARAMETER_ERROR);
         }
         UserEntity userEntity = userRepository.findByMobileAndPasWord(mobile, pasWord);
-        return ResultUtil.success(setRongToken(userEntity));
+        return ResultUtil.success(jSGuangService.setRongToken(userEntity));
     }
 
     /**
@@ -168,37 +168,7 @@ public class LoginController {
             throw new JSGNoSuchElementException(ResultEnum.MOBILE_CODE_ERROR);
         }
         UserEntity userEntity = userRepository.findUserEntityByMobile(mobile);
-        return ResultUtil.success(setRongToken(userEntity));
-    }
-
-    /**
-     * 设置用户融云token
-     *
-     * @param userEntity
-     */
-    private UserEntity setRongToken(UserEntity userEntity) {
-        try {
-            RongCloud rongCloud = RongCloud.getInstance(StringUtils.RONG_APP_KEY, StringUtils.RONG_APP_SECRET);
-            User user = rongCloud.user;
-            UserModel userModel = new UserModel()
-                    .setId(userEntity.getUserId())
-                    .setName(userEntity.getMobile())
-                    .setPortrait(userEntity.getAvatar());
-            if (userEntity.getToken() == null || "".equals(userEntity.getToken())) {
-                TokenResult result = user.register(userModel);
-                userEntity.setToken(result.getToken());
-
-            } else {
-                user.update(userModel);
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new JSGRuntimeException(ResultEnum.SYSTEM_ERROR);
-
-        }
-
-        return userEntity;
+        return ResultUtil.success(jSGuangService.setRongToken(userEntity));
     }
 
     /**

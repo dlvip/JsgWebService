@@ -85,7 +85,7 @@ public class UserController extends BaseController {
         }
         userEntity = userRepository.save(mUserEntity);
 
-        return ResultUtil.success(setRongToken(userEntity));
+        return ResultUtil.success(jSGuangService.setRongToken(userEntity));
     }
 
     /**
@@ -151,37 +151,7 @@ public class UserController extends BaseController {
             userEntity = new UserEntity(GenerateShortUuid.getPhoneUserId(mobil), mobil, StringUtils.encodeByMd5("123456"));
 
         }
-        return ResultUtil.success(setRongToken(userEntity));
+        return ResultUtil.success(jSGuangService.setRongToken(userEntity));
     }
-
-    /**
-     * 设置用户融云token
-     *
-     * @param userEntity
-     */
-    private UserEntity setRongToken(UserEntity userEntity) {
-        try {
-            RongCloud rongCloud = RongCloud.getInstance(StringUtils.RONG_APP_KEY, StringUtils.RONG_APP_SECRET);
-            User user = rongCloud.user;
-            UserModel userModel = new UserModel()
-                    .setId(userEntity.getUserId())
-                    .setName(userEntity.getMobile())
-                    .setPortrait(userEntity.getAvatar());
-            if (userEntity.getToken() == null || "".equals(userEntity.getToken())) {
-                TokenResult result = user.register(userModel);
-                userEntity.setToken(result.getToken());
-
-            } else {
-                user.update(userModel);
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new JSGRuntimeException(ResultEnum.SYSTEM_ERROR);
-
-        }
-        return userEntity;
-    }
-
 
 }

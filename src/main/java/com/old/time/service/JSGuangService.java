@@ -3,10 +3,16 @@ package com.old.time.service;
 import com.old.time.domain.*;
 import com.old.time.enums.ResultEnum;
 import com.old.time.exception.JSGNoSuchElementException;
+import com.old.time.exception.JSGRuntimeException;
 import com.old.time.repository.AlbumRepository;
 import com.old.time.repository.CourseRepository;
 import com.old.time.repository.MusicRepository;
 import com.old.time.utils.ResultUtil;
+import com.old.time.utils.StringUtils;
+import io.rong.RongCloud;
+import io.rong.methods.user.User;
+import io.rong.models.response.TokenResult;
+import io.rong.models.user.UserModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,5 +70,34 @@ public class JSGuangService {
         }
 
         return ResultUtil.success(musicRepository.save(musicEntry));
+    }
+
+    /**
+     * 设置用户融云token
+     *
+     * @param userEntity
+     */
+    public UserEntity setRongToken(UserEntity userEntity) {
+        try {
+            RongCloud rongCloud = RongCloud.getInstance(StringUtils.RONG_APP_KEY, StringUtils.RONG_APP_SECRET);
+            User user = rongCloud.user;
+            UserModel userModel = new UserModel()
+                    .setId(userEntity.getUserId())
+                    .setName(userEntity.getMobile())
+                    .setPortrait(userEntity.getAvatar());
+            if (userEntity.getToken() == null || "".equals(userEntity.getToken())) {
+                TokenResult result = user.register(userModel);
+                userEntity.setToken(result.getToken());
+
+            } else {
+                user.update(userModel);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new JSGRuntimeException(ResultEnum.SYSTEM_ERROR);
+
+        }
+        return userEntity;
     }
 }
