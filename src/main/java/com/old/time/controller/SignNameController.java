@@ -95,4 +95,24 @@ public class SignNameController extends BaseController {
         }
         return ResultUtil.success(signNameEntities);
     }
+
+    /**
+     * 分页获取打卡列表
+     *
+     * @param bookId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping(value = "/getBookSignNameList")
+    public Result getBookSignNameList(@RequestParam("bookId") String bookId, @RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
+        List<SignNameEntity> signNameEntities = signNameRepository.findSignNameEntitiesByBookId(bookId);
+        for (SignNameEntity signNameEntity : signNameEntities) {
+            signNameEntity.setUserEntity(userRepository.findUserEntityByUserId(signNameEntity.getUserId()));
+            signNameEntity.setPaiseCount(praiseContentController.getPraiseCount(signNameEntity.getId()));
+            signNameEntity.setBookEntity(bookRepository.findBookEntityById(signNameEntity.getBookId()));
+
+        }
+        return ResultUtil.success(signNameEntities);
+    }
 }
