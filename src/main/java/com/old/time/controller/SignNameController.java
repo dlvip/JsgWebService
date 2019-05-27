@@ -106,7 +106,7 @@ public class SignNameController extends BaseController {
      */
     @RequestMapping(value = "/getBookSignNameList")
     public Result getBookSignNameList(@RequestParam("bookId") String bookId, @RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
-        List<SignNameEntity> signNameEntities = signNameRepository.findSignNameEntitiesByBookId(bookId);
+        List<SignNameEntity> signNameEntities = signNameRepository.findSignNameEntitiesByBookId(bookId, PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.DESC, "id")));
         for (SignNameEntity signNameEntity : signNameEntities) {
             signNameEntity.setUserEntity(userRepository.findUserEntityByUserId(signNameEntity.getUserId()));
             signNameEntity.setPaiseCount(praiseContentController.getPraiseCount(signNameEntity.getId()));

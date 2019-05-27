@@ -33,5 +33,5 @@ public interface SignNameRepository extends JpaRepository<SignNameEntity, Intege
      * @param bookId
      * @return
      */
-    List<SignNameEntity> findSignNameEntitiesByBookId(String bookId);
+    List<SignNameEntity> findSignNameEntitiesByBookId(String bookId, Pageable pageable);
 }
