@@ -178,10 +178,6 @@ public class BookController extends BaseController {
     public Result getBookEntities(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.DESC, "id"));
         List<BookEntity> bookEntities = bookRepository.findAll(pageable).getContent();
-        if (bookEntities == null) {
-            bookEntities = new ArrayList<>();
-
-        }
         return ResultUtil.success(bookEntities);
     }
 }

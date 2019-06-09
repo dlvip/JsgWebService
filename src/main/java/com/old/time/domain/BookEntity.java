@@ -1,8 +1,5 @@
 package com.old.time.domain;
 
-import org.hibernate.validator.constraints.Length;
-import org.springframework.beans.factory.annotation.Value;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
