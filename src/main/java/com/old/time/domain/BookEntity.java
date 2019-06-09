@@ -156,6 +156,34 @@ public class BookEntity {
 
     private String url;
 
+    /**
+     * 0：男频、1：女频、2：文学
+     */
+    private Integer people_type;
+
+    /**
+     * 图书类型0：玄幻、1：奇幻、2：仙侠、3：悬疑、4：军事、5：历史、6：灵异
+     *        10：现代言情、11：穿越架空、12：总裁豪门、13：青春校园
+     *        20：
+     */
+    private Integer book_type;
+
+    public Integer getPeople_type() {
+        return people_type;
+    }
+
+    public void setPeople_type(Integer people_type) {
+        this.people_type = people_type;
+    }
+
+    public Integer getBook_type() {
+        return book_type;
+    }
+
+    public void setBook_type(Integer book_type) {
+        this.book_type = book_type;
+    }
+
     public Integer getId() {
         return id;
     }
