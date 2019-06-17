@@ -34,7 +34,7 @@ public class RBookController extends BaseController {
     public Result getRecommendRBook(String aType) {
         List<ItemBookEntity> itemBookEntities = new ArrayList<>();
         switch (aType) {
-            case "0":
+            case "0"://推荐
                 itemBookEntities.add(ItemBookEntity.getInstance("重磅推荐", rBookRepository.findRBookEntitiesByWeight("00", PageRequest.of(0, 4, new Sort(Sort.Direction.DESC, "id")))));
                 itemBookEntities.add(ItemBookEntity.getInstance("热门精选", rBookRepository.findRBookEntitiesByWeight("01", PageRequest.of(0, 6, new Sort(Sort.Direction.DESC, "id")))));
                 itemBookEntities.add(ItemBookEntity.getInstance("都市·猎艳", rBookRepository.findRBookEntitiesByWeight("02", PageRequest.of(0, 6, new Sort(Sort.Direction.DESC, "id")))));
@@ -42,7 +42,7 @@ public class RBookController extends BaseController {
                 itemBookEntities.add(ItemBookEntity.getInstance("小编·推荐", rBookRepository.findRBookEntitiesByWeight("04", PageRequest.of(0, 6, new Sort(Sort.Direction.DESC, "id")))));
 
                 break;
-            case "1":
+            case "1"://男频
                 itemBookEntities.add(ItemBookEntity.getInstance("重磅推荐", rBookRepository.findRBookEntitiesByWeight("10", PageRequest.of(0, 4, new Sort(Sort.Direction.DESC, "id")))));
                 itemBookEntities.add(ItemBookEntity.getInstance("热门精选", rBookRepository.findRBookEntitiesByWeight("11", PageRequest.of(0, 6, new Sort(Sort.Direction.DESC, "id")))));
                 itemBookEntities.add(ItemBookEntity.getInstance("玄幻·奇幻", rBookRepository.findRBookEntitiesByWeight("12", PageRequest.of(0, 6, new Sort(Sort.Direction.DESC, "id")))));
@@ -50,7 +50,7 @@ public class RBookController extends BaseController {
                 itemBookEntities.add(ItemBookEntity.getInstance("游戏·竞技", rBookRepository.findRBookEntitiesByWeight("14", PageRequest.of(0, 6, new Sort(Sort.Direction.DESC, "id")))));
 
                 break;
-            case "2":
+            case "2"://女频
                 itemBookEntities.add(ItemBookEntity.getInstance("重磅推荐", rBookRepository.findRBookEntitiesByWeight("20", PageRequest.of(0, 4, new Sort(Sort.Direction.DESC, "id")))));
                 itemBookEntities.add(ItemBookEntity.getInstance("热门精选", rBookRepository.findRBookEntitiesByWeight("21", PageRequest.of(0, 6, new Sort(Sort.Direction.DESC, "id")))));
                 itemBookEntities.add(ItemBookEntity.getInstance("现代·都市", rBookRepository.findRBookEntitiesByWeight("22", PageRequest.of(0, 6, new Sort(Sort.Direction.DESC, "id")))));
@@ -68,8 +68,19 @@ public class RBookController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/getTypeRBookList")
-    public Result getTypeRBookList(String aTypt,Integer startNum,Integer pageSize) {
+    public Result getTypeRBookList(String aTypt, Integer startNum, Integer pageSize) {
 
-        return ResultUtil.success(rBookRepository.findRBookEntitiesByA_type(aTypt, PageRequest.of(startNum, pageSize, new Sort(Sort.Direction.DESC, "id"))));
+        return ResultUtil.success(rBookRepository.findRBookEntitiesByAType(aTypt, PageRequest.of(startNum, pageSize, new Sort(Sort.Direction.DESC, "id"))));
+    }
+
+    /**
+     * 获取类型推荐
+     *
+     * @return
+     */
+    @RequestMapping(value = "/getTypeRecommendBooks")
+    public Result getTypeRecommendBooks(String aTypt, Integer startNum, Integer pageSize) {
+
+        return ResultUtil.success(rBookRepository.findRBookEntitiesByAType(aTypt, PageRequest.of(startNum, pageSize, new Sort(Sort.Direction.ASC, "id"))));
     }
 }

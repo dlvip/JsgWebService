@@ -22,7 +22,7 @@ public interface RBookRepository extends JpaRepository<RBookEntity, Integer> {
      * @param pageable
      * @return
      */
-    List<RBookEntity> findRBookEntitiesByA_type(String a_type, Pageable pageable);
+    List<RBookEntity> findRBookEntitiesByAType(String a_type, Pageable pageable);
 
     /**
      * 获取图书信息

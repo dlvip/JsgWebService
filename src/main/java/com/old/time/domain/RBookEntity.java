@@ -38,7 +38,7 @@ public class RBookEntity {
      * 女频 10：现代言情、11：古代言情、12：穿越架空、13：总裁豪门、14：青春校园
      * 20：
      */
-    private String a_type;
+    private String aType;
 
     /**
      * 文件地址
@@ -93,12 +93,12 @@ public class RBookEntity {
         this.author = author;
     }
 
-    public String getA_type() {
-        return a_type;
+    public String getaType() {
+        return aType;
     }
 
-    public void setA_type(String a_type) {
-        this.a_type = a_type;
+    public void setaType(String aType) {
+        this.aType = aType;
     }
 
     public String getUrl() {
