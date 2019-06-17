@@ -1,5 +1,6 @@
 package com.old.time.controller;
 
+import com.old.time.domain.BookTabEntity;
 import com.old.time.domain.ItemBookEntity;
 import com.old.time.domain.Result;
 import com.old.time.repository.RBookRepository;
@@ -82,5 +83,19 @@ public class RBookController extends BaseController {
     public Result getTypeRecommendBooks(String aTypt, Integer startNum, Integer pageSize) {
 
         return ResultUtil.success(rBookRepository.findRBookEntitiesByAType(aTypt, PageRequest.of(startNum, pageSize, new Sort(Sort.Direction.ASC, "id"))));
+    }
+
+    /**
+     * 获取类型
+     *
+     * @return
+     */
+    @RequestMapping(value = "/getPeopleTypeList")
+    public Result getPeopleTypeList() {
+        List<BookTabEntity> bookTabEntities = new ArrayList<>();
+        bookTabEntities.add(BookTabEntity.getInstance(0));
+        bookTabEntities.add(BookTabEntity.getInstance(1));
+
+        return ResultUtil.success(bookTabEntities);
     }
 }
