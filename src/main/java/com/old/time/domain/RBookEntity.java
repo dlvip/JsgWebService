@@ -7,6 +7,23 @@ import javax.persistence.Id;
 @Entity
 public class RBookEntity {
 
+    public static RBookEntity getInstance(){
+        RBookEntity rBookEntity = new RBookEntity();
+        rBookEntity.id = 0;
+        rBookEntity.aType="0";
+        rBookEntity.title="异能少女重生：帝少夺吻99次";
+        rBookEntity.author = "格格喵";
+        rBookEntity.des_cribe = "她助渣男荣华富贵，最终被渣男开车撞死。重生回到十二岁，她发誓不再期盼虚无的爱情！开启异能掌控阴阳，趋吉避凶未卜先知，有仇报仇有恩...";
+        rBookEntity.images_large = "https://images.bookbao99.net/coverpic/596/596531.jpg";
+        rBookEntity.weight = "00";
+
+        return rBookEntity;
+    }
+
+    public RBookEntity(){
+
+    }
+
 
     @Id
     @GeneratedValue

@@ -18,24 +18,24 @@ public class BookTabEntity {
             case 0:
                 mBookTabEntity.setTitle("男频");
                 tabEntities.clear();
-                tabEntities.add(TabEntity.getInstance("0", "玄幻", ""));
-                tabEntities.add(TabEntity.getInstance("1", "奇幻", ""));
-                tabEntities.add(TabEntity.getInstance("2", "仙侠", ""));
-                tabEntities.add(TabEntity.getInstance("3", "悬疑", ""));
-                tabEntities.add(TabEntity.getInstance("4", "军旅", ""));
-                tabEntities.add(TabEntity.getInstance("5", "历史", ""));
-                tabEntities.add(TabEntity.getInstance("6", "灵异", ""));
+                tabEntities.add(TabEntity.getInstance("0", "玄幻", "https://images.bookbao99.net/coverpic/596/596531.jpg"));
+                tabEntities.add(TabEntity.getInstance("1", "奇幻", "https://images.bookbao99.net/coverpic/596/596531.jpg"));
+                tabEntities.add(TabEntity.getInstance("2", "仙侠", "https://images.bookbao99.net/coverpic/596/596531.jpg"));
+                tabEntities.add(TabEntity.getInstance("3", "悬疑", "https://images.bookbao99.net/coverpic/596/596531.jpg"));
+                tabEntities.add(TabEntity.getInstance("4", "军旅", "https://images.bookbao99.net/coverpic/596/596531.jpg"));
+                tabEntities.add(TabEntity.getInstance("5", "历史", "https://images.bookbao99.net/coverpic/596/596531.jpg"));
+                tabEntities.add(TabEntity.getInstance("6", "灵异", "https://images.bookbao99.net/coverpic/596/596531.jpg"));
                 mBookTabEntity.setTabEntities(tabEntities);
 
                 break;
             case 1:
                 mBookTabEntity.setTitle("女频");
                 tabEntities.clear();
-                tabEntities.add(TabEntity.getInstance("10", "现代言情", ""));
-                tabEntities.add(TabEntity.getInstance("11", "古代言情", ""));
-                tabEntities.add(TabEntity.getInstance("12", "穿越架空", ""));
-                tabEntities.add(TabEntity.getInstance("13", "总裁豪门", ""));
-                tabEntities.add(TabEntity.getInstance("14", "青春校园", ""));
+                tabEntities.add(TabEntity.getInstance("10", "现代言情", "https://images.bookbao99.net/coverpic/596/596531.jpg"));
+                tabEntities.add(TabEntity.getInstance("11", "古代言情", "https://images.bookbao99.net/coverpic/596/596531.jpg"));
+                tabEntities.add(TabEntity.getInstance("12", "穿越架空", "https://images.bookbao99.net/coverpic/596/596531.jpg"));
+                tabEntities.add(TabEntity.getInstance("13", "总裁豪门", "https://images.bookbao99.net/coverpic/596/596531.jpg"));
+                tabEntities.add(TabEntity.getInstance("14", "青春校园", "https://images.bookbao99.net/coverpic/596/596531.jpg"));
                 mBookTabEntity.setTabEntities(tabEntities);
 
                 break;
