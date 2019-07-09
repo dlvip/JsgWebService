@@ -38,17 +38,17 @@ public class RBookController extends BaseController {
         List<ItemBookEntity> itemBookEntities = new ArrayList<>();
         switch (aType) {
             case "0"://推荐
-//                itemBookEntities.add(ItemBookEntity.getInstance("重磅推荐", rBookRepository.findRBookEntitiesByWeight("00", PageRequest.of(0, 4, new Sort(Sort.Direction.DESC, "id")))));
-//                itemBookEntities.add(ItemBookEntity.getInstance("热门精选", rBookRepository.findRBookEntitiesByWeight("01", PageRequest.of(0, 6, new Sort(Sort.Direction.DESC, "id")))));
-//                itemBookEntities.add(ItemBookEntity.getInstance("都市·猎艳", rBookRepository.findRBookEntitiesByWeight("02", PageRequest.of(0, 6, new Sort(Sort.Direction.DESC, "id")))));
-//                itemBookEntities.add(ItemBookEntity.getInstance("暧昧·异能", rBookRepository.findRBookEntitiesByWeight("03", PageRequest.of(0, 6, new Sort(Sort.Direction.DESC, "id")))));
-//                itemBookEntities.add(ItemBookEntity.getInstance("小编·推荐", rBookRepository.findRBookEntitiesByWeight("04", PageRequest.of(0, 6, new Sort(Sort.Direction.DESC, "id")))));
+                itemBookEntities.add(ItemBookEntity.getInstance("重磅推荐", rBookRepository.findRBookEntitiesByWeight("00", PageRequest.of(0, 4, new Sort(Sort.Direction.DESC, "id")))));
+                itemBookEntities.add(ItemBookEntity.getInstance("热门精选", rBookRepository.findRBookEntitiesByWeight("01", PageRequest.of(0, 6, new Sort(Sort.Direction.DESC, "id")))));
+                itemBookEntities.add(ItemBookEntity.getInstance("都市·猎艳", rBookRepository.findRBookEntitiesByWeight("02", PageRequest.of(0, 6, new Sort(Sort.Direction.DESC, "id")))));
+                itemBookEntities.add(ItemBookEntity.getInstance("暧昧·异能", rBookRepository.findRBookEntitiesByWeight("03", PageRequest.of(0, 6, new Sort(Sort.Direction.DESC, "id")))));
+                itemBookEntities.add(ItemBookEntity.getInstance("小编·推荐", rBookRepository.findRBookEntitiesByWeight("04", PageRequest.of(0, 6, new Sort(Sort.Direction.DESC, "id")))));
 
-                itemBookEntities.add(ItemBookEntity.getInstance("重磅推荐", getRBookEntities(4)));
-                itemBookEntities.add(ItemBookEntity.getInstance("热门精选", getRBookEntities(6)));
-                itemBookEntities.add(ItemBookEntity.getInstance("都市·猎艳", getRBookEntities(6)));
-                itemBookEntities.add(ItemBookEntity.getInstance("暧昧·异能", getRBookEntities(6)));
-                itemBookEntities.add(ItemBookEntity.getInstance("小编·推荐", getRBookEntities(6)));
+//                itemBookEntities.add(ItemBookEntity.getInstance("重磅推荐", getRBookEntities(4)));
+//                itemBookEntities.add(ItemBookEntity.getInstance("热门精选", getRBookEntities(6)));
+//                itemBookEntities.add(ItemBookEntity.getInstance("都市·猎艳", getRBookEntities(6)));
+//                itemBookEntities.add(ItemBookEntity.getInstance("暧昧·异能", getRBookEntities(6)));
+//                itemBookEntities.add(ItemBookEntity.getInstance("小编·推荐", getRBookEntities(6)));
 
                 break;
             case "1"://男频
