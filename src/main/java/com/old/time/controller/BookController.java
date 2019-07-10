@@ -40,13 +40,9 @@ public class BookController extends BaseController {
      * 添加图书信息
      *
      * @param levelNum
-     * @param subtitle
      * @param author
      * @param pubdate
-     * @param origin_title
      * @param binding
-     * @param pages
-     * @param images_medium
      * @param images_large
      * @param publisher
      * @param isbn10
@@ -54,26 +50,20 @@ public class BookController extends BaseController {
      * @param title
      * @param summary
      * @param price
-     * @param url
      * @return
      */
     @RequestMapping(value = "/createBookInfo")
     public Result createBookInfo(@RequestParam("levelNum") String levelNum,
-                                 @RequestParam("subtitle") String subtitle,
                                  @RequestParam("author") String author,
                                  @RequestParam("pubdate") String pubdate,
-                                 @RequestParam("origin_title") String origin_title,
                                  @RequestParam("binding") String binding,
-                                 @RequestParam("pages") String pages,
-                                 @RequestParam("images_medium") String images_medium,
                                  @RequestParam("images_large") String images_large,
                                  @RequestParam("publisher") String publisher,
                                  @RequestParam("isbn10") String isbn10,
                                  @RequestParam("isbn13") String isbn13,
                                  @RequestParam("title") String title,
                                  @RequestParam("summary") String summary,
-                                 @RequestParam("price") String price,
-                                 @RequestParam("url") String url) {
+                                 @RequestParam("price") String price) {
         BookEntity bookEntity;
         if ("".equals(isbn10) && "".equals(isbn13)) {
             throw new JSGRuntimeException(ResultEnum.CURRENCY_MSG_PARAMETER_ERROR);
@@ -84,21 +74,16 @@ public class BookController extends BaseController {
 
         } else {
             bookEntity = bookRepository.save(BookEntity.getInstance(levelNum,
-                    subtitle,
                     author,
                     pubdate,
-                    origin_title,
                     binding,
-                    pages,
-                    images_medium,
                     images_large,
                     publisher,
                     isbn10,
                     isbn13,
                     title,
                     summary,
-                    price,
-                    url));
+                    price));
         }
         //创建话题
         TopicEntity topicEntity;
@@ -178,6 +163,85 @@ public class BookController extends BaseController {
     public Result getBookEntities(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.DESC, "id"));
         List<BookEntity> bookEntities = bookRepository.findAll(pageable).getContent();
+
         return ResultUtil.success(bookEntities);
+    }
+
+    /**
+     * 精选：00：重磅推荐、01：热门精选、02：都市·猎艳、03：暧昧·异能、04：小编·推荐
+     * 男频：10：重磅推荐、11：热门精选、12：玄幻·奇幻、13：历史·军旅、14：游戏·竞技
+     * 女频：20：重磅推荐、21：热门精选、22：现代·都市、23：灵异·穿越、24：美文·同人
+     */
+    /**
+     * 获取精选
+     *
+     * @return
+     */
+    @RequestMapping(value = "/getRecommendBook")
+    public Result getRecommendBook(@RequestParam("tabId") String aType) {
+        List<ItemBookEntity> itemBookEntities = new ArrayList<>();
+        switch (aType) {
+            case "0"://推荐
+                itemBookEntities.add(ItemBookEntity.getInstance("重磅推荐", bookRepository.findRBookEntitiesByWeight("00", PageRequest.of(0, 4, new Sort(Sort.Direction.DESC, "id")))));
+                itemBookEntities.add(ItemBookEntity.getInstance("热门精选", bookRepository.findRBookEntitiesByWeight("01", PageRequest.of(0, 6, new Sort(Sort.Direction.DESC, "id")))));
+                itemBookEntities.add(ItemBookEntity.getInstance("都市·猎艳", bookRepository.findRBookEntitiesByWeight("02", PageRequest.of(0, 6, new Sort(Sort.Direction.DESC, "id")))));
+                itemBookEntities.add(ItemBookEntity.getInstance("暧昧·异能", bookRepository.findRBookEntitiesByWeight("03", PageRequest.of(0, 6, new Sort(Sort.Direction.DESC, "id")))));
+                itemBookEntities.add(ItemBookEntity.getInstance("小编·推荐", bookRepository.findRBookEntitiesByWeight("04", PageRequest.of(0, 6, new Sort(Sort.Direction.DESC, "id")))));
+
+                break;
+            case "1"://男频
+                itemBookEntities.add(ItemBookEntity.getInstance("重磅推荐", bookRepository.findRBookEntitiesByWeight("10", PageRequest.of(0, 4, new Sort(Sort.Direction.DESC, "id")))));
+                itemBookEntities.add(ItemBookEntity.getInstance("热门精选", bookRepository.findRBookEntitiesByWeight("11", PageRequest.of(0, 6, new Sort(Sort.Direction.DESC, "id")))));
+                itemBookEntities.add(ItemBookEntity.getInstance("玄幻·奇幻", bookRepository.findRBookEntitiesByWeight("12", PageRequest.of(0, 6, new Sort(Sort.Direction.DESC, "id")))));
+                itemBookEntities.add(ItemBookEntity.getInstance("历史·军旅", bookRepository.findRBookEntitiesByWeight("13", PageRequest.of(0, 6, new Sort(Sort.Direction.DESC, "id")))));
+                itemBookEntities.add(ItemBookEntity.getInstance("游戏·竞技", bookRepository.findRBookEntitiesByWeight("14", PageRequest.of(0, 6, new Sort(Sort.Direction.DESC, "id")))));
+
+                break;
+            case "2"://女频
+                itemBookEntities.add(ItemBookEntity.getInstance("重磅推荐", bookRepository.findRBookEntitiesByWeight("20", PageRequest.of(0, 4, new Sort(Sort.Direction.DESC, "id")))));
+                itemBookEntities.add(ItemBookEntity.getInstance("热门精选", bookRepository.findRBookEntitiesByWeight("21", PageRequest.of(0, 6, new Sort(Sort.Direction.DESC, "id")))));
+                itemBookEntities.add(ItemBookEntity.getInstance("现代·都市", bookRepository.findRBookEntitiesByWeight("22", PageRequest.of(0, 6, new Sort(Sort.Direction.DESC, "id")))));
+                itemBookEntities.add(ItemBookEntity.getInstance("灵异·穿越", bookRepository.findRBookEntitiesByWeight("23", PageRequest.of(0, 6, new Sort(Sort.Direction.DESC, "id")))));
+                itemBookEntities.add(ItemBookEntity.getInstance("美文·同人", bookRepository.findRBookEntitiesByWeight("24", PageRequest.of(0, 6, new Sort(Sort.Direction.DESC, "id")))));
+
+                break;
+        }
+
+        return ResultUtil.success(itemBookEntities);
+    }
+
+    /**
+     * @param tabId
+     * @return
+     */
+    @RequestMapping(value = "/getTabBookList")
+    public Result getTypeRBookList(String tabId, Integer startNum, Integer pageSize) {
+
+        return ResultUtil.success(bookRepository.findBookEntitiesByTabId(tabId, PageRequest.of(startNum, pageSize, new Sort(Sort.Direction.DESC, "id"))));
+    }
+
+    /**
+     * 获取类型推荐
+     *
+     * @return
+     */
+    @RequestMapping(value = "/getWeightRecommendBooks")
+    public Result getTsbRecommendBooks(String weight, Integer startNum, Integer pageSize) {
+
+        return ResultUtil.success(bookRepository.findRBookEntitiesByWeight(weight, PageRequest.of(startNum, pageSize, new Sort(Sort.Direction.ASC, "id"))));
+    }
+
+    /**
+     * 获取类型
+     *
+     * @return
+     */
+    @RequestMapping(value = "/getPeopleTypeList")
+    public Result getPeopleTypeList() {
+        List<BookTabEntity> bookTabEntities = new ArrayList<>();
+        bookTabEntities.add(BookTabEntity.getInstance(0));
+        bookTabEntities.add(BookTabEntity.getInstance(1));
+
+        return ResultUtil.success(bookTabEntities);
     }
 }

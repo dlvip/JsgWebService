@@ -8,13 +8,9 @@ import javax.persistence.Id;
 public class BookEntity {
     /**
      * "levelNum":"8.0",
-     * "subtitle":"",
      * "author":" 加西亚·马尔克斯",
      * "pubdate":"2012-9-1",
-     * "origin_title":El amor en los tiempos del cólera",
      * "binding":"精装",
-     * "pages":"401",
-     * "images_medium":"http://open.6api.net/mpic/s11284102.jpg",
      * "images_large":"http://open.6api.net/lpic/s11284102.jpg",
      * "publisher":"南海出版公司",
      * "isbn10":"7544258971",
@@ -30,29 +26,20 @@ public class BookEntity {
     }
 
     private BookEntity(String levelNum,
-                       String subtitle,
                        String author,
                        String pubdate,
-                       String origin_title,
                        String binding,
-                       String pages,
-                       String images_medium,
                        String images_large,
                        String publisher,
                        String isbn10,
                        String isbn13,
                        String title,
                        String summary,
-                       String price,
-                       String url) {
+                       String price) {
         this.levelNum = levelNum;
-        this.subtitle = subtitle;
         this.author = author;
         this.pubdate = pubdate;
-        this.origin_title = origin_title;
         this.binding = binding;
-        this.pages = pages;
-        this.images_medium = images_medium;
         this.images_large = images_large;
         this.publisher = publisher;
         this.isbn10 = isbn10;
@@ -60,7 +47,6 @@ public class BookEntity {
         this.title = title;
         this.summary = summary;
         this.price = price;
-        this.url = url;
 
 
     }
@@ -69,13 +55,9 @@ public class BookEntity {
      * 书本信息
      *
      * @param levelNum
-     * @param subtitle
      * @param author
      * @param pubdate
-     * @param origin_title
      * @param binding
-     * @param pages
-     * @param images_medium
      * @param images_large
      * @param publisher
      * @param isbn10
@@ -86,38 +68,28 @@ public class BookEntity {
      * @return
      */
     public static BookEntity getInstance(String levelNum,
-                                         String subtitle,
                                          String author,
                                          String pubdate,
-                                         String origin_title,
                                          String binding,
-                                         String pages,
-                                         String images_medium,
                                          String images_large,
                                          String publisher,
                                          String isbn10,
                                          String isbn13,
                                          String title,
                                          String summary,
-                                         String price,
-                                         String url) {
+                                         String price) {
 
         return new BookEntity(levelNum,
-                subtitle,
                 author,
                 pubdate,
-                origin_title,
                 binding,
-                pages,
-                images_medium,
                 images_large,
                 publisher,
                 isbn10,
                 isbn13,
                 title,
                 summary,
-                price,
-                url);
+                price);
     }
 
     @Id
@@ -126,19 +98,11 @@ public class BookEntity {
 
     private String levelNum;
 
-    private String subtitle;
-
     private String author;
 
     private String pubdate;
 
-    private String origin_title;
-
     private String binding;
-
-    private String pages;
-
-    private String images_medium;
 
     private String images_large;
 
@@ -154,9 +118,38 @@ public class BookEntity {
 
     private String price;
 
-    private String url;
-
     private String filePath;
+
+    /**
+     * 图书类型
+     * 男频 0：玄幻、1：奇幻、2：仙侠、3：悬疑、4：军旅、5：历史、6：灵异
+     * 女频 10：现代言情、11：古代言情、12：穿越架空、13：总裁豪门、14：青春校园
+     * 文学 20：经典文学
+     */
+    private String tabId;
+
+    /**
+     * 精选：00：重磅推荐、01：热门精选、02：都市·猎艳、03：暧昧·异能、04：小编·推荐
+     * 男频：10：重磅推荐、11：热门精选、12：玄幻·奇幻、13：历史·军旅、14：游戏·竞技
+     * 女频：20：重磅推荐、21：热门精选、22：现代·都市、23：灵异·穿越、24：美文·同人
+     */
+    private String weight;
+
+    public String getTabId() {
+        return tabId;
+    }
+
+    public void setTabId(String tabId) {
+        this.tabId = tabId;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
 
     public String getFilePath() {
         return filePath;
@@ -182,14 +175,6 @@ public class BookEntity {
         this.levelNum = levelNum;
     }
 
-    public String getSubtitle() {
-        return subtitle;
-    }
-
-    public void setSubtitle(String subtitle) {
-        this.subtitle = subtitle;
-    }
-
     public String getAuthor() {
         return author;
     }
@@ -206,36 +191,12 @@ public class BookEntity {
         this.pubdate = pubdate;
     }
 
-    public String getOrigin_title() {
-        return origin_title;
-    }
-
-    public void setOrigin_title(String origin_title) {
-        this.origin_title = origin_title;
-    }
-
     public String getBinding() {
         return binding;
     }
 
     public void setBinding(String binding) {
         this.binding = binding;
-    }
-
-    public String getPages() {
-        return pages;
-    }
-
-    public void setPages(String pages) {
-        this.pages = pages;
-    }
-
-    public String getImages_medium() {
-        return images_medium;
-    }
-
-    public void setImages_medium(String images_medium) {
-        this.images_medium = images_medium;
     }
 
     public String getImages_large() {
@@ -294,11 +255,4 @@ public class BookEntity {
         this.price = price;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
 }

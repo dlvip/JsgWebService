@@ -4,7 +4,7 @@ import java.util.List;
 
 public class ItemBookEntity {
 
-    public static ItemBookEntity getInstance(String title, List<RBookEntity> bookEntities) {
+    public static ItemBookEntity getInstance(String title, List<BookEntity> bookEntities) {
         ItemBookEntity itemBookEntity = new ItemBookEntity();
         itemBookEntity.setTitle(title);
         itemBookEntity.setBookEntities(bookEntities);
@@ -13,9 +13,9 @@ public class ItemBookEntity {
     }
 
     private String title;
-    private List<RBookEntity> bookEntities;
+    private List<BookEntity> bookEntities;
 
-    public List<RBookEntity> getBookEntities() {
+    public List<BookEntity> getBookEntities() {
         return bookEntities;
     }
 
@@ -23,7 +23,7 @@ public class ItemBookEntity {
         return title;
     }
 
-    public void setBookEntities(List<RBookEntity> bookEntities) {
+    public void setBookEntities(List<BookEntity> bookEntities) {
         this.bookEntities = bookEntities;
     }
 

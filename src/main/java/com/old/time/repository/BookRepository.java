@@ -1,9 +1,28 @@
 package com.old.time.repository;
 
 import com.old.time.domain.BookEntity;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface BookRepository extends JpaRepository<BookEntity, Integer> {
+
+    /**
+     * 获取图书列表
+     *
+     * @param weight
+     * @param pageable
+     * @return
+     */
+    List<BookEntity> findRBookEntitiesByWeight(String weight, Pageable pageable);
+
+    /**
+     * @param tabId
+     * @param pageable
+     * @return
+     */
+    List<BookEntity> findBookEntitiesByTabId(String tabId, Pageable pageable);
 
     /**
      * 是否已经存在
