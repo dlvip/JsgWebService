@@ -236,11 +236,12 @@ public class BookController extends BaseController {
      *
      * @return
      */
-    @RequestMapping(value = "/getPeopleTypeList")
-    public Result getPeopleTypeList() {
+    @RequestMapping(value = "/getTabList")
+    public Result getTabList() {
         List<BookTabEntity> bookTabEntities = new ArrayList<>();
-        bookTabEntities.add(BookTabEntity.getInstance(0));
+        bookTabEntities.add(BookTabEntity.getInstance(2));
         bookTabEntities.add(BookTabEntity.getInstance(1));
+        bookTabEntities.add(BookTabEntity.getInstance(0));
 
         return ResultUtil.success(bookTabEntities);
     }

@@ -12,8 +12,8 @@ public class BookTabEntity {
      * 文学 20：经典文学
      */
     public static BookTabEntity getInstance(int type) {
-        BookTabEntity mBookTabEntity = new BookTabEntity();
         List<TabEntity> tabEntities = new ArrayList<>();
+        BookTabEntity mBookTabEntity = new BookTabEntity();
         switch (type) {
             case 0:
                 mBookTabEntity.setTitle("男频");
@@ -42,7 +42,8 @@ public class BookTabEntity {
             case 2:
                 mBookTabEntity.setTitle("文学");
                 tabEntities.clear();
-                tabEntities.add(TabEntity.getInstance(20, "经典文学", "https://images.bookbao99.net/coverpic/596/596531.jpg"));
+                tabEntities.add(TabEntity.getInstance(20, "经典文学", "https://www.qisuu.la/files/article/image/33/33638/33638s.jpg"));
+                mBookTabEntity.setTabEntities(tabEntities);
 
                 break;
         }
