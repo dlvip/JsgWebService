@@ -215,7 +215,7 @@ public class BookController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/getTabBookList")
-    public Result getTypeRBookList(String tabId, Integer startNum, Integer pageSize) {
+    public Result getTypeRBookList(@RequestParam("tabId") String tabId, @RequestParam("startNum") Integer startNum, @RequestParam("pageSize") Integer pageSize) {
 
         return ResultUtil.success(bookRepository.findBookEntitiesByTabId(tabId, PageRequest.of(startNum, pageSize, new Sort(Sort.Direction.DESC, "id"))));
     }
