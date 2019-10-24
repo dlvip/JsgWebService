@@ -52,6 +52,11 @@ public class DynamicEntity {
 
     private String createTime;
 
+    /**
+     * 动态类型
+     */
+    private Integer dynamicType;
+
     @Transient
     private String commentCount;
 
@@ -63,6 +68,14 @@ public class DynamicEntity {
 
     @Transient
     private TopicEntity topicEntity;
+
+    public Integer getDynamicType() {
+        return dynamicType;
+    }
+
+    public void setDynamicType(Integer dynamicType) {
+        this.dynamicType = dynamicType;
+    }
 
     public TopicEntity getTopicEntity() {
         return topicEntity;

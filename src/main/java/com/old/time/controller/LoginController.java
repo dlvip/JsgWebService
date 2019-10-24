@@ -2,6 +2,7 @@ package com.old.time.controller;
 
 import com.old.time.domain.MsgCodeEntity;
 import com.old.time.domain.Result;
+import com.old.time.domain.SystemBean;
 import com.old.time.domain.UserEntity;
 import com.old.time.enums.ResultEnum;
 import com.old.time.exception.JSGNoSuchElementException;
@@ -53,7 +54,6 @@ public class LoginController extends BaseController {
             msgCodeEntity = MsgCodeEntity.getInstance(mobile, MsgCodeUtils.getMsgCode(mobile));
 
         }
-
         msgCodeRepository.save(msgCodeEntity);
         return ResultUtil.success();
     }
@@ -105,6 +105,28 @@ public class LoginController extends BaseController {
         userEntity.setToken(mobile);
 
         return ResultUtil.success(userRepository.save(userEntity));
+    }
+
+    /**
+     * 密码登陆
+     *
+     * @param mobile
+     * @return
+     * @throws RuntimeException
+     */
+    @PostMapping(value = "/userLogin")
+    public Result userLogin(@RequestParam("mobile") String mobile) {
+        boolean isUser = userRepository.existsByMobile(mobile);
+        UserEntity userEntity;
+        if (isUser) {
+            userEntity = userRepository.findUserEntityByMobile(mobile);
+
+        } else {
+            userEntity = userRepository.save(UserEntity.getInstance(mobile, "123456"));
+
+        }
+        userEntity = jSGuangService.setRongToken(userEntity);
+        return ResultUtil.success(userEntity);
     }
 
     /**
@@ -223,5 +245,15 @@ public class LoginController extends BaseController {
         UserEntity userEntity = userRepository.findUserEntityByMobile(mobile);
         userEntity.setPasWord(pasWord);
         return ResultUtil.success(userRepository.save(userEntity));
+    }
+
+    @PostMapping(value = "/checkUpdate")
+    public Result checkUpdate() {
+        SystemBean systemBean = new SystemBean();
+        systemBean.setDescribe("1：优化用户体验\n2：修改已知bug");
+        systemBean.setIsForce(1);
+        systemBean.setVersionCode(3);
+        systemBean.setUrl("https://jsguang.oss-cn-beijing.aliyuncs.com/app/miyou_sign_1.1.3.apk");
+        return ResultUtil.success(systemBean);
     }
 }

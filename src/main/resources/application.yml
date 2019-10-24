@@ -15,4 +15,9 @@ spring:
           # spring boot 2.0 的坑， spring boot2.+后默认使用的是MyISAM引擎
           org.hibernate.dialect.MySQL5InnoDBDialect
 
-
+  # 分页配置
+  pagehelper:
+    helper-dialect: mysql
+    reasonable: true
+    support-methods-arguments: true
+    params: count=countSql

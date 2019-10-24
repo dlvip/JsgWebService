@@ -7,6 +7,4 @@ import java.util.List;
 
 public interface BannerRepository extends JpaRepository<BannerEntity, Integer> {
 
-
-
 }

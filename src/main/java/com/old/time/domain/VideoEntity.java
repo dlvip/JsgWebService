@@ -80,17 +80,17 @@ public class VideoEntity {
     private String pic;
 
     /**
-     * 国家（大陆/香港/澳门/台湾）
+     * 地区（大陆/香港/澳门/台湾）
      */
     private String country;
 
     /**
-     * 所属类型（电影/电视/动漫/综艺）
+     * 形式（电影/电视/动漫/综艺）
      */
     private String film;
 
     /**
-     * 剧情类型（悬疑/惊悚/魔幻）
+     * 类型（悬疑/惊悚/魔幻）
      */
     private String type;
 
