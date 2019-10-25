@@ -32,7 +32,7 @@ public interface VideoRepository extends JpaRepository<VideoEntity, Integer> {
      * @param name
      * @return
      */
-    List<VideoEntity> findVideoEntitiesByNameIsLike(String name);
+    List<VideoEntity> findAllByNameLike(String name);
 
     /**
      * 推荐查询
@@ -46,19 +46,26 @@ public interface VideoRepository extends JpaRepository<VideoEntity, Integer> {
      * 根据类型查询
      *
      * @param weight
-     * @param pageable
      * @return
      */
-    List<VideoEntity> findVideoEntitiesByWeight(Integer weight, Pageable pageable);
+    List<VideoEntity> findVideoEntitiesByWeight(int weight);
 
+    /**
+     * 视频类型查询
+     *
+     * @param film
+     * @return
+     */
+    List<VideoEntity> findVideoEntitiesByFilm(String film);
 
     /**
      * 根据类型查询
      *
      * @param weight
+     * @param pageable
      * @return
      */
-    List<VideoEntity> findVideoEntitiesByWeight(int weight);
+    List<VideoEntity> findVideoEntitiesByWeight(Integer weight, Pageable pageable);
 
 
     /**
@@ -128,13 +135,5 @@ public interface VideoRepository extends JpaRepository<VideoEntity, Integer> {
      * @return
      */
     List<VideoEntity> findVideoEntitiesByTypeContainingAndCountryContainingAndCreateTimeContaining(String type, String country, String createTime, Pageable pageable);
-
-    /**
-     * 视频类型查询
-     *
-     * @param film
-     * @return
-     */
-    List<VideoEntity> findVideoEntitiesByFilm(String film);
 
 }

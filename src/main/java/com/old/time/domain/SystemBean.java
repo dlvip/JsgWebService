@@ -1,6 +1,15 @@
 package com.old.time.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class SystemBean {
+
+    @Id
+    @GeneratedValue
+    private Integer id;
 
     /**
      * 版本号
@@ -10,7 +19,7 @@ public class SystemBean {
     /**
      * 描述
      */
-    private String describe;
+    private String des;
 
     /**
      * 下载URl
@@ -22,6 +31,14 @@ public class SystemBean {
      */
     private int isForce;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public int getVersionCode() {
         return versionCode;
     }
@@ -30,12 +47,12 @@ public class SystemBean {
         this.versionCode = versionCode;
     }
 
-    public String getDescribe() {
-        return describe;
+    public String getDes() {
+        return des;
     }
 
-    public void setDescribe(String describe) {
-        this.describe = describe;
+    public void setDes(String des) {
+        this.des = des;
     }
 
     public String getUrl() {

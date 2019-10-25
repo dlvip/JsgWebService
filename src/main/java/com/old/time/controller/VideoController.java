@@ -49,7 +49,7 @@ public class VideoController {
      * @param totalEpisodes
      * @return
      */
-    @PostMapping(value = "/createVideoEntity")
+    @PostMapping(value = "/checkUpdate")
     public Result createVideoEntity(@RequestParam("name") String name
             , @RequestParam("detail") String detail
             , @RequestParam("pic") String pic
@@ -118,7 +118,7 @@ public class VideoController {
      */
     @RequestMapping(value = "/searchVideo")
     public Result searchVideo(@RequestParam("name") String name) {
-        List<VideoEntity> videoEntities = videoRepository.findVideoEntitiesByNameIsLike(name);
+        List<VideoEntity> videoEntities = videoRepository.findAllByNameLike("%" + name + "%");
 
         return ResultUtil.success(videoEntities);
     }
@@ -171,42 +171,6 @@ public class VideoController {
 
         return ResultUtil.success(videoEntities);
     }
-
-//    /**
-//     * 查询列表
-//     *
-//     * @param type 类型 0:推荐 1:地区（中国/香港）、2：剧情类别（惊悚/悬疑/魔幻）、3：视频类型（电影/电视/动漫）
-//     * @param name 关键字
-//     * @return
-//     */
-//    @PostMapping(value = "/queryVideoList")
-//    public Result queryVideoList(@RequestParam("type") int type, @RequestParam("name") String name) {
-//        List<VideoEntity> videoEntities;
-//        switch (type) {
-//            case 0:
-//                videoEntities = videoRepository.findVideoEntitiesByWeight(Integer.parseInt(name));
-//
-//                break;
-//            case 1:
-//                videoEntities = videoRepository.findVideoEntitiesByCountry(name);
-//
-//                break;
-//            case 2:
-//                videoEntities = videoRepository.findVideoEntitiesByTypeIsLike(name, PageRequest.of(0, 6, new Sort(Sort.Direction.DESC, "id")));
-//
-//                break;
-//            case 3:
-//                videoEntities = videoRepository.findVideoEntitiesByFilm(name);
-//
-//                break;
-//            default:
-//                videoEntities = new ArrayList<>();
-//
-//                break;
-//        }
-//
-//        return ResultUtil.success(videoEntities);
-//    }
 
     @RequestMapping("/queryVideoList")
     public Result queryVideos(@RequestParam("type") String type, @RequestParam("country") String country, @RequestParam("createTime") String createTime, @RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {

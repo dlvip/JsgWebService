@@ -46,7 +46,6 @@ public class DynamicController extends BaseController {
 
             throw new JSGNoSuchElementException(ResultEnum.USER_NON_EXISTENT);
         }
-
         DynamicEntity dynamicEntity = DynamicEntity.getInstance(userId, content, images, Integer.parseInt(topicId));
         dynamicEntity.setTopicEntity(topicRepository.findTopicEntityById(dynamicEntity.getTopicId()));
         dynamicEntity.setUserEntity(userRepository.findUserEntityByUserId(userId));

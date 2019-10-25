@@ -8,6 +8,7 @@ import com.old.time.enums.ResultEnum;
 import com.old.time.exception.JSGNoSuchElementException;
 import com.old.time.exception.JSGRuntimeException;
 import com.old.time.repository.MsgCodeRepository;
+import com.old.time.repository.SystemUpdateRepository;
 import com.old.time.repository.UserRepository;
 import com.old.time.utils.MsgCodeUtils;
 import com.old.time.utils.ResultUtil;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "jiushiguang")
 public class LoginController extends BaseController {
@@ -27,6 +30,9 @@ public class LoginController extends BaseController {
 
     @Autowired
     private MsgCodeRepository msgCodeRepository;
+
+    @Autowired
+    private SystemUpdateRepository updateRepository;
 
     /**
      * 获取验证码
@@ -249,11 +255,8 @@ public class LoginController extends BaseController {
 
     @PostMapping(value = "/checkUpdate")
     public Result checkUpdate() {
-        SystemBean systemBean = new SystemBean();
-        systemBean.setDescribe("1：优化用户体验\n2：修改已知bug");
-        systemBean.setIsForce(1);
-        systemBean.setVersionCode(3);
-        systemBean.setUrl("https://jsguang.oss-cn-beijing.aliyuncs.com/app/miyou_sign_1.1.3.apk");
-        return ResultUtil.success(systemBean);
+        List<SystemBean> systemBeans = updateRepository.findAll();
+
+        return ResultUtil.success(systemBeans);
     }
 }
